@@ -1,0 +1,10 @@
+*.svn
+*~
+.DS_Store
+ThumbsDB
+\#*#
+.#*
+ZenLib
+MediaInfoLib
+Shared
+mediainfojs.o
