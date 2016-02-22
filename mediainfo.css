@@ -1,0 +1,21 @@
+body {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 13px;
+  color: #333;
+  background-color: #eee;
+  margin: 25px;
+}
+
+#dropzone {
+  color: #555;
+  border: 5px dashed #bbb;
+  font-size: 200%;
+  text-align: center;
+  padding: 80px;
+}
+
+#dropzone.dragover {
+  color: inherit;
+  background-color: #ccc;
+  border-color: #888;
+}

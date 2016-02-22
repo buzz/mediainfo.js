@@ -7,18 +7,12 @@
   </head>
   <body>
     <div id="dropzone">
-      Drop a file here!
+      Drop a file here!<br>
+      (or click)
     </div>
     <input type="file" id="fileinput">
     <pre id="result"></pre>
-    <script type="text/javascript">
-      var Module = {
-        onRuntimeInitialized: function() {
-          // called when mediainfo.js is ready
-          MediaInfoStart();
-        }
-      };
-    </script>
+    <div id="status"></div>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="mediainfo.js"></script>
     <script src="mediainfopage.js"></script>
