@@ -1,21 +1,45 @@
 body {
-  font-family: Verdana, Arial, sans-serif;
+  font-family: 'Open Sans', Verdana, Arial, sans-serif;
+  font-weight: 600;
   font-size: 13px;
   color: #333;
   background-color: #eee;
+  background-image: url(img/bg.png);
   margin: 25px;
 }
 
-#dropzone {
-  color: #555;
-  border: 5px dashed #bbb;
-  font-size: 200%;
+.center {
   text-align: center;
-  padding: 80px;
+}
+
+.big {
+  font-size: 200%;
+}
+
+.small {
+  font-size: 80%;
+}
+
+#dropzone {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  padding: 50px 25px;
+  color: #555;
+  border: 5px dashed rgba(85, 85, 85, 0.35);
+}
+
+#file-input {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  font-size: 100px; /* to fill whole parent */
 }
 
 #dropzone.dragover {
   color: inherit;
-  background-color: #ccc;
-  border-color: #888;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(85, 85, 85, 0.40);
 }

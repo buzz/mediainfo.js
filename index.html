@@ -3,14 +3,20 @@
   <head>
     <title>mediainfo.js</title>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:600,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="mediainfo.css" type="text/css">
   </head>
   <body>
-    <div id="dropzone">
-      Drop a file here!<br>
-      (or click)
+    <div id="loader" class="center">
+      <i class="fa fa-spinner fa-spin fa-5x"></i><br>
+      <span class="big"> Loading…</span>
     </div>
-    <input type="file" id="fileinput">
+    <div id="dropzone" class="big center">
+      Drop a file here!<br>
+      <span class="small">(or click)</span>
+      <input id="file-input" class="hidden" type="file">
+    </div>
     <pre id="result"></pre>
     <div id="status"></div>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
