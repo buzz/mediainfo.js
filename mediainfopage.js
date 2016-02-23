@@ -1,70 +1,77 @@
 $(function() {
-  var $dropzone = $('#dropzone, #dropzone *');
-  var $fileInput = $('#fileinput');
+  var $loader = $('#loader');
+  var $dropzone = $('#dropzone');
+  var $fileinput = $('#file-input');
   var $result = $('#result');
   var $status = $('#status');
 
   var CHUNK_SIZE = 5 * 1024 * 1024;
-  var miLib, mi, offset, state;
+  var miLib, mi;
 
-  // Parse file chunk by chunk
-  function parseFile(file, cb) {
-    var reader = new FileReader();
-    offset = 0;
+  function parseFile(file, callback) {
+    var fileSize = file.size, offset = 0, state = 0, seek = null;
 
-    console.debug('Analyzing file: ', file.name + ' (' + file.size + ')');
+    mi.open_buffer_init(fileSize, offset);
 
-    mi.open_buffer_init(file.size, offset);
-
-    reader.onload = function() {
-      var arr = new Uint8Array(reader.result);
-      state = mi.open_buffer_continue(arr, arr.length);
-      arr = null;
-
-      if ((state >> 3) % 2 !== 0 || offset >= file.size) {
-        var result = mi.inform();
-        mi.close();
-        cb(result);
+    var processChunk = function(e) {
+      var l;
+      $status.text('Read ' + offset + ' bytes (' + (offset / fileSize * 100).toFixed(1) + '% of file) state=' + state);
+      if (e.target.error === null) {
+        var chunk = new Uint8Array(e.target.result);
+        l = chunk.length;
+        state = mi.open_buffer_continue(chunk, l);
+        offset += l;
+        chunk = null;
+      } else {
+        console.log('Read error: ' + e.target.error);
         return;
       }
-
-      $status.text('Read ' + offset + ' bytes (' + (offset / file.size * 100).toFixed(1) + '% of file)', state);
-
-      offset += CHUNK_SIZE;
-      seek();
+      // bit 4 set means finalized
+      if ((state >> 3) % 2 !== 0 || offset >= fileSize) {
+        console.log('Done reading file');
+        var result = mi.inform();
+        mi.close();
+        callback(result);
+        return;
+      }
+      seek(l);
     };
 
-    reader.onerror = function(e) {
-      throw('Error while reading file', e);
+    seek = function(length) {
+      var r = new FileReader();
+      var blob = file.slice(offset, length + offset);
+      r.onload = processChunk;
+      r.readAsArrayBuffer(blob);
     };
 
-    function seek() {
-      var slice = file.slice(offset, offset + CHUNK_SIZE);
-      reader.readAsArrayBuffer(slice);
-    }
-    seek();
-  };
+    seek(CHUNK_SIZE);
+  }
 
   // show result
   function showResult(r) {
     $result.text(r);
   }
 
+  // prevent window from loading file if dropped on background
+  $(window).on('dragover dragleave dragenter drop', function(e) {
+    e.preventDefault();
+  });
+
   // init drag 'n drop
   $dropzone.on('dragover', function(e) {
     e.preventDefault();
     e.stopPropagation();
-  })
+  });
   $dropzone.on('dragleave', function(e) {
     e.preventDefault();
     e.stopPropagation();
     $dropzone.removeClass('dragover');
-  })
+  });
   $dropzone.on('dragenter', function(e) {
     e.preventDefault();
     e.stopPropagation();
     $dropzone.addClass('dragover');
-  })
+  });
   $dropzone.on('drop', function(e){
     e.preventDefault();
     e.stopPropagation();
@@ -80,14 +87,18 @@ $(function() {
   miLib = MediaInfo(function() {
     console.debug('mediainfo.js initialized');
 
-    window['miLib'] = miLib;    // debug
-    mi = new miLib.MediaInfo();
+    $loader.fadeOut(function() {
+      $dropzone.fadeIn();
 
-    $fileInput.on('change', function(e) {
-      var el = $fileInput.get(0);
-      if (el.files.length > 0) {
-        parseFile(el.files[0], showResult);
-      }
+      window['miLib'] = miLib; // debug
+      mi = new miLib.MediaInfo();
+
+      $fileinput.on('change', function(e) {
+        var el = $fileinput.get(0);
+        if (el.files.length > 0) {
+          parseFile(el.files[0], showResult);
+        }
+      });
     });
   });
 });
