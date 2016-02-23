@@ -28,14 +28,14 @@
       <!-- Menu -->
       <nav id="menu">
         <ul>
-          <li><a href="#">mediainfo.js</a></li>
-          <li><a href="#">about</a></li>
-          <li><a href="#">contact</a></li>
+          <li><a href="#mediainfojs" class="active pagelink">mediainfo.js</a></li>
+          <li><a href="#about" class="pagelink">about</a></li>
         </ul>
+        <hr>
       </nav>
 
       <!-- mediainfo.js -->
-      <div id="mediainfojs">
+      <div id="mediainfojs" class="page active">
         <div id="dropzone" class="big center">
           <div id="loader" class="center">
             <i class="fa fa-spinner fa-spin fa-lg"></i><br>
@@ -43,7 +43,7 @@
           </div>
           <div id="dropcontrols" class="hidden">
             <div id="dropcontrolstext">
-              Drop a file here!<br>
+              <i class="fa fa-lg fa-hand-rock-o"></i> Drop a media file here!<br>
               <span class="small">(or click)</span>
             </div>
             <input id="fileinput" type="file">
@@ -55,31 +55,33 @@
           </div>
         </div>
         <p>
-          Show information about media files. Works with
+          <strong>mediainfo.js</strong> shows information about media
+          files. It works with
           <code>.avi</code>, <code>.mkv</code>, <code>.mp3</code>
-          and <a href="#about"> many more…</a>
+          and <a href="#about" class="pagelink"> many more…</a>
         </p>
         <p>
-          <em><i class="fa fa-lg fa-info-circle blue"></i> No file
+          <em><i class="fa fa-lg fa-info-circle fa-padded blue"></i> No file
             data is leaving your computer. All analyzing is done in
             your browser!</em>
         </p>
         <div id="results">
-          <h1>Results</h1>
+          <h2><i class="fa fa-list"></i> results</h2>
           <div id="resultscontainer"></div>
         </div>
       </div>
 
       <!-- about -->
-      <div id="about" class="hidden">
+      <div id="about" class="hidden page">
+        <h1>about</h1>
         <p>
-
-          <h1>about</h1>
           <strong>mediainfo.js</strong> can analyze all kinds of media
-          files for you. It shows technical details and metainfo.
+          files for you. It shows technical details and metadata.
+        </p>
 
-          <h2>FAQ</h2>
+        <h2><i class="fa fa-question-circle"></i> faq</h2>
 
+        <p>
           <ul>
             <li>
               nothing is sent to servers?
@@ -88,30 +90,35 @@
               mediainfo made by mediaarea
             </li>
             <li>
+              Problems, ideas, ... -> GH issue tracker
+            </li>
+            <li>
               result list saved in browser
             </li>
           </ul>
         </p>
 
-        <h2>Thanks</h2>
+        <h2><i class="fa fa-trophy"></i> thanks</h2>
 
         <p>
           - mediainfo
           - dragster
           - font awesome
         </p>
-      </div>
 
-      <!-- contact -->
-      <div id="contact" class="hidden">
+        <h2><i class="fa fa-envelope"></i> contact</h2>
+
         <p>
-          <h1>contact</h1>
+          Get in touch either
+          on <a href="https://github/buzz/mediainfo.js">GitHub</a> or
+          via
+          email: <a href="mailto:buzz-AT-l4m1-DOT-de">buzz <i class="fa fa-at"></i>l4m1 <i class="fa fa-circle" style="font-size: 20%"></i>de</a>.
         </p>
       </div>
 
       <!-- Footer -->
-      <hr>
       <footer>
+        <hr>
         <p>
           <a href="https://github.com/buzz/mediainfo.js"><i class="fa fa-github fa-lg fa-padded"></i>GitHub</a>
           <span class="pull-right"><i class="fa fa-copyright fa-flip-horizontal"></i> <a href="https://github.com/buzz">buzz</a> 2016</span>

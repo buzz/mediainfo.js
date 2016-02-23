@@ -35,10 +35,13 @@ body
   font-size: 80%
 
 .fa-padded
-  margin-right: 0.4rem
+  margin-right: 0.5rem
 
 .blue
   color: $color-blue
+
+h2 i
+  margin-right: 0.5rem
 
 a
   color: black
@@ -53,7 +56,6 @@ hr
   border-right: none
   border-bottom: none
   border-left: none
-  margin: 3rem 0 0.7rem
 
 tt, code, kbd, samp, pre
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace
@@ -66,7 +68,7 @@ nav#menu
 
   > ul
     padding-left: 0
-    margin: 0 0 1rem
+    margin: 0
 
     > li
       list-style-type: none
@@ -78,6 +80,12 @@ nav#menu
     margin: 0 1rem 0 0
     font-size: 110%
     text-decoration: none
+
+    &.active
+      text-decoration: underline
+
+  hr
+    margin: 0 0 2rem
 
 #dropzone
   height: 180px
@@ -135,3 +143,6 @@ nav#menu
 
     pre
       margin: 0
+
+footer
+  margin: 3rem 0 0.7rem

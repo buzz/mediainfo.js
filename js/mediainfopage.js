@@ -1,4 +1,6 @@
 $(function() {
+  var $nav = $('nav#menu');
+  var $pages = $('.page');
   var $loader = $('#loader');
   var $dropzone = $('#dropzone');
   var $dropcontrols = $('#dropcontrols');
@@ -13,9 +15,26 @@ $(function() {
 
   var results = [];
 
-  function showPage() {
-    
+  // Page handling
+
+  function showPage(page) {
+    var $page = $(page);
+    if (!$page.hasClass('active')) {
+      $pages.filter('.active').removeClass('active').fadeOut(function() {
+        $page.addClass('active').fadeIn();
+        $nav.find('a.active').removeClass('active');
+        $nav.find('a[href="' + page + '"]').addClass('active');
+      });
+    }
   }
+
+  $('body').on('click', 'a.pagelink', function(e) {
+    e.preventDefault();
+    var $a = $(e.currentTarget);
+    showPage($a.attr('href'));
+  });
+
+  // MediaInfo processing
 
   function showResult(result) {
     var $el = $resultscontainer.prepend('<div class="result"><pre></pre></div>');
