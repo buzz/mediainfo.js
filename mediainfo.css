@@ -37,7 +37,7 @@ body {
 
 /* line 37, sass/mediainfo.sass */
 .fa-padded {
-  margin-right: 0.4rem;
+  margin-right: 0.5rem;
 }
 
 /* line 40, sass/mediainfo.sass */
@@ -46,47 +46,51 @@ body {
 }
 
 /* line 43, sass/mediainfo.sass */
+h2 i {
+  margin-right: 0.5rem;
+}
+
+/* line 46, sass/mediainfo.sass */
 a {
   color: black;
   text-decoration: underline;
 }
-/* line 47, sass/mediainfo.sass */
+/* line 50, sass/mediainfo.sass */
 a:hover, a:active, a:visited {
   color: #333;
   text-decoration: none;
 }
 
-/* line 51, sass/mediainfo.sass */
+/* line 54, sass/mediainfo.sass */
 hr {
   border-top: 1px solid rgba(0, 0, 0, 0.25);
   border-right: none;
   border-bottom: none;
   border-left: none;
-  margin: 3rem 0 0.7rem;
 }
 
-/* line 58, sass/mediainfo.sass */
+/* line 60, sass/mediainfo.sass */
 tt, code, kbd, samp, pre {
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
-/* line 61, sass/mediainfo.sass */
+/* line 63, sass/mediainfo.sass */
 #page {
   max-width: 850px;
   margin: 0 auto;
 }
 
-/* line 67, sass/mediainfo.sass */
+/* line 69, sass/mediainfo.sass */
 nav#menu > ul {
   padding-left: 0;
-  margin: 0 0 1rem;
+  margin: 0;
 }
-/* line 71, sass/mediainfo.sass */
+/* line 73, sass/mediainfo.sass */
 nav#menu > ul > li {
   list-style-type: none;
   display: inline-block;
 }
-/* line 75, sass/mediainfo.sass */
+/* line 77, sass/mediainfo.sass */
 nav#menu a {
   display: inline-block;
   padding: 0.5rem 0;
@@ -94,8 +98,16 @@ nav#menu a {
   font-size: 110%;
   text-decoration: none;
 }
+/* line 84, sass/mediainfo.sass */
+nav#menu a.active {
+  text-decoration: underline;
+}
+/* line 87, sass/mediainfo.sass */
+nav#menu hr {
+  margin: 0 0 2rem;
+}
 
-/* line 82, sass/mediainfo.sass */
+/* line 90, sass/mediainfo.sass */
 #dropzone {
   height: 180px;
   -moz-transition-property: color, background-color, border-color;
@@ -115,13 +127,13 @@ nav#menu a {
   color: #555;
   border: 5px dashed rgba(0, 0, 0, 0.25);
 }
-/* line 92, sass/mediainfo.sass */
+/* line 100, sass/mediainfo.sass */
 #dropzone.dragover {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.1);
   border-color: rgba(0, 0, 0, 0.25);
 }
-/* line 97, sass/mediainfo.sass */
+/* line 105, sass/mediainfo.sass */
 #dropzone #loader, #dropzone #status {
   -moz-transform: translate(0, -50%);
   -ms-transform: translate(0, -50%);
@@ -131,11 +143,11 @@ nav#menu a {
   top: 50%;
   width: 100%;
 }
-/* line 103, sass/mediainfo.sass */
+/* line 111, sass/mediainfo.sass */
 #dropzone #dropcontrols {
   height: 100%;
 }
-/* line 106, sass/mediainfo.sass */
+/* line 114, sass/mediainfo.sass */
 #dropzone #dropcontrols #dropcontrolstext {
   -moz-transform: translate(0, -50%);
   -ms-transform: translate(0, -50%);
@@ -145,7 +157,7 @@ nav#menu a {
   top: 50%;
   width: 100%;
 }
-/* line 112, sass/mediainfo.sass */
+/* line 120, sass/mediainfo.sass */
 #dropzone #dropcontrols #fileinput {
   height: 100%;
   position: absolute;
@@ -154,22 +166,27 @@ nav#menu a {
   opacity: 0;
   font-size: 100px;
 }
-/* line 123, sass/mediainfo.sass */
+/* line 131, sass/mediainfo.sass */
 #dropzone #status i {
   vertical-align: middle;
   margin-right: 0.5rem;
 }
-/* line 127, sass/mediainfo.sass */
+/* line 135, sass/mediainfo.sass */
 #dropzone #status #status-percent-wrapper {
   color: #777;
 }
 
-/* line 132, sass/mediainfo.sass */
+/* line 140, sass/mediainfo.sass */
 #resultscontainer .result {
   background-color: rgba(0, 0, 0, 0.25);
   padding: 1rem;
 }
-/* line 136, sass/mediainfo.sass */
+/* line 144, sass/mediainfo.sass */
 #resultscontainer .result pre {
   margin: 0;
+}
+
+/* line 147, sass/mediainfo.sass */
+footer {
+  margin: 3rem 0 0.7rem;
 }
