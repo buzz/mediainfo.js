@@ -6,6 +6,7 @@ body {
   background-color: #eee;
   background-image: url(img/bg.png);
   margin: 25px;
+  text-shadow: 0 1px 0 white;
 }
 
 .center {
@@ -20,6 +21,40 @@ body {
   font-size: 80%;
 }
 
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover,
+a:active,
+a:visited {
+  color: #333;
+  text-decoration: underline;
+}
+
+#page {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+nav#menu > ul {
+  padding-left: 0;
+  margin: 0 0 1rem;
+}
+
+nav#menu > ul > li {
+  list-style-type: none;
+  display: inline-block;
+}
+
+nav#menu a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  margin: 0 1rem 0 0;
+  font-size: 110%;
+}
+
 #dropzone {
   display: none;
   position: relative;
@@ -27,6 +62,15 @@ body {
   padding: 50px 25px;
   color: #555;
   border: 5px dashed rgba(85, 85, 85, 0.35);
+}
+
+#status {
+  display: none;
+}
+
+#status i {
+  vertical-align: middle;
+  margin-right: 0.5rem;
 }
 
 #file-input {

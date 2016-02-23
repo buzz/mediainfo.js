@@ -1,24 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>mediainfo.js</title>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="description" content="mediainfo.js lets you analyze media files directly in your browser.">
+    <meta name="author" content="buzz">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:600,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="mediainfo.css" type="text/css">
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDomains", ["*.mediainfo.js.org"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+      var u="//fillips.l4m1.de/piwik/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', 8]);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
   </head>
   <body>
-    <div id="loader" class="center">
-      <i class="fa fa-spinner fa-spin fa-5x"></i><br>
-      <span class="big"> Loading…</span>
+    <div id="page">
+      <nav id="menu">
+        <ul>
+          <li><a href="#">mediainfo.js</a></li>
+          <li><a href="#">about</a></li>
+          <li><a href="#">contact</a></li>
+        </ul>
+      </nav>
+      <div id="loader" class="center">
+        <i class="fa fa-spinner fa-spin fa-5x"></i><br>
+        <span class="big"> Loading…</span>
+      </div>
+      <div id="dropzone" class="big center">
+        <div id="dropcontrols">
+          Drop a file here!<br>
+          <span class="small">(or click)</span>
+          <input id="file-input" class="hidden" type="file">
+        </div>
+        <div id="status">
+          <i class="fa fa-cog fa-spin fa-2x"></i>
+          Analyzing file… (<span id="status-percent">0</span> %)
+        </div>
+      </div>
+      <pre id="results"></pre>
     </div>
-    <div id="dropzone" class="big center">
-      Drop a file here!<br>
-      <span class="small">(or click)</span>
-      <input id="file-input" class="hidden" type="file">
-    </div>
-    <pre id="result"></pre>
-    <div id="status"></div>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="mediainfo.js"></script>
     <script src="mediainfopage.js"></script>

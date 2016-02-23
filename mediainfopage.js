@@ -1,21 +1,44 @@
 $(function() {
   var $loader = $('#loader');
   var $dropzone = $('#dropzone');
+  var $dropcontrols = $('#dropcontrols');
   var $fileinput = $('#file-input');
-  var $result = $('#result');
+  var $results = $('#results');
   var $status = $('#status');
+  var $statuspercent = $('#status-percent');
 
   var CHUNK_SIZE = 5 * 1024 * 1024;
   var miLib, mi;
+  var processing = false;
 
-  function parseFile(file, callback) {
+  var results = [];
+
+  function showResult(result) {
+    $results.append('<div class="result"><pre>' + result + '</pre></div>');
+  }
+
+  function processingDone() {
+    processing = false;
+    $status.hide();
+    $dropcontrols.fadeIn();
+  }
+
+  function parseFile(file) {
+    if (processing) {
+      console.log('Already processing, aborting…');
+      return;
+    }
+    processing = true;
+    $dropcontrols.hide();
+    $status.fadeIn();
+
     var fileSize = file.size, offset = 0, state = 0, seek = null;
 
     mi.open_buffer_init(fileSize, offset);
 
     var processChunk = function(e) {
       var l;
-      $status.text('Read ' + offset + ' bytes (' + (offset / fileSize * 100).toFixed(1) + '% of file) state=' + state);
+      $statuspercent.text((offset / fileSize * 100).toFixed(1));
       if (e.target.error === null) {
         var chunk = new Uint8Array(e.target.result);
         l = chunk.length;
@@ -24,6 +47,7 @@ $(function() {
         chunk = null;
       } else {
         console.log('Read error: ' + e.target.error);
+        processingDone();
         return;
       }
       // bit 4 set means finalized
@@ -31,7 +55,8 @@ $(function() {
         console.log('Done reading file');
         var result = mi.inform();
         mi.close();
-        callback(result);
+        showResult(result);
+        processingDone();
         return;
       }
       seek(l);
@@ -45,11 +70,6 @@ $(function() {
     };
 
     seek(CHUNK_SIZE);
-  }
-
-  // show result
-  function showResult(r) {
-    $result.text(r);
   }
 
   // prevent window from loading file if dropped on background
@@ -78,7 +98,7 @@ $(function() {
     $dropzone.removeClass('dragover');
     if(e.originalEvent.dataTransfer){
       if(e.originalEvent.dataTransfer.files.length > 0) {
-        parseFile(e.originalEvent.dataTransfer.files[0], showResult);
+        parseFile(e.originalEvent.dataTransfer.files[0]);
       }
     }
   });
@@ -96,7 +116,7 @@ $(function() {
       $fileinput.on('change', function(e) {
         var el = $fileinput.get(0);
         if (el.files.length > 0) {
-          parseFile(el.files[0], showResult);
+          parseFile(el.files[0]);
         }
       });
     });
