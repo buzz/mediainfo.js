@@ -3,8 +3,9 @@
   <head>
     <title>mediainfo.js</title>
     <meta charset="utf-8">
-    <meta name="description" content="mediainfo.js lets you analyze media files directly in your browser.">
+    <meta name="description" content="mediainfo.js lets you analyze media files in your browser.">
     <meta name="author" content="buzz">
+    <meta name="keywords" content="free mediainfo mkv avi mp4 mp3 codec tags">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:600,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
@@ -37,6 +38,7 @@
       <!-- mediainfo.js -->
       <div id="mediainfojs" class="page active">
         <div id="dropzone" class="big center">
+          <button class="cancel hidden"><i class="fa fa-times"></i></button>
           <div id="loader" class="center">
             <i class="fa fa-spinner fa-spin fa-lg"></i><br>
             Loading…
@@ -49,7 +51,7 @@
             <input id="fileinput" type="file">
           </div>
           <div id="status" class="hidden">
-            <i class="fa fa-cog fa-spin fa-lg"></i>
+            <i class="fa fa-cog fa-lg"></i>
             Analyzing file…
             <span id="status-percent-wrapper">(<span id="status-percent">0</span> %)</span>
           </div>
@@ -58,14 +60,14 @@
           <strong>mediainfo.js</strong> shows information about media
           files. It works with
           <code>.avi</code>, <code>.mkv</code>, <code>.mp3</code>
-          and <a href="#about" class="pagelink"> many more…</a>
+          and <a href="https://mediaarea.net/nn/MediaInfo"> many more…</a>
         </p>
         <p>
           <em><i class="fa fa-lg fa-info-circle fa-padded blue"></i> No file
             data is leaving your computer. All analyzing is done in
-            your browser!</em>
+            the browser!</em>
         </p>
-        <div id="results">
+        <div id="results" class="hidden">
           <h2><i class="fa fa-list"></i> results</h2>
           <div id="resultscontainer"></div>
         </div>
@@ -87,10 +89,10 @@
               nothing is sent to servers?
             </li>
             <li>
-              mediainfo made by mediaarea
+              works in what browsers?
             </li>
             <li>
-              Problems, ideas, ... -> GH issue tracker
+              how does it work?
             </li>
             <li>
               result list saved in browser
@@ -118,6 +120,12 @@
 
       <!-- Footer -->
       <footer>
+        <p>
+          This is a JavaScript port of the
+          excellent <a href="https://mediaarea.net/en/MediaInfo">MediaInfoLib</a>.
+          mediainfo.js was created using
+          <a href="https://kripken.github.io/emscripten-site/">Emscripten</a>.
+        </p>
         <hr>
         <p>
           <a href="https://github.com/buzz/mediainfo.js"><i class="fa fa-github fa-lg fa-padded"></i>GitHub</a>
@@ -125,8 +133,37 @@
         </p>
       </footer>
     </div>
+    <!-- templates -->
+    <script type="text/template" id="template-results">
+      <% _.each(results, function(result) { %>
+        <div class="result">
+          <div class="result-head">
+            <div class="pull-right">
+              <button title="Remove from list" class="remove"><i class="fa fa-lg fa-times"></i></button>
+            </div>
+            <button title="Un/collapse" class="toggle-collapse"><i class="fa fa-lg fa-caret-right"></i></button>
+            <span class="filename"><%= result.fileName %></span>
+          </div>
+          <div class="result-body">
+            <table><tbody>
+              <% _.each(result.File.track, function(track) { %>
+                <tr class="header"><td colspan="2"><h2>
+                  <i class="fa fa-file-o fa-file-<%= track['_type'].toLowerCase() %>-o"></i> <%= track['_type'] %>
+                </h2></td></tr>
+                <% _.each(_.without(_.keys(track), '_type', 'Unique_ID'), function(key) { %>
+                  <tr><td><%= key.replace(/_/g, ' ') %></td><td><%= track[key] %></td></tr>
+                <% }) %>
+              <% }) %>
+            </tbody></table>
+          </div>
+        </div>
+      <% }) %>
+    </script>
+    <!-- libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="js/jquery.dragster.js"></script>
+    <script src="js/xml2json.js"></script>
     <script src="js/mediainfo.js"></script>
     <script src="js/mediainfopage.js"></script>
   </body>

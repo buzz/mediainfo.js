@@ -1,4 +1,4 @@
-/* line 12, sass/mediainfo.sass */
+/* line 20, sass/mediainfo.sass */
 body {
   font-family: "Open Sans", Verdana, Arial, sans-serif;
   font-weight: 600;
@@ -10,58 +10,58 @@ body {
   text-shadow: 0 1px 0 white;
 }
 
-/* line 22, sass/mediainfo.sass */
+/* line 30, sass/mediainfo.sass */
 .center {
   text-align: center;
 }
 
-/* line 25, sass/mediainfo.sass */
+/* line 33, sass/mediainfo.sass */
 .hidden {
   display: none;
 }
 
-/* line 28, sass/mediainfo.sass */
+/* line 36, sass/mediainfo.sass */
 .pull-right {
   float: right;
 }
 
-/* line 31, sass/mediainfo.sass */
+/* line 39, sass/mediainfo.sass */
 .big {
   font-size: 200%;
 }
 
-/* line 34, sass/mediainfo.sass */
+/* line 42, sass/mediainfo.sass */
 .small {
   font-size: 80%;
 }
 
-/* line 37, sass/mediainfo.sass */
+/* line 45, sass/mediainfo.sass */
 .fa-padded {
   margin-right: 0.5rem;
 }
 
-/* line 40, sass/mediainfo.sass */
+/* line 48, sass/mediainfo.sass */
 .blue {
   color: #458ccc;
 }
 
-/* line 43, sass/mediainfo.sass */
+/* line 51, sass/mediainfo.sass */
 h2 i {
   margin-right: 0.5rem;
 }
 
-/* line 46, sass/mediainfo.sass */
+/* line 54, sass/mediainfo.sass */
 a {
   color: black;
   text-decoration: underline;
 }
-/* line 50, sass/mediainfo.sass */
+/* line 58, sass/mediainfo.sass */
 a:hover, a:active, a:visited {
   color: #333;
   text-decoration: none;
 }
 
-/* line 54, sass/mediainfo.sass */
+/* line 62, sass/mediainfo.sass */
 hr {
   border-top: 1px solid rgba(0, 0, 0, 0.25);
   border-right: none;
@@ -69,28 +69,36 @@ hr {
   border-left: none;
 }
 
-/* line 60, sass/mediainfo.sass */
+/* line 68, sass/mediainfo.sass */
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+/* line 74, sass/mediainfo.sass */
 tt, code, kbd, samp, pre {
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
-/* line 63, sass/mediainfo.sass */
+/* line 77, sass/mediainfo.sass */
 #page {
   max-width: 850px;
   margin: 0 auto;
 }
 
-/* line 69, sass/mediainfo.sass */
+/* line 83, sass/mediainfo.sass */
 nav#menu > ul {
   padding-left: 0;
   margin: 0;
 }
-/* line 73, sass/mediainfo.sass */
+/* line 87, sass/mediainfo.sass */
 nav#menu > ul > li {
   list-style-type: none;
   display: inline-block;
 }
-/* line 77, sass/mediainfo.sass */
+/* line 91, sass/mediainfo.sass */
 nav#menu a {
   display: inline-block;
   padding: 0.5rem 0;
@@ -98,16 +106,16 @@ nav#menu a {
   font-size: 110%;
   text-decoration: none;
 }
-/* line 84, sass/mediainfo.sass */
+/* line 98, sass/mediainfo.sass */
 nav#menu a.active {
   text-decoration: underline;
 }
-/* line 87, sass/mediainfo.sass */
+/* line 101, sass/mediainfo.sass */
 nav#menu hr {
   margin: 0 0 2rem;
 }
 
-/* line 90, sass/mediainfo.sass */
+/* line 104, sass/mediainfo.sass */
 #dropzone {
   height: 180px;
   -moz-transition-property: color, background-color, border-color;
@@ -127,13 +135,20 @@ nav#menu hr {
   color: #555;
   border: 5px dashed rgba(0, 0, 0, 0.25);
 }
-/* line 100, sass/mediainfo.sass */
+/* line 114, sass/mediainfo.sass */
 #dropzone.dragover {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.1);
   border-color: rgba(0, 0, 0, 0.25);
 }
-/* line 105, sass/mediainfo.sass */
+/* line 119, sass/mediainfo.sass */
+#dropzone button.cancel {
+  color: #555;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+/* line 125, sass/mediainfo.sass */
 #dropzone #loader, #dropzone #status {
   -moz-transform: translate(0, -50%);
   -ms-transform: translate(0, -50%);
@@ -143,11 +158,11 @@ nav#menu hr {
   top: 50%;
   width: 100%;
 }
-/* line 111, sass/mediainfo.sass */
+/* line 131, sass/mediainfo.sass */
 #dropzone #dropcontrols {
   height: 100%;
 }
-/* line 114, sass/mediainfo.sass */
+/* line 134, sass/mediainfo.sass */
 #dropzone #dropcontrols #dropcontrolstext {
   -moz-transform: translate(0, -50%);
   -ms-transform: translate(0, -50%);
@@ -157,7 +172,7 @@ nav#menu hr {
   top: 50%;
   width: 100%;
 }
-/* line 120, sass/mediainfo.sass */
+/* line 140, sass/mediainfo.sass */
 #dropzone #dropcontrols #fileinput {
   height: 100%;
   position: absolute;
@@ -166,27 +181,80 @@ nav#menu hr {
   opacity: 0;
   font-size: 100px;
 }
-/* line 131, sass/mediainfo.sass */
+/* line 151, sass/mediainfo.sass */
 #dropzone #status i {
   vertical-align: middle;
   margin-right: 0.5rem;
 }
-/* line 135, sass/mediainfo.sass */
+/* line 155, sass/mediainfo.sass */
 #dropzone #status #status-percent-wrapper {
   color: #777;
 }
 
-/* line 140, sass/mediainfo.sass */
-#resultscontainer .result {
-  background-color: rgba(0, 0, 0, 0.25);
-  padding: 1rem;
+/* line 158, sass/mediainfo.sass */
+.result {
+  border-radius: 4px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  margin: 1rem 0;
 }
-/* line 144, sass/mediainfo.sass */
-#resultscontainer .result pre {
-  margin: 0;
+/* line 164, sass/mediainfo.sass */
+.result .result-head {
+  text-shadow: 0 1px 0 #d6d6d6;
+  background-color: rgba(105, 67, 39, 0.25);
+  padding: 1rem;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+/* line 170, sass/mediainfo.sass */
+.result .result-head .filename {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+/* line 173, sass/mediainfo.sass */
+.result .result-head button.toggle-collapse > i {
+  -moz-transition: -moz-transform 0.2s;
+  -o-transition: -o-transform 0.2s;
+  -webkit-transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+}
+/* line 176, sass/mediainfo.sass */
+.result .result-body {
+  display: none;
+  background-color: rgba(197, 141, 100, 0.25);
+}
+/* line 180, sass/mediainfo.sass */
+.result .result-body > table {
+  width: 100%;
+  padding: 1rem;
+  border-spacing: 0;
+}
+/* line 185, sass/mediainfo.sass */
+.result .result-body > table tr:first-child h2 {
+  margin-top: 0;
+}
+/* line 188, sass/mediainfo.sass */
+.result .result-body > table h2 {
+  margin: 1.5rem 0 0.5rem;
+}
+/* line 193, sass/mediainfo.sass */
+.result .result-body > table tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+/* line 196, sass/mediainfo.sass */
+.result .result-body > table tr.header {
+  background-color: transparent;
+}
+/* line 199, sass/mediainfo.sass */
+.result .result-body > table td {
+  vertical-align: top;
+  padding: 0.1rem 0.4rem;
+}
+/* line 203, sass/mediainfo.sass */
+.result .result-body > table td:first-child {
+  font-weight: bold;
+  white-space: nowrap;
 }
 
-/* line 147, sass/mediainfo.sass */
+/* line 207, sass/mediainfo.sass */
 footer {
   margin: 3rem 0 0.7rem;
 }

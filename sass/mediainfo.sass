@@ -6,8 +6,16 @@ $color-lighter: #777
 $color-bg: #eee
 $color-borders: rgba(0, 0, 0, 0.25)
 $color-blue: #458ccc
+$color-brown: #c58d64
+$color-brown-dark: darken($color-brown, 30%)
+$color-brown-trans: fade-out($color-brown, 0.75)
+$color-brown-dark-trans: fade-out($color-brown-dark, 0.75)
+$color-light-trans: rgba(0, 0, 0, 0.1)
 
 $dur-short: 0.2s
+
+=monofont
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace
 
 body
   font-family: 'Open Sans', Verdana, Arial, sans-serif
@@ -57,8 +65,14 @@ hr
   border-bottom: none
   border-left: none
 
+button
+  background-color: transparent
+  border: none
+  cursor: pointer
+  outline: none
+
 tt, code, kbd, samp, pre
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace
+  +monofont
 
 #page
   max-width: 850px
@@ -99,8 +113,14 @@ nav#menu
 
   &.dragover
     color: inherit
-    background-color: rgba(0, 0, 0, 0.1)
+    background-color: $color-light-trans
     border-color: darken($color-borders, 10%)
+
+  button.cancel
+    color: $color-light
+    position: absolute
+    top: 1rem
+    right: 1rem
 
   #loader, #status
     +transform(translate(0, -50%))
@@ -135,14 +155,54 @@ nav#menu
     #status-percent-wrapper
       color: $color-lighter
 
-#resultscontainer
+.result
+  border-radius: 4px
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.45)
+  overflow: hidden
+  margin: 1rem 0
 
-  .result
-    background-color: $color-borders
+  .result-head
+    text-shadow: 0 1px 0 #d6d6d6
+    background-color: $color-brown-dark-trans
     padding: 1rem
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25)
 
-    pre
-      margin: 0
+    .filename
+      +monofont
+
+    button.toggle-collapse > i
+      +transition(transform $dur-short)
+
+  .result-body
+    display: none
+    background-color: $color-brown-trans
+
+    > table
+      width: 100%
+      padding: 1rem
+      border-spacing: 0
+
+      tr:first-child h2
+        margin-top: 0
+
+      h2
+        margin: 1.5rem 0 0.5rem
+
+      tr
+
+        &:nth-child(odd)
+          background-color: $color-light-trans
+
+        &.header
+          background-color: transparent
+
+      td
+        vertical-align: top
+        padding: 0.1rem 0.4rem
+
+        &:first-child
+          font-weight: bold
+          white-space: nowrap
 
 footer
   margin: 3rem 0 0.7rem
