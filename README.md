@@ -1,6 +1,6 @@
 # mediainfo.js
 
-This is a JavaScript port of the excellent [MediaInfoLib](https://mediaarea.net/en/MediaInfo) and meant to be run directly in a browser. mediainfo.js was created using [emscripten](http://emscripten.org/).
+This is a JavaScript port of the excellent [MediaInfoLib](https://mediaarea.net/en/MediaInfo) and meant to be run directly in a browser. mediainfo.js was created using [Emscripten](http://emscripten.org/).
 
 ## Demo
 
@@ -9,7 +9,7 @@ Try it out in your browser:  [https://mediainfo.js.org](https://mediainfo.js.org
 ## Build
 
 Make sure the
-[emscripten tools](https://kripken.github.io/emscripten-site/docs/getting_started/downloads.html)
+[Emscripten tools](https://kripken.github.io/emscripten-site/docs/getting_started/downloads.html)
 can be found in `$PATH`. Something like this will do:
 
     source ~/programs/emsdk_portable/emsdk_env.sh
