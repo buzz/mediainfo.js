@@ -5,15 +5,69 @@ $(function() {
   var $dropzone = $('#dropzone');
   var $dropcontrols = $('#dropcontrols');
   var $fileinput = $('#fileinput');
+  var $results = $('#results');
   var $resultscontainer = $('#resultscontainer');
   var $status = $('#status');
   var $statuspercent = $('#status-percent');
+  var $cancel = $dropzone.find('button.cancel');
 
   var CHUNK_SIZE = 5 * 1024 * 1024;
   var miLib, mi;
   var processing = false;
 
+  var x2js = new X2JS();
+
+  var template_results = _.template($('#template-results').html());
+
+  // Results saving
+
   var results = [];
+  function restoreResults() {
+    var r = window.localStorage.getItem('results');
+    if (r) {
+      results = JSON.parse(r);
+    }
+    showResults();
+  }
+
+  function saveResults() {
+    window.localStorage.setItem('results', JSON.stringify(results));
+  }
+
+  function showResults() {
+    var $el = $resultscontainer.html(template_results({ results: results }));
+    if (results.length > 0) {
+      $results.fadeIn();
+    }
+  }
+
+  function addResult(name, result) {
+    var resultObj = x2js.xml_str2json(result);
+    resultObj.date = _.now();
+    resultObj.fileName = name;
+    results.unshift(resultObj);
+    saveResults();
+    showResults();
+    toggleResult($results.find('.result:first-child'));
+  }
+
+  function removeResult($result) {
+    results.splice($result.index, 1);
+    $result.animate({ height: 'toggle', opacity: 'toggle' }, function() {
+      $result.remove();
+    });
+    if (results.length === 0) {
+      $results.fadeOut();
+    }
+    saveResults();
+  }
+
+  function toggleResult($result) {
+    $result
+      .toggleClass('collapsed')
+      .find('button.toggle-collapse > i').toggleClass('fa-rotate-90');
+    $result.find('.result-body').slideToggle();
+  }
 
   // Page handling
 
@@ -36,33 +90,23 @@ $(function() {
 
   // MediaInfo processing
 
-  function showResult(result) {
-    var $el = $resultscontainer.prepend('<div class="result"><pre></pre></div>');
-    $el.find('pre:first').text(result);
-  }
-
-  function processingDone() {
-    processing = false;
-    $status.hide();
-    $dropcontrols.fadeIn();
-  }
-
   function parseFile(file) {
     if (processing) {
-      console.log('Already processing, aborting…');
       return;
     }
+    $statuspercent.text('0');
     processing = true;
     $dropcontrols.hide();
     $status.fadeIn();
+    $cancel.fadeIn();
 
     var fileSize = file.size, offset = 0, state = 0, seek = null;
+    var statusInterval;
 
     mi.open_buffer_init(fileSize, offset);
 
     var processChunk = function(e) {
       var l;
-      $statuspercent.text((offset / fileSize * 100).toFixed(1));
       if (e.target.error === null) {
         var chunk = new Uint8Array(e.target.result);
         l = chunk.length;
@@ -70,29 +114,51 @@ $(function() {
         offset += l;
         chunk = null;
       } else {
-        console.log('Read error: ' + e.target.error);
+        var msg = 'An error happened reading your file!';
+        console.err(msg, e.target.error);
         processingDone();
+        alert(msg);
         return;
       }
       // bit 4 set means finalized
       if ((state >> 3) % 2 !== 0 || offset >= fileSize) {
-        console.log('Done reading file');
         var result = mi.inform();
         mi.close();
-        showResult(result);
+        addResult(file.name, result);
         processingDone();
         return;
       }
       seek(l);
     };
 
+    function processingDone() {
+      processing = false;
+      $status.hide();
+      $cancel.hide();
+      $dropcontrols.fadeIn();
+      $fileinput.val('');
+      clearInterval(statusInterval);
+    }
+
     seek = function(length) {
-      var r = new FileReader();
-      var blob = file.slice(offset, length + offset);
-      r.onload = processChunk;
-      r.readAsArrayBuffer(blob);
+      if (processing) {
+        var r = new FileReader();
+        var blob = file.slice(offset, length + offset);
+        r.onload = processChunk;
+        r.readAsArrayBuffer(blob);
+      }
+      else {
+        mi.close();
+        processingDone();
+      }
     };
 
+    // print status
+    statusInterval = window.setInterval(function() {
+      $statuspercent.text((offset / fileSize * 100).toFixed(0));
+    }, 1000);
+
+    // start
     seek(CHUNK_SIZE);
   }
 
@@ -119,10 +185,21 @@ $(function() {
     }
   });
 
+  // buttons
+  $cancel.on('click', function() {
+    processing = false;
+  });
+  $results
+    .on('click', 'button.remove', function() {
+      removeResult($(this).parents('.result'));
+    })
+    .on('click', 'button.toggle-collapse', function() {
+      toggleResult($(this).parents('.result'));
+    });
+
   // init mediainfo
   miLib = MediaInfo(function() {
-    console.debug('mediainfo.js initialized');
-
+    console.debug('MediaInfo ready');
     $loader.fadeOut(function() {
       $dropcontrols.fadeIn();
 
@@ -137,4 +214,6 @@ $(function() {
       });
     });
   });
+
+  restoreResults();
 });
