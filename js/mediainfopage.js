@@ -160,6 +160,8 @@ $(function() {
 
     // start
     seek(CHUNK_SIZE);
+
+    _paq.push(['trackEvent', 'File', 'AnalysisRun', file.name]);
   }
 
   // prevent window from loading file if dropped on background
