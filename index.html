@@ -127,11 +127,12 @@
           </div>
           <div class="result-body">
             <table><tbody>
-              <% _.each(result.File.track, function(track) { %>
+              <% var tracks; if (_.isArray(result.File.track)) { tracks = result.File.track; } else { tracks = [result.File.track] } %>
+              <% _.each(tracks, function(track) { %>
                 <tr class="header"><td colspan="2"><h2>
-                  <i class="fa fa-file-o fa-file-<%= track['_type'].toLowerCase() %>-o"></i> <%= track['_type'] %>
+                  <i class="fa fa-file-o fa-file-<%= (track['_type'] || '').toLowerCase() %>-o"></i> <%= track['_type'] || '' %>
                 </h2></td></tr>
-                <% _.each(_.without(_.keys(track), '_type', 'Unique_ID'), function(key) { %>
+                <% _.each(_.without(_.keys(track), '_type'), function(key) { %>
                   <tr><td><%= key.replace(/_/g, ' ') %></td><td><%= track[key] %></td></tr>
                 <% }) %>
               <% }) %>
