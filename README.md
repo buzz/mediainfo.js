@@ -24,6 +24,18 @@ Then build `mediainfo.js` using:
 
 The resulting files are `mediainfo.js` and `mediainfo.js.mem`.
 
+## Using mediainfo.js
+
+The API is defined in [`mediainfojs.cpp`](https://github.com/buzz/mediainfo.js/blob/master/mediainfojs.cpp) and currently exposes the following methods from [MediaInfoLib::MediaInfo](https://mediaarea.net/en/MediaInfo/Support/SDK/Doxygen/class_media_info_lib_1_1_media_info.html):
+
+* open
+* open_buffer_init
+* open_buffer_continue
+* inform
+* close
+
+You can also check out [this example](https://github.com/buzz/mediainfo.js/blob/gh-pages/js/mediainfopage.js#L93) on how to use mediainfo.js in a web page.
+
 ## License
 
 This program is freeware under BSD-2-Clause license conditions:
