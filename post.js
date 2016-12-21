@@ -1,6 +1,6 @@
 return function(cb) {
   return Module({
-    memoryInitializerPrefixURL: 'js/',
+    memoryInitializerPrefixURL: './',
     onRuntimeInitialized: cb
   });
 };
