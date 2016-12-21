@@ -1,0 +1,22 @@
+{
+  "name": "mediainfo.js",
+  "version": "0.0.2",
+  "description": "Emscripten port of MediaInfoLib displays information about video and audio files.",
+  "author": "buzz",
+  "main": "mediainfo.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buzz/mediainfo.js"
+  },
+  "bugs": {
+    "url": "https://github.com/buzz/mediainfo.js/issues"
+  },
+  "homepage": "https://github.com/buzz/mediainfo.js",
+  "keywords": [
+    "mediainfo",
+    "emscripten",
+    "video",
+    "audio",
+    "media"
+  ]
+}
