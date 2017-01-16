@@ -34,7 +34,9 @@ The API is defined in [`mediainfojs.cpp`](https://github.com/buzz/mediainfo.js/b
 * inform
 * close
 
-You can also check out [this example](https://github.com/buzz/mediainfo.js/blob/gh-pages/js/mediainfopage.js#L93) on how to use mediainfo.js in a web page.
+You can check out [this example](https://github.com/buzz/mediainfo.js/blob/gh-pages/js/mediainfopage.js#L93) on how mediainfo.js is used in the browser.
+
+See [this issue](/../../issues/5) on how to use mediainfo.js with Node.js.
 
 ## License
 
