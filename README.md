@@ -31,6 +31,7 @@ The API is defined in [`mediainfojs.cpp`](https://github.com/buzz/mediainfo.js/b
 * open
 * open_buffer_init
 * open_buffer_continue
+* open_buffer_continue_goto_get
 * inform
 * close
 
