@@ -7,7 +7,7 @@ class MediaInfoJs {
 public:
   MediaInfoJs() {
     mi.Option(__T("Output"), __T("XML"));
-    mi.Option(__T("File_IsSeekable"), __T("0"));
+    mi.Option(__T("File_IsSeekable"), __T("1"));
   }
   int open(const std::string& data, double fileSize) {
     return mi.Open((const ZenLib::int8u*)data.data(), data.size(), NULL, 0, (ZenLib::int64u)fileSize);
@@ -17,6 +17,9 @@ public:
   }
   int open_buffer_continue(const std::string& data, double size) {
     return mi.Open_Buffer_Continue((ZenLib::int8u*)data.data(), (ZenLib::int64u)size);
+  }
+  long open_buffer_continue_goto_get(){
+    return (int64_t)mi.Open_Buffer_Continue_GoTo_Get();
   }
   MediaInfoLib::String inform() {
     return mi.Inform();
@@ -29,9 +32,10 @@ public:
 EMSCRIPTEN_BINDINGS(mediainfojs) {
   emscripten::class_<MediaInfoJs>("MediaInfo")
     .constructor()
-    .function("open", &MediaInfoJs::inform)
+    .function("open", &MediaInfoJs::open)
     .function("open_buffer_init", &MediaInfoJs::open_buffer_init)
     .function("open_buffer_continue", &MediaInfoJs::open_buffer_continue)
+    .function("open_buffer_continue_goto_get", &MediaInfoJs::open_buffer_continue_goto_get)
     .function("inform", &MediaInfoJs::inform)
     .function("close", &MediaInfoJs::close)
     ;
