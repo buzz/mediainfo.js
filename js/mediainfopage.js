@@ -8,7 +8,6 @@ $(function() {
   var $results = $('#results');
   var $resultscontainer = $('#resultscontainer');
   var $status = $('#status');
-  var $statuspercent = $('#status-percent');
   var $cancel = $dropzone.find('button.cancel');
 
   var CHUNK_SIZE = 5 * 1024 * 1024;
@@ -94,14 +93,12 @@ $(function() {
     if (processing) {
       return;
     }
-    $statuspercent.text('0');
     processing = true;
     $dropcontrols.hide();
     $status.fadeIn();
     $cancel.fadeIn();
 
-    var fileSize = file.size, offset = 0, state = 0, seek = null;
-    var statusInterval;
+    var fileSize = file.size, offset = 0, state = 0, seekTo = -1, seek = null;
 
     mi.open_buffer_init(fileSize, offset);
 
@@ -111,7 +108,13 @@ $(function() {
         var chunk = new Uint8Array(e.target.result);
         l = chunk.length;
         state = mi.open_buffer_continue(chunk, l);
-        offset += l;
+		seekTo = mi.open_buffer_continue_goto_get();
+		if(seekTo === -1){
+          offset += l;
+		}else{
+		  offset = seekTo;
+		  mi.open_buffer_init(fileSize, seekTo);
+		}
         chunk = null;
       } else {
         var msg = 'An error happened reading your file!';
@@ -121,7 +124,7 @@ $(function() {
         return;
       }
       // bit 4 set means finalized
-      if ((state >> 3) % 2 !== 0 || offset >= fileSize) {
+      if (state&0x08) {
         var result = mi.inform();
         mi.close();
         addResult(file.name, result);
@@ -137,7 +140,6 @@ $(function() {
       $cancel.hide();
       $dropcontrols.fadeIn();
       $fileinput.val('');
-      clearInterval(statusInterval);
     }
 
     seek = function(length) {
@@ -152,11 +154,6 @@ $(function() {
         processingDone();
       }
     };
-
-    // print status
-    statusInterval = window.setInterval(function() {
-      $statuspercent.text((offset / fileSize * 100).toFixed(0));
-    }, 1000);
 
     // start
     seek(CHUNK_SIZE);
