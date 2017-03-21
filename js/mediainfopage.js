@@ -108,13 +108,13 @@ $(function() {
         var chunk = new Uint8Array(e.target.result);
         l = chunk.length;
         state = mi.open_buffer_continue(chunk, l);
-		seekTo = mi.open_buffer_continue_goto_get();
-		if(seekTo === -1){
+	seekTo = mi.open_buffer_continue_goto_get();
+	if(seekTo === -1){
           offset += l;
-		}else{
-		  offset = seekTo;
-		  mi.open_buffer_init(fileSize, seekTo);
-		}
+	}else{
+	  offset = seekTo;
+	  mi.open_buffer_init(fileSize, seekTo);
+	}
         chunk = null;
       } else {
         var msg = 'An error happened reading your file!';
