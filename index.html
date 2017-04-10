@@ -10,14 +10,6 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:600,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="mediainfo.css" type="text/css">
-    <script type="text/javascript">
-      var _paq = _paq || [];
-      _paq.push(["setDomains", ["*.mediainfo.js.org","*.buzz.github.io/mediainfo.js"]]);
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
-      _paq.push(['setTrackerUrl', '//fillips.l4m1.de/piwik/piwik.php']);
-      _paq.push(['setSiteId', 8]);
-    </script>
   </head>
   <body>
     <div id="page">
@@ -140,5 +132,17 @@
     <script src="js/xml2json.js"></script>
     <script src="js/mediainfo.js"></script>
     <script src="js/mediainfopage.js"></script>
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//piwik.l4m1.de/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '8']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
   </body>
 </html>
