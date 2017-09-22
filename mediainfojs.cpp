@@ -19,11 +19,13 @@ public:
     return mi.Open_Buffer_Continue((ZenLib::int8u*)data.data(), (ZenLib::int64u)size);
   }
   int open_buffer_continue_goto_get(){
-    seekTo.total = mi.Open_Buffer_Continue_GoTo_Get();
-    return seekTo.lower;
+    return open_buffer_continue_goto_get_lower();
   }
-  int get_seek_to_upper() {
-    return seekTo.upper;
+  int open_buffer_continue_goto_get_lower(){
+    return mi.Open_Buffer_Continue_GoTo_Get();
+  }
+  int open_buffer_continue_goto_get_upper() {
+    return mi.Open_Buffer_Continue_GoTo_Get() >> 32;
   }
   MediaInfoLib::String inform() {
     return mi.Inform();
@@ -31,16 +33,6 @@ public:
   void close() {
     mi.Close();
   }
-private:
-  union SeekTo {
-    int64_t total;
-    struct {
-      int32_t lower;
-      int32_t upper;
-    };
-  };
-
-  SeekTo seekTo;
 };
 
 EMSCRIPTEN_BINDINGS(mediainfojs) {
@@ -50,7 +42,8 @@ EMSCRIPTEN_BINDINGS(mediainfojs) {
     .function("open_buffer_init", &MediaInfoJs::open_buffer_init)
     .function("open_buffer_continue", &MediaInfoJs::open_buffer_continue)
     .function("open_buffer_continue_goto_get", &MediaInfoJs::open_buffer_continue_goto_get)
-    .function("get_seek_to_upper", &MediaInfoJs::get_seek_to_upper)
+    .function("open_buffer_continue_goto_get_lower", &MediaInfoJs::open_buffer_continue_goto_get_lower)
+    .function("open_buffer_continue_goto_get_upper", &MediaInfoJs::open_buffer_continue_goto_get_upper)
     .function("inform", &MediaInfoJs::inform)
     .function("close", &MediaInfoJs::close)
     ;
