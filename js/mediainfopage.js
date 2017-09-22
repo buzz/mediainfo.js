@@ -110,8 +110,8 @@ $(function() {
         state = mi.open_buffer_continue(chunk, l);
 
         var seekTo = -1;
-        var seekToLow = mi.open_buffer_continue_goto_get();
-        var seekToHigh = mi.get_seek_to_upper();
+        var seekToLow = mi.open_buffer_continue_goto_get_lower();
+        var seekToHigh = mi.open_buffer_continue_goto_get_upper();
 
         if (seekToLow == -1 && seekToHigh == -1) {
           seekTo = -1;
