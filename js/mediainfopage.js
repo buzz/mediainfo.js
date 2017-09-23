@@ -108,7 +108,19 @@ $(function() {
         var chunk = new Uint8Array(e.target.result);
         l = chunk.length;
         state = mi.open_buffer_continue(chunk, l);
-        seekTo = mi.open_buffer_continue_goto_get();
+
+        var seekTo = -1;
+        var seekToLow = mi.open_buffer_continue_goto_get_lower();
+        var seekToHigh = mi.open_buffer_continue_goto_get_upper();
+
+        if (seekToLow == -1 && seekToHigh == -1) {
+          seekTo = -1;
+        } else if (seekToLow < 0) {
+          seekTo = seekToLow + 4294967296 + (seekToHigh * 4294967296);
+        } else {
+          seekTo = seekToLow + (seekToHigh * 4294967296);
+        }
+
         if(seekTo === -1){
           offset += l;
         }else{
