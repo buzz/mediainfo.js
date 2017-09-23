@@ -18,8 +18,14 @@ public:
   int open_buffer_continue(const std::string& data, double size) {
     return mi.Open_Buffer_Continue((ZenLib::int8u*)data.data(), (ZenLib::int64u)size);
   }
-  long open_buffer_continue_goto_get(){
-    return (int64_t)mi.Open_Buffer_Continue_GoTo_Get();
+  int open_buffer_continue_goto_get(){
+    return open_buffer_continue_goto_get_lower();
+  }
+  int open_buffer_continue_goto_get_lower(){
+    return mi.Open_Buffer_Continue_GoTo_Get();
+  }
+  int open_buffer_continue_goto_get_upper() {
+    return mi.Open_Buffer_Continue_GoTo_Get() >> 32;
   }
   MediaInfoLib::String inform() {
     return mi.Inform();
@@ -36,6 +42,8 @@ EMSCRIPTEN_BINDINGS(mediainfojs) {
     .function("open_buffer_init", &MediaInfoJs::open_buffer_init)
     .function("open_buffer_continue", &MediaInfoJs::open_buffer_continue)
     .function("open_buffer_continue_goto_get", &MediaInfoJs::open_buffer_continue_goto_get)
+    .function("open_buffer_continue_goto_get_lower", &MediaInfoJs::open_buffer_continue_goto_get_lower)
+    .function("open_buffer_continue_goto_get_upper", &MediaInfoJs::open_buffer_continue_goto_get_upper)
     .function("inform", &MediaInfoJs::inform)
     .function("close", &MediaInfoJs::close)
     ;
