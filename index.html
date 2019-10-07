@@ -110,7 +110,7 @@
           </div>
           <div class="result-body">
             <table><tbody>
-              <% var tracks; if (_.isArray(result.File.track)) { tracks = result.File.track; } else { tracks = [result.File.track] } %>
+              <% var tracks; if (_.isArray(result.MediaInfo.media.track)) { tracks = result.MediaInfo.media.track; } else { tracks = [result.MediaInfo.media.track] } %>
               <% _.each(tracks, function(track) { %>
                 <tr class="header"><td colspan="2"><h2>
                   <i class="fa fa-file-o fa-file-<%= (track['_type'] || '').toLowerCase() %>-o"></i> <%= track['_type'] || '' %>

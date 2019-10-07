@@ -136,7 +136,8 @@ $(function() {
         return;
       }
       // bit 4 set means finalized
-      if (state&0x08) {
+      if (state&0x08 || offset >= fileSize) {
+        mi.open_buffer_finalize();
         var result = mi.inform();
         mi.close();
         addResult(file.name, result);
@@ -215,7 +216,7 @@ $(function() {
       $dropcontrols.fadeIn();
 
       window['miLib'] = miLib; // debug
-      mi = new miLib.MediaInfo();
+      mi = new miLib.MediaInfo("XML");
 
       $fileinput.on('change', function(e) {
         var el = $fileinput.get(0);
