@@ -4,9 +4,7 @@
 ThumbsDB
 \#*#
 .#*
-ZenLib
-MediaInfoLib
-Shared
-mediainfojs.o
-npm-debug.log
 /node_modules
+npm-debug.log
+/build
+/dist
