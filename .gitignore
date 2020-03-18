@@ -9,3 +9,4 @@ MediaInfoLib
 Shared
 mediainfojs.o
 npm-debug.log
+/node_modules
