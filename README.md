@@ -28,12 +28,20 @@ The resulting files are `mediainfo.js` and `mediainfo.js.mem`.
 
 The API is defined in [`mediainfojs.cpp`](https://github.com/buzz/mediainfo.js/blob/master/mediainfojs.cpp) and currently exposes the following methods from [MediaInfoLib::MediaInfo](https://mediaarea.net/en/MediaInfo/Support/SDK/Doxygen/class_media_info_lib_1_1_media_info.html):
 
-* open
-* open_buffer_init
-* open_buffer_continue
-* open_buffer_continue_goto_get
-* inform
-* close
+* `open`
+* `open_buffer_init`
+* `open_buffer_continue`
+* `open_buffer_finalize`
+* `open_buffer_continue_goto_get`
+* `inform`
+* `close`
+
+Additionally it exposes the following methods. They return the lower/upper part
+of a 64 bit seek position that would be otherwise truncated if
+`open_buffer_continue_goto_get` is called directly from JavaScript.
+
+* `open_buffer_continue_goto_get_lower`
+* `open_buffer_continue_goto_get_upper`
 
 You can check out [this example](https://github.com/buzz/mediainfo.js/blob/gh-pages/js/mediainfopage.js#L93) on how mediainfo.js is used in the browser.
 
