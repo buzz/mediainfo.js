@@ -19,7 +19,7 @@ use a JavaScript bundler like webpack.
 * **CDN**: `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
 * **Bundler**: `npm install mediainfo.js`
 
-- [Simple example](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple)
+- [Simple example](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple) ([CodePen](https://codepen.io/buzzone/pen/eYNjJrx))
 - [Code for demo](https://github.com/buzz/mediainfo.js/tree/gh-pages)
 
 ### Node.js
