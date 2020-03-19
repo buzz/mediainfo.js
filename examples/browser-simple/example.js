@@ -5,21 +5,23 @@ const onChangeFile = (mediainfo) => {
   const file = fileinput.files[0]
   if (file) {
     output.value = 'Working…'
-    mediainfo
-      .analyzeData({
-        readData: (chunkSize, offset) =>
-          new Promise((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onload = (event) => {
-              if (event.target.error) {
-                reject(event.target.error)
-              }
-              resolve(new Uint8Array(event.target.result))
-            }
-            reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize))
-          }),
-        getSize: () => file.size,
+
+    const getSize = () => file.size
+
+    const readChunk = (chunkSize, offset) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = (event) => {
+          if (event.target.error) {
+            reject(event.target.error)
+          }
+          resolve(new Uint8Array(event.target.result))
+        }
+        reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize))
       })
+
+    mediainfo
+      .analyzeData(getSize, readChunk)
       .then((result) => {
         output.value = result
       })
@@ -29,6 +31,6 @@ const onChangeFile = (mediainfo) => {
   }
 }
 
-MediaInfo({ format: 'text' }).then((mediainfo) => {
+MediaInfo({ format: 'text' }, (mediainfo) => {
   fileinput.addEventListener('change', () => onChangeFile(mediainfo))
 })

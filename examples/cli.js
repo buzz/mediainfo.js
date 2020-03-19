@@ -9,14 +9,13 @@ const main = async (filePath) => {
   try {
     fileHandle = await open(filePath, 'r')
     mediainfo = await MediaInfo({ format: 'text' })
-    const result = await mediainfo.analyzeData({
-      readData: async (size, offset) => {
-        const buffer = new Uint8Array(size)
-        await fileHandle.read(buffer, 0, size, offset)
-        return buffer
-      },
-      getSize: async () => (await fileHandle.stat()).size,
-    })
+    const getSize = async () => (await fileHandle.stat()).size
+    const readChunk = async (size, offset) => {
+      const buffer = new Uint8Array(size)
+      await fileHandle.read(buffer, 0, size, offset)
+      return buffer
+    }
+    const result = await mediainfo.analyzeData(getSize, readChunk)
     console.log(result)
   } catch (error) {
     console.error(error)

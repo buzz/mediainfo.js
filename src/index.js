@@ -3,29 +3,65 @@ import MediaInfo from '../build/mediainfo.js'
 const mediaInfoLib = MediaInfo()
 
 const createMI = (mi, { chunkSize, format }) => {
-  const analyzeData = async ({ getSize, readData }) => {
-    let offset = 0
-    const fileSize = await getSize()
-    openBufferInit(fileSize, offset)
-    for (;;) {
-      const data = await readData(
-        Math.min(chunkSize, fileSize - offset),
-        offset
+  const analyzeData = (getSize, readChunk, cb) => {
+    if (cb === undefined) {
+      return new Promise((resolve) =>
+        analyzeData(getSize, readChunk, (result) => resolve(result))
       )
-      if (data.length === 0 || openBufferContinue(data, data.length)) {
-        break
-      }
-      const seekTo = openBufferContinueGotoGet()
-      if (seekTo === -1) {
-        offset += data.length
-      } else {
-        offset = seekTo
-        openBufferInit(fileSize, seekTo)
-      }
     }
-    openBufferFinalize()
-    const result = inform()
-    return format === 'JSON' ? JSON.parse(result) : result
+
+    const fileSizeValue = getSize()
+    let offset = 0
+
+    const runReadDataLoop = (fileSize) => {
+      const getChunk = () => {
+        const readNextChunk = (data) => {
+          if (continueBuffer(data)) {
+            getChunk()
+          } else {
+            finalize()
+          }
+        }
+        const dataValue = readChunk(
+          Math.min(chunkSize, fileSize - offset),
+          offset
+        )
+        if (dataValue instanceof Promise) {
+          dataValue.then(readNextChunk)
+        } else {
+          readNextChunk(dataValue)
+        }
+      }
+
+      const continueBuffer = (data) => {
+        if (data.length === 0 || openBufferContinue(data, data.length)) {
+          return false
+        }
+        const seekTo = openBufferContinueGotoGet()
+        if (seekTo === -1) {
+          offset += data.length
+        } else {
+          offset = seekTo
+          openBufferInit(fileSize, seekTo)
+        }
+        return true
+      }
+
+      const finalize = () => {
+        openBufferFinalize()
+        const result = inform()
+        cb(format === 'object' ? JSON.parse(result) : result)
+      }
+
+      openBufferInit(fileSize, offset)
+      getChunk()
+    }
+
+    if (fileSizeValue instanceof Promise) {
+      fileSizeValue.then(runReadDataLoop)
+    } else {
+      runReadDataLoop(fileSizeValue)
+    }
   }
 
   const close = () => mi.close()
@@ -67,19 +103,21 @@ const createMI = (mi, { chunkSize, format }) => {
   }
 }
 
-const mediaInfoFactory = (userOptions = {}) =>
-  new Promise((resolve) => {
-    const defaultOptions = {
-      chunkSize: 1024 * 1024,
-      format: 'JSON',
-    }
-    const opts = {
-      ...defaultOptions,
-      ...userOptions,
-    }
-    mediaInfoLib.then((MI) =>
-      resolve(createMI(new MI.MediaInfo(opts.format), opts))
+const mediaInfoFactory = (userOptions = {}, cb) => {
+  if (cb === undefined) {
+    return new Promise((resolve) =>
+      mediaInfoFactory(userOptions, (mediainfo) => resolve(mediainfo))
     )
+  }
+
+  const defaultOptions = { chunkSize: 1024 * 1024, format: 'object' }
+  const opts = { ...defaultOptions, ...userOptions }
+
+  mediaInfoLib.then((MI) => {
+    const format = opts.format === 'object' ? 'JSON' : opts.format
+    const mi = createMI(new MI.MediaInfo(format), opts)
+    cb(mi)
   })
+}
 
 export default mediaInfoFactory
