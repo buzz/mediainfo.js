@@ -6,6 +6,8 @@ const HtmlWebpackRootPlugin = require('html-webpack-root-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('mini-css-extract-plugin')
 
+const pkginfo = require('./package.json')
+
 const devMode = process.env.NODE_ENV !== 'production'
 const srcPath = resolve(__dirname, 'src')
 const distPath = resolve(__dirname, 'dist')
@@ -17,6 +19,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: resolve(distPath, 'index.html'),
       // favicon: resolve(srcPath, 'static', 'favicon.png'),
+      meta: {
+        description: pkginfo.description,
+        author: pkginfo.author,
+        keywords: pkginfo.keywords.join(' '),
+        viewport: 'width=device-width,initial-scale=1',
+      },
       minify: false,
       title: 'mediainfo.js',
     }),
@@ -48,7 +56,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.png$/,
+        test: /\.(png|woff2)$/,
         use: [
           {
             loader: 'url-loader',

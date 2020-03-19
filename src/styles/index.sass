@@ -12,8 +12,20 @@ $color-light-trans: rgba(0, 0, 0, 0.1)
 
 $dur-short: 0.2s
 
+@font-face
+	font-family: 'Open Sans'
+  src: url('../static/OpenSans-SemiBold.woff2') format('woff2')
+	font-weight: 600
+	font-style: normal
+
+@font-face
+	font-family: 'Open Sans'
+  src: url('../static/OpenSans-Bold.woff2') format('woff2')
+	font-weight: 700
+	font-style: normal
+
 =monofont
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace
 
 body
   font-family: 'Open Sans', Verdana, Arial, sans-serif
@@ -21,7 +33,7 @@ body
   font-size: 15px
   color: $color-base
   background-color: $color-bg
-  background-image: image-url("bg.png")
+  background-image: url('../static/bg.png')
   margin: 25px
   text-shadow: 0 1px 0 white
 
@@ -72,7 +84,7 @@ button
 tt, code, kbd, samp, pre
   +monofont
 
-#page
+#root
   max-width: 850px
   margin: 0 auto
 
@@ -101,9 +113,9 @@ nav#menu
 
 #dropzone
   height: 180px
-  +transition-property(color, background-color, border-color)
-  +transition-duration($dur-short)
-  +transition-timing-function(ease-in-out)
+  transition-property: color, background-color, border-color
+  transition-duration: $dur-short
+  transition-timing-function: ease-in-out
   position: relative
   overflow: hidden
   color: $color-light
@@ -121,7 +133,7 @@ nav#menu
     right: 1rem
 
   #loader, #status
-    +transform(translate(0, -50%))
+    transform: translate(0, -50%)
     position: absolute
     top: 50%
     width: 100%
@@ -130,7 +142,7 @@ nav#menu
     height: 100%
 
     #dropcontrolstext
-      +transform(translate(0, -50%))
+      transform: translate(0, -50%)
       position: absolute
       top: 50%
       width: 100%
@@ -166,7 +178,7 @@ nav#menu
       +monofont
 
     button.toggle-collapse > i
-      +transition(transform $dur-short)
+      transition: transform $dur-short
 
   .result-body
     display: none
