@@ -1,6 +1,6 @@
 {
   "name": "mediainfo.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Emscripten port of MediaInfoLib displays information about video and audio files.",
   "author": "buzz",
   "main": "dist/mediainfo.js",
@@ -21,7 +21,8 @@
   "files": [
     "LICENSE.txt",
     "README.md",
-    "dist/"
+    "dist/",
+    "examples/cli.js"
   ],
   "scripts": {
     "build:deps": "bash scripts/build-deps.sh",
