@@ -8,10 +8,9 @@
     "type": "git",
     "url": "https://github.com/buzz/mediainfo.js"
   },
-  "bugs": {
-    "url": "https://github.com/buzz/mediainfo.js/issues"
-  },
+  "bugs": "https://github.com/buzz/mediainfo.js/issues",
   "homepage": "https://github.com/buzz/mediainfo.js",
+  "license": "BSD-2-Clause",
   "keywords": [
     "mediainfo",
     "emscripten",
@@ -19,7 +18,11 @@
     "audio",
     "media"
   ],
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "files": [
+    "LICENSE.txt",
+    "README.md",
+    "dist/"
+  ],
   "scripts": {
     "build:deps": "bash scripts/build-deps.sh",
     "build": "bash scripts/build.sh web",
