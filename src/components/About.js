@@ -1,10 +1,13 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
 import { faEnvelope, faTrophy } from '@fortawesome/free-solid-svg-icons'
 
 const About = () => (
   <div id="about">
-    <h1>about</h1>
+    <h1>
+      <FontAwesomeIcon icon={faAddressCard} /> about
+    </h1>
     <p>
       <strong>mediainfo.js</strong> can analyze all kinds of media files for
       you. It shows technical details and metadata.
@@ -14,7 +17,11 @@ const About = () => (
       <FontAwesomeIcon icon={faTrophy} /> thanks
     </h2>
 
-    <p>- mediainfo - dragster - font awesome</p>
+    <p>
+      - <a href="https://mediaarea.net/en/MediaInfo">mediainfo</a> -{' '}
+      <a href="https://react-dropzone.js.org/">react-dropzone</a> -{' '}
+      <a href="https://fontawesome.com/">font awesome</a>
+    </p>
 
     <h2>
       <FontAwesomeIcon icon={faEnvelope} /> contact

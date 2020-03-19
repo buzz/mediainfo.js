@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { faCopyright } from '@fortawesome/free-regular-svg-icons'
+import { faAddressCard, faCopyright } from '@fortawesome/free-regular-svg-icons'
+import { faPhotoVideo } from '@fortawesome/free-solid-svg-icons'
 
 import About from './About'
 import MediaInfoJs from './MediaInfoJs'
@@ -24,6 +25,7 @@ const App = () => {
               })}
               onClick={() => setPage('mediainfojs')}
             >
+              <FontAwesomeIcon className="fa-padded" icon={faPhotoVideo} />
               mediainfo.js
             </a>
           </li>
@@ -35,6 +37,7 @@ const App = () => {
               })}
               onClick={() => setPage('about')}
             >
+              <FontAwesomeIcon className="fa-padded" icon={faAddressCard} />
               about
             </a>
           </li>

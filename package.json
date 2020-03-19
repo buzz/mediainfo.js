@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "mediainfo.js lets you analyze media files in your browser.",
   "keywords": [
-    "free", "mediainfo", "mkv", "avi", "mp4", "mp3", "codec", "tags"
+    "free",
+    "mediainfo",
+    "mkv",
+    "avi",
+    "mp4",
+    "mp3",
+    "codec",
+    "tags"
   ],
   "private": true,
   "dependencies": {
@@ -14,7 +21,8 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "classnames": "^2.2.6",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.13.0",
+    "react-dropzone": "^10.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
