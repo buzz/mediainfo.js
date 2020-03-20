@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackRootPlugin = require('html-webpack-root-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('mini-css-extract-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const pkginfo = require('./package.json')
 
@@ -28,6 +29,12 @@ module.exports = {
       minify: false,
       title: 'mediainfo.js',
     }),
+    new CopyPlugin([
+      {
+        from: resolve('node_modules', 'mediainfo.js', 'dist', 'mediainfo.wasm'),
+        to: '.',
+      },
+    ]),
     new HtmlWebpackRootPlugin(),
     ...(devMode
       ? [new webpack.HotModuleReplacementPlugin()]
@@ -78,6 +85,9 @@ module.exports = {
         ],
       },
     ],
+  },
+  node: {
+    fs: 'empty',
   },
   resolve: {
     extensions: ['*', '.js'],

@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
 import { faEnvelope, faTrophy } from '@fortawesome/free-solid-svg-icons'
 
-const About = () => (
-  <div id="about">
+const About = ({ className }) => (
+  <div className={className} id="about">
     <h1>
       <FontAwesomeIcon icon={faAddressCard} /> about
     </h1>

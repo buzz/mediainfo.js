@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import classNames from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
@@ -10,8 +10,8 @@ import MediaInfoJs from './MediaInfoJs'
 
 const App = () => {
   const [page, setPage] = useState('mediainfojs')
-
-  const pageComp = page === 'mediainfojs' ? <MediaInfoJs /> : <About />
+  const onClickMediaInfoJs = useCallback(() => setPage('mediainfojs'), [])
+  const onClickAbout = useCallback(() => setPage('about'), [])
 
   return (
     <>
@@ -23,7 +23,7 @@ const App = () => {
               className={classNames('pagelink', {
                 active: page === 'mediainfojs',
               })}
-              onClick={() => setPage('mediainfojs')}
+              onClick={onClickMediaInfoJs}
             >
               <FontAwesomeIcon className="fa-padded" icon={faPhotoVideo} />
               mediainfo.js
@@ -35,7 +35,7 @@ const App = () => {
               className={classNames('pagelink', {
                 active: page === 'about',
               })}
-              onClick={() => setPage('about')}
+              onClick={onClickAbout}
             >
               <FontAwesomeIcon className="fa-padded" icon={faAddressCard} />
               about
@@ -44,7 +44,12 @@ const App = () => {
         </ul>
         <hr />
       </nav>
-      {pageComp}
+      <MediaInfoJs
+        className={classNames({ 'page-hidden': page === 'about' })}
+      />
+      <About
+        className={classNames({ 'page-hidden': page === 'mediainfojs' })}
+      />
       <footer>
         <p>
           This is a JavaScript port of the excellent{' '}

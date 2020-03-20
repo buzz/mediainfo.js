@@ -1,47 +1,108 @@
-import React, { useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
+import React, { useCallback, useState } from 'react'
+import MediaInfo from 'mediainfo.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCog,
-  faInfoCircle,
-  faSpinner,
-  faTimes,
-} from '@fortawesome/free-solid-svg-icons'
-import { faHandRock } from '@fortawesome/free-regular-svg-icons'
+import { faInfoCircle, faList } from '@fortawesome/free-solid-svg-icons'
 
-const MediaInfoJs = () => {
-  const onDrop = useCallback((files) => {
-    console.log(files)
-  }, [])
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    multiple: false,
-    onDrop,
+import usePersist from '../hooks/usePersist'
+import DropZone from './DropZone'
+import Result from './Result'
+
+const readChunk = (file) => (chunkSize, offset) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      if (event.target.error) {
+        reject(event.target.error)
+      }
+      resolve(new Uint8Array(event.target.result))
+    }
+    reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize))
   })
+
+const getRandomId = () =>
+  Math.random()
+    .toString(36)
+    .substr(2, 9)
+
+const collapseAll = (restoredResults) =>
+  Object.entries(restoredResults).reduce((acc, [key, val]) => {
+    return {
+      ...acc,
+      [key]: {
+        ...val,
+        collapsed: true,
+      },
+    }
+  }, {})
+
+const MediaInfoJs = ({ className }) => {
+  const [analyzing, setAnalyzing] = useState(false)
+  const [results, setResults] = useState({})
+
+  usePersist({
+    key: 'results',
+    onRestore: collapseAll,
+    setState: setResults,
+    state: results,
+  })
+
+  const onDrop = useCallback(([file]) => {
+    if (file) {
+      setAnalyzing(true)
+      MediaInfo().then((mediainfo) =>
+        mediainfo
+          .analyzeData(() => file.size, readChunk(file))
+          .then((result) =>
+            setResults((prevResults) => ({
+              [getRandomId()]: {
+                ...result,
+                name: file.name,
+                collapsed: false,
+              },
+              ...prevResults,
+            }))
+          )
+          .catch((error) =>
+            setResults((prevResults) => ({
+              [getRandomId()]: { collapsed: false, error: error.stack },
+              ...prevResults,
+            }))
+          )
+          .finally(() => setAnalyzing(false))
+      )
+    }
+  }, [])
+
+  const onCollapse = useCallback(
+    (resultId) =>
+      setResults((prevResults) => ({
+        ...prevResults,
+        [resultId]: {
+          ...prevResults[resultId],
+          collapsed: !prevResults[resultId].collapsed,
+        },
+      })),
+    []
+  )
+
+  const onRemove = useCallback(
+    (resultId) => setResults(({ [resultId]: _, ...rest }) => rest),
+    []
+  )
+
+  const resultsContainer = Object.entries(results).map(([resultId, result]) => (
+    <Result
+      id={resultId}
+      key={resultId}
+      onCollapse={onCollapse}
+      onRemove={onRemove}
+      result={result}
+    />
+  ))
+
   return (
-    <>
-      <div id="dropzone" className="big center" {...getRootProps()}>
-        <button className="cancel hidden" type="button">
-          <FontAwesomeIcon icon={faTimes} size="lg" />
-        </button>
-        <div id="loader" className="center" style={{ display: 'none' }}>
-          <FontAwesomeIcon icon={faSpinner} size="lg" spin />
-          <br />
-          Loading…
-        </div>
-        <div id="dropcontrols">
-          <div id="dropcontrolstext">
-            <FontAwesomeIcon icon={faHandRock} size="lg" /> Drop a media file
-            here!
-            <br />
-            <span className="small">(or click)</span>
-          </div>
-          <input id="fileinput" type="file" {...getInputProps()} />
-        </div>
-        <div id="status" className="hidden">
-          <FontAwesomeIcon icon={faCog} size="lg" />
-          Analyzing file…
-        </div>
-      </div>
+    <div className={className}>
+      <DropZone analyzing={analyzing} onDrop={onDrop} />
       <p>
         <strong>mediainfo.js</strong> shows information about media files. It
         works with <code>.avi</code>, <code>.mkv</code>, <code>.mp3</code> and{' '}
@@ -55,36 +116,12 @@ const MediaInfoJs = () => {
       </p>
       <div id="results">
         <h2>
-          <i className="fa fa-list" /> results
+          <FontAwesomeIcon icon={faList} /> results
         </h2>
-        <div id="resultscontainer">
-          <div className="result">
-            <div className="result-head">
-              <div className="pull-right">
-                <button
-                  title="Remove from list"
-                  className="remove"
-                  type="button"
-                >
-                  <i className="fa fa-lg fa-times" />
-                </button>
-              </div>
-              <button
-                title="Un/collapse"
-                className="toggle-collapse"
-                type="button"
-              >
-                <i className="fa fa-lg fa-caret-right" />
-              </button>
-              <span className="filename">
-                Fleabag.S02E04.720p.BluRay.x264-SHORTBREHD.mkv
-              </span>
-            </div>
-            <div className="result-body" />
-          </div>
-        </div>
+        {resultsContainer}
+        {Object.keys(results).length ? null : 'No results yet…'}
       </div>
-    </>
+    </div>
   )
 }
 
