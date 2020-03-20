@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import classNames from 'classnames'
+import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { faAddressCard, faCopyright } from '@fortawesome/free-regular-svg-icons'
@@ -7,6 +8,8 @@ import { faPhotoVideo } from '@fortawesome/free-solid-svg-icons'
 
 import About from './About'
 import MediaInfoJs from './MediaInfoJs'
+
+const PAGE_FADE_TIME = 400
 
 const App = () => {
   const [page, setPage] = useState('mediainfojs')
@@ -44,12 +47,18 @@ const App = () => {
         </ul>
         <hr />
       </nav>
-      <MediaInfoJs
-        className={classNames({ 'page-hidden': page === 'about' })}
-      />
-      <About
-        className={classNames({ 'page-hidden': page === 'mediainfojs' })}
-      />
+      <section id="page">
+        <SwitchTransition>
+          <CSSTransition
+            classNames="page"
+            key={page}
+            mountOnEnter
+            timeout={PAGE_FADE_TIME}
+          >
+            {page === 'mediainfojs' ? <MediaInfoJs /> : <About />}
+          </CSSTransition>
+        </SwitchTransition>
+      </section>
       <footer>
         <p>
           This is a JavaScript port of the excellent{' '}
