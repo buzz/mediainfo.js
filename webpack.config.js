@@ -34,6 +34,10 @@ module.exports = {
         from: resolve('node_modules', 'mediainfo.js', 'dist', 'mediainfo.wasm'),
         to: '.',
       },
+      {
+        from: 'CNAME',
+        to: '.',
+      },
     ]),
     new HtmlWebpackRootPlugin(),
     ...(devMode
