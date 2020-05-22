@@ -2,7 +2,7 @@
 
 set -xe
 
-OPTS="-O0"
+OPTS="-Oz"
 
 mkdir -p build dist
 cd build
@@ -33,5 +33,5 @@ emcc \
   -o mediainfo.js
 
 cd ..
-mv build/mediainfo.wasm dist/
+wasm-opt -Oz -o dist/mediainfo.wasm build/mediainfo.wasm
 npx rollup -c
