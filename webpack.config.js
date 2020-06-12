@@ -2,7 +2,7 @@ const { resolve } = require('path')
 
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const HtmlWebpackRootPlugin = require('html-webpack-root-plugin')
+const HtmlWebpackPartialsPlugin = require('html-webpack-partials-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('mini-css-extract-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
@@ -12,6 +12,14 @@ const pkginfo = require('./package.json')
 const devMode = process.env.NODE_ENV !== 'production'
 const srcPath = resolve(__dirname, 'src')
 const distPath = resolve(__dirname, 'dist')
+const bodyPartialFile = resolve(srcPath, 'body.html')
+const wasmFile = resolve(
+  __dirname,
+  'node_modules',
+  'mediainfo.js',
+  'dist',
+  'mediainfo.wasm'
+)
 
 module.exports = {
   mode: devMode ? 'development' : 'production',
@@ -29,17 +37,13 @@ module.exports = {
       minify: false,
       title: 'mediainfo.js',
     }),
-    new CopyPlugin([
-      {
-        from: resolve('node_modules', 'mediainfo.js', 'dist', 'mediainfo.wasm'),
-        to: '.',
-      },
-      {
-        from: 'CNAME',
-        to: '.',
-      },
-    ]),
-    new HtmlWebpackRootPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: wasmFile, to: '.' },
+        { from: 'CNAME', to: '.' },
+      ],
+    }),
+    new HtmlWebpackPartialsPlugin({ path: bodyPartialFile }),
     ...(devMode
       ? [new webpack.HotModuleReplacementPlugin()]
       : [
