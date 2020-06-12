@@ -26,7 +26,8 @@
   ],
   "scripts": {
     "build:deps": "bash scripts/build-deps.sh",
-    "build": "bash scripts/build.sh web",
+    "build:wasm": "bash scripts/build.sh",
+    "build": "npm run build:deps && npm run build:wasm",
     "clean": "rimraf build dist vendor",
     "test": "jest"
   },

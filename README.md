@@ -97,16 +97,10 @@ can be found in `$PATH`. Something like this will do:
 $ source ~/path/to/emsdk_portable/emsdk_env.sh
 ```
 
-Before the first build you must compile the dependencies.
+This compiles dependencies and the package.
 
 ```sh
 $ npm install
-$ npm run build:deps
-```
-
-Then you can build the package.
-
-```sh
 $ npm run build
 ```
 

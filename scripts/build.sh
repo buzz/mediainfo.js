@@ -2,14 +2,14 @@
 
 set -xe
 
-OPTS="-Oz"
+source scripts/build-opts
 
 mkdir -p build dist
 cd build
 
 emcc \
-  ${OPTS} \
-  -DUNICODE \
+  ${CXXFLAGS} \
+  ${MediaInfoLib_CXXFLAGS} \
   -std=c++11 \
   -I vendor/MediaInfoLib/Source \
   -I vendor/ZenLib/Source \
@@ -17,7 +17,8 @@ emcc \
   -c ../src/mediainfojs.cpp
 
 emcc \
-  ${OPTS} \
+  ${CXXFLAGS} \
+  ${MediaInfoLib_CXXFLAGS} \
   -s ALLOW_MEMORY_GROWTH=1 \
   -s ASSERTIONS=0 \
   -s ENVIRONMENT="node,web" \
