@@ -19,10 +19,7 @@ const readChunk = (file) => (chunkSize, offset) =>
     reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize))
   })
 
-const getRandomId = () =>
-  Math.random()
-    .toString(36)
-    .substr(2, 9)
+const getRandomId = () => Math.random().toString(36).substr(2, 9)
 
 const collapseAll = (restoredResults) =>
   Object.entries(restoredResults).reduce((acc, [key, val]) => {
