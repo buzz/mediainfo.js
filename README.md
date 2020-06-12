@@ -17,10 +17,8 @@ You can either use a CDN to include the script file directly in your page or
 use a JavaScript bundler like webpack.
 
 * **CDN**: `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
-* **Bundler**: `npm install mediainfo.js`
-
-- [Simple example](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple) ([CodePen](https://codepen.io/buzzone/pen/eYNjJrx))
-- [Code for demo](https://github.com/buzz/mediainfo.js/tree/gh-pages)
+* **Bundler**: `npm install mediainfo.js`  
+  (Note: When using a bundler you need to make sure `mediainfo.wasm` can be loaded by the library. Check the [webpack example](https://github.com/buzz/mediainfo.js/blob/50830088bd775942a3962416ce61f759b13bc7c2/webpack.config.js#L34) to see how this is achieved using `copy-webpack-plugin`.)
 
 ### Node.js
 
