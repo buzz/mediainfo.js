@@ -18,7 +18,9 @@ const analyzeAvi = async (mi) => {
     await fileHandle.read(buffer, 0, size, offset)
     return buffer
   }
-  return mi.analyzeData(getSize, readChunk)
+  const result = await mi.analyzeData(getSize, readChunk)
+  fileHandle.close()
+  return result
 }
 
 describe('mediainfo.js', () => {
