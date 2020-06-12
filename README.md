@@ -28,8 +28,7 @@ Install [mediainfo.js from NPM](https://www.npmjs.com/package/mediainfo.js).
 $ npm install -g mediainfo.js
 ```
 
-Use it as a
-[shell command](https://github.com/buzz/mediainfo.js/tree/master/examples/cli.js).
+You can use it directly from the **shell**.
 
 ```sh
 $ mediainfo.js /path/to/media.avi
@@ -42,6 +41,13 @@ require('mediainfo.js')().then((mediainfo) => {
   // mediainfo ready…
 })
 ```
+
+### Examples
+
+- [Simple](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple)
+- [CDN (CodePen)](https://codepen.io/buzzone/pen/eYNjJrx)
+- [Webpack](https://github.com/buzz/mediainfo.js/tree/gh-pages-src)
+- [Node.js](https://github.com/buzz/mediainfo.js/tree/master/examples/cli.js)
 
 ### API
 
