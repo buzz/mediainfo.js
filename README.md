@@ -93,15 +93,22 @@ the
 
 ## Build
 
-Make sure the
-[Emscripten tools](https://emscripten.org/docs/getting_started/downloads.html)
-can be found in `$PATH`. Something like this will do:
+Install Emscripten preferably using
+[Emscripten SDK](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions).
 
-```sh
-$ source ~/path/to/emsdk_portable/emsdk_env.sh
+```bash
+$ git clone https://github.com/emscripten-core/emsdk.git
+$ cd emsdk
+$ ./emsdk install 1.39.15
+$ ./emsdk activate 1.39.15
+$ source ./emsdk_env.sh
+$ export PATH=$PATH:$(pwd)/upstream/bin # for wasm-opt
 ```
 
-This compiles dependencies and the package.
+Note: Versions 1.39.16 and later of Emscripten give
+[compile errors](https://github.com/buzz/mediainfo.js/issues/29).
+
+In the project root of mediainfo.js run the following to build.
 
 ```sh
 $ npm install
