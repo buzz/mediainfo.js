@@ -47,7 +47,7 @@ require('mediainfo.js')().then((mediainfo) => {
 - [Simple](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple)
 - [CDN (CodePen)](https://codepen.io/buzzone/pen/eYNjJrx)
 - [Webpack](https://github.com/buzz/mediainfo.js/tree/gh-pages-src)
-- [Node.js](https://github.com/buzz/mediainfo.js/tree/master/examples/cli.js)
+- [Node.js](https://github.com/buzz/mediainfo.js/tree/master/examples/node-cli/cli.js)
 
 ### API
 

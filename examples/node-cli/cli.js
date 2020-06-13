@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { open } = require('fs').promises
-const MediaInfo = require('../dist/mediainfo.js')
+const MediaInfo = require('../../dist/mediainfo.js')
 
 const main = async (filePath) => {
   let fileHandle
