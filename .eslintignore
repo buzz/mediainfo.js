@@ -1,1 +1,5 @@
-!.eslintrc.js
+!/.eslintrc.js
+/dist
+/build
+/mediainfo.d.ts
+/types.d.ts

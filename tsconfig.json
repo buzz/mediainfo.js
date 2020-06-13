@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "strict": true
+  }
+}
