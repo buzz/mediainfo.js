@@ -16,8 +16,8 @@ Try mediainfo.js in your browser: [https://mediainfo.js.org](https://mediainfo.j
 You can either use a CDN to include the script file directly in your page or
 use a JavaScript bundler like webpack.
 
-* **CDN**: `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
-* **Bundler**: `npm install mediainfo.js`  
+- **CDN**: `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
+- **Bundler**: `npm install mediainfo.js`  
   (Note: When using a bundler you need to make sure `mediainfo.wasm` can be loaded by the library. Check the [webpack example](https://github.com/buzz/mediainfo.js/blob/50830088bd775942a3962416ce61f759b13bc7c2/webpack.config.js#L34) to see how this is achieved using `copy-webpack-plugin`.)
 
 ### Node.js
@@ -57,9 +57,9 @@ require('mediainfo.js')().then((mediainfo) => {
 
 Defaults: `opts = { chunkSize: 1024*1024, format: 'object' }`
 
-* As output format you can try `object`, `JSON`, `XML`, `HTML` or `text`. The
-chunk size is used by `analyzeData` and set to 1 MiB.
-* Returns a Promise if no callback is given.
+- As output format you can try `object`, `JSON`, `XML`, `HTML` or `text`. The
+  chunk size is used by `analyzeData` and set to 1 MiB.
+- Returns a Promise if no callback is given.
 
 ```js
 const MediaInfo = require('mediainfo.js')
@@ -72,13 +72,13 @@ facilitates this somewhat cumbersome process.
 
 #### `mediainfo.analyzeData(getSize, readChunk, cb)`
 
-> Convenient method for analyzing a file chunk by chunk.
+> Convenient method for analyzing a buffer chunk by chunk.
 
 - You need to provide two callback functions. They can either return a Promise
-or directly the value.
-   - `getSize()` - Return total file size.
-   - `readChunk(size, offset)` - Read data chunk of `size` with `offset` and
-     return an `Uint8Array`.
+  or directly the value.
+  - `getSize()` - Return total buffer size.
+  - `readChunk(size, offset)` - Read data chunk of `size` with `offset` and
+    return an `Uint8Array`.
 - Returns a Promise if no callback is given.
 
 #### Low-level methods

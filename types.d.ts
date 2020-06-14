@@ -25,17 +25,10 @@ interface ResultObject {
     };
 }
 export declare type Result = ResultObject | string;
-export interface AnalyzeFunc {
-    (getSize: () => Promise<number> | number, readChunk: (size: number, offset: number) => Promise<Uint8Array> | Uint8Array, cb?: (result: Result) => void): Promise<Result> | void;
+export interface GetSizeFunc {
+    (): Promise<number> | number;
 }
-export interface MediaInfoInterface {
-    analyzeData: AnalyzeFunc;
-    chunkSize: number;
-    close: () => void;
-    inform: () => string;
-    openBufferContinue: (data: Uint8Array, size: number) => boolean;
-    openBufferContinueGotoGet: () => number;
-    openBufferFinalize: () => void;
-    openBufferInit: (size: number, offset: number) => void;
+export interface ReadChunkFunc {
+    (size: number, offset: number): Promise<Uint8Array> | Uint8Array;
 }
 export {};

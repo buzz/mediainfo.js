@@ -36,7 +36,7 @@ describe('mediainfo.js', () => {
         'openBufferInit',
       ]
       methodNames.forEach((name) => expect(mi[name]).toBeInstanceOf(Function))
-      expect(mi.chunkSize).toEqual(expect.any(Number))
+      expect(mi.options.chunkSize).toEqual(expect.any(Number))
     }
 
     it('should instantiate via callback', (done) => {
@@ -59,7 +59,7 @@ describe('mediainfo.js', () => {
       it('should use chunk size of 1 MiB', async () => {
         expect.assertions(1)
         const mi = await MediaInfo()
-        expect(mi.chunkSize).toEqual(1024 * 1024)
+        expect(mi.options.chunkSize).toEqual(1024 * 1024)
       })
 
       it('should return Object as result', async () => {
@@ -72,7 +72,7 @@ describe('mediainfo.js', () => {
 
     it('should use custom chunk size', async () => {
       const mi = await MediaInfo({ chunkSize: 16 * 1024 })
-      expect(mi.chunkSize).toEqual(16 * 1024)
+      expect(mi.options.chunkSize).toEqual(16 * 1024)
     })
 
     it('should return Object as result', async () => {
