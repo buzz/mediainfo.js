@@ -18,7 +18,7 @@ const wasmFile = resolve(
   'node_modules',
   'mediainfo.js',
   'dist',
-  'mediainfo.wasm'
+  'MediaInfoModule.wasm'
 )
 
 module.exports = {
