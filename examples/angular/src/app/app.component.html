@@ -1,0 +1,7 @@
+
+<h1>MediaInfo Angular Example</h1>
+
+<input type='file' placeholder='Select video...' (change)='onChangeFile($event.target)' />
+<br/><br/>
+<div [innerHtml]="videoInfo">
+</div>
