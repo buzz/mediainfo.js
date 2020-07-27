@@ -1,5 +1,4 @@
 import path from 'path'
-// import commonjs from '@rollup/plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 
@@ -24,6 +23,5 @@ export default {
     },
   ],
   external: ['fs', 'path'],
-  // plugins: [commonjs(), typescript()],
   plugins: [typescript()],
 }
