@@ -3,6 +3,7 @@ import MediaInfoModuleFactory from '../build/MediaInfoModule'
 import {
   FormatType,
   GetSizeFunc,
+  MediaInfo as MediaInfoInterface,
   MediaInfoOptions,
   MediaInfoWasmInterface,
   ReadChunkFunc,
@@ -19,7 +20,7 @@ const DEFAULT_OPTIONS: MediaInfoOptions = {
 /**
  * Wrapper around MediaInfoLib WASM module.
  */
-class MediaInfo {
+class MediaInfo implements MediaInfoInterface {
   private readonly wasmInstance: MediaInfoWasmInterface
   readonly options: MediaInfoOptions
 
@@ -35,13 +36,6 @@ class MediaInfo {
     this.options = options
   }
 
-  /**
-   * Convenient method for analyzing a buffer chunk by chunk.
-   *
-   * @param getSize Return total buffer size in bytes.
-   * @param readChunk Read chunk of data and return an {@link Uint8Array}.
-   * @param callback Function that is called once the processing is done
-   */
   analyzeData(
     getSize: GetSizeFunc,
     readChunk: ReadChunkFunc,
@@ -109,50 +103,19 @@ class MediaInfo {
     }
   }
 
-  /**
-   * Close the MediaInfoLib WASM instance.
-   *
-   * (This is a low-level MediaInfoLib function.)
-   */
   close(): void {
     this.wasmInstance.close()
   }
 
-  /**
-   * Receive result data from the WASM instance.
-   *
-   * (This is a low-level MediaInfoLib function.)
-   *
-   * @returns Result data (format can be configured in options)
-   */
   inform(): string {
     return this.wasmInstance.inform()
   }
 
-  /**
-   * Send more data to the WASM instance.
-   *
-   * (This is a low-level MediaInfoLib function.)
-   *
-   * @param data Data buffer
-   * @param size Buffer size
-   * @returns Processing state: `0` (no bits set) = not finished, Bit `0` set = enough data read for providing information
-   */
   openBufferContinue(data: Uint8Array, size: number): boolean {
     // bit 0 set -> done
     return !!(this.wasmInstance.open_buffer_continue(data, size) & 0x02)
   }
 
-  /**
-   * Retrieve seek position from WASM instance.
-   * The MediaInfoLib function `Open_Buffer_GoTo` returns an integer with 64 bit precision.
-   * It would be cut at 32 bit due to the JavaScript bindings. Here we transport the low and high
-   * parts separately and put them together.
-   *
-   * (This is a low-level MediaInfoLib function.)
-   *
-   * @returns Seek position (where MediaInfoLib wants go in the data buffer)
-   */
   openBufferContinueGotoGet(): number {
     // JS bindings don't support 64 bit int
     // https://github.com/buzz/mediainfo.js/issues/11
@@ -169,38 +132,29 @@ class MediaInfo {
     return seekTo
   }
 
-  /**
-   * Inform MediaInfoLib that no more data is being read.
-   */
   openBufferFinalize(): void {
     this.wasmInstance.open_buffer_finalize()
   }
 
-  /**
-   * Prepare MediaInfoLib to process a data buffer.
-   *
-   * @param size Expected buffer size
-   * @param offset Buffer offset
-   */
   openBufferInit(size: number, offset: number): void {
     this.wasmInstance.open_buffer_init(size, offset)
   }
 }
 
-function MediaInfoFactory(options?: MediaInfoOptions): Promise<MediaInfo>
+function MediaInfoFactory(
+  options?: MediaInfoOptions
+): Promise<MediaInfoInterface>
 function MediaInfoFactory(
   options: MediaInfoOptions,
-  callback: (mediainfo: MediaInfo) => void
+  callback: (mediainfo: MediaInfoInterface) => void
 ): void
 
 function MediaInfoFactory(
   options: MediaInfoOptions = {},
-  callback?: (mediainfo: MediaInfo) => void
-): Promise<MediaInfo> | void {
+  callback?: (mediainfo: MediaInfoInterface) => void
+): Promise<MediaInfoInterface> | void {
   if (callback === undefined) {
-    return new Promise((resolve) =>
-      MediaInfoFactory(options, (mediainfo) => resolve(mediainfo))
-    )
+    return new Promise((resolve) => MediaInfoFactory(options, resolve))
   }
 
   const mergedOptions: MediaInfoOptions = { ...DEFAULT_OPTIONS, ...options }

@@ -4,7 +4,7 @@
   "description": "Emscripten port of MediaInfoLib displays information about video and audio files.",
   "author": "buzz",
   "main": "dist/mediainfo.js",
-  "types": "./mediainfo.d.ts",
+  "types": "dist/mediainfo.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/buzz/mediainfo.js"
@@ -26,7 +26,7 @@
     "examples/node-cli/cli.js"
   ],
   "scripts": {
-    "build:declaration": "tsc --emitDeclarationOnly --declarationDir . --declaration true src/mediainfo.ts",
+    "build:declaration": "tsc --emitDeclarationOnly --declarationDir ./dist/ --declaration true src/mediainfo.ts",
     "build:deps": "bash scripts/build-deps.sh",
     "build:js-wrapper": "rollup -c",
     "build:wasm": "bash scripts/build.sh",
