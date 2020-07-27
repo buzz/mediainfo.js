@@ -3,5 +3,6 @@
     "noEmitOnError": true,
     "sourceMap": true,
     "strict": true
-  }
+  },
+  "exclude": ["examples"]
 }

@@ -1,44 +1,32 @@
-# Mediainfo Angular example
+# mediainfo.js Angular example
 
-**Step #1**
+## Step #1: WASM module
 
-Copy the node_modules/mediainfo.js/dist/MediaInfoModule.wasm to your project's src directory,
+Add `MediaInfoModule.wasm` to the `assets` section in the options of the build
+target in your `angular.json`.
 
-**Step #2**
+```json
+"assets": [
+  {
+    "input": "node_modules/mediainfo.js/dist",
+    "glob": "MediaInfoModule.wasm",
+    "output": ""
+  }
+]
+```
 
-Modify the angular.json file to add that file to the assets section, in the options of build target
+## Step #2: Ignore `fs` and `path`
 
-"architect": {
-    "build": {
-      "builder": "@angular-devkit/build-angular:browser",
-      "options": {
-        
-        ...
-        "assets": [
-          "src/assets",
-          "src/favicon.ico",
-          "src/MediaInfoModule.wasm"
-        ],
-        "styles": [
+Add this section to your `package.json`.
 
-**Step #3**
-
-Put this browser section in highest level section of package.json (it can be just above dependencies):
-
-	...
-	"browser": {
-		"fs": false,
-		"path": false
-	},
-	"dependencies": {
-	...
-
-**Step #4**
-
-Restart ng serve
+```json
+"browser": {
+  "fs": false,
+  "path": false
+},
+```
 
 ## Credits
 
-To @David that showed how to do this in [this Stackoverflow question](https://stackoverflow.com/questions/63001079/mediainfo-js-integration-in-angular-8)
-
-
+Based on a [Stack Overflow answer](https://stackoverflow.com/a/63049567) by
+[David](https://stackoverflow.com/users/1160794/david).

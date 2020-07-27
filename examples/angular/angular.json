@@ -1,83 +1,45 @@
 {
-	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-	"version": 1,
-	"newProjectRoot": "projects",
-	"projects": {
-		"mediainfoangular": {
-			"projectType": "application",
-			"schematics": {
-				"@schematics/angular:component": {
-					"style": "scss"
-				}
-			},
-			"root": "",
-			"sourceRoot": "src",
-			"prefix": "app",
-			"architect": {
-				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
-					"options": {
-						"outputPath": "dist/mediainfoangular",
-						"index": "src/index.html",
-						"main": "src/main.ts",
-						"polyfills": "src/polyfills.ts",
-						"tsConfig": "tsconfig.app.json",
-						"aot": true,
-						"assets": [
-							"src/assets",
-							{
-								"input": "node_modules/mediainfo.js/dist",
-								"glob": "MediaInfoModule.wasm",
-								"output": "" 	
-							}
-							
-						],
-						"scripts": []
-					},
-					"configurations": {
-						"production": {
-							"fileReplacements": [
-								{
-									"replace": "src/environments/environment.ts",
-									"with": "src/environments/environment.prod.ts"
-								}
-							],
-							"optimization": true,
-							"outputHashing": "all",
-							"sourceMap": false,
-							"extractCss": true,
-							"namedChunks": false,
-							"extractLicenses": true,
-							"vendorChunk": false,
-							"buildOptimizer": true,
-							"budgets": [
-								{
-									"type": "initial",
-									"maximumWarning": "2mb",
-									"maximumError": "5mb"
-								},
-								{
-									"type": "anyComponentStyle",
-									"maximumWarning": "6kb",
-									"maximumError": "10kb"
-								}
-							]
-						}
-					}
-				},
-				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"browserTarget": "mediainfoangular:build"
-					},
-					"configurations": {
-						"production": {
-							"browserTarget": "mediainfoangular:build:production"
-						}
-					}
-				}			
-			}
-		}
-	},
-	"defaultProject": "mediainfoangular"
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "mediainfojs-angular-example": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/mediainfojs-angular-example",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.json",
+            "aot": true,
+            "assets": [
+              {
+                "input": "node_modules/mediainfo.js/dist",
+                "glob": "MediaInfoModule.wasm",
+                "output": ""
+              }
+            ]
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "mediainfojs-angular-example:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "mediainfojs-angular-example:build:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "mediainfojs-angular-example"
 }

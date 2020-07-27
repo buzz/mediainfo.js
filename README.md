@@ -18,7 +18,10 @@ use a JavaScript bundler like webpack.
 
 - **CDN**: `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
 - **Bundler**: `npm install mediainfo.js`  
-  (Note: When using a bundler you need to make sure `mediainfo.wasm` can be loaded by the library. Check the [webpack example](https://github.com/buzz/mediainfo.js/blob/50830088bd775942a3962416ce61f759b13bc7c2/webpack.config.js#L34) to see how this is achieved using `copy-webpack-plugin`.)
+  Note: When using a bundler you need to make sure `mediainfo.wasm` can be
+  loaded by the library. Check the
+  [React/webpack](https://github.com/buzz/mediainfo.js/blob/50830088bd775942a3962416ce61f759b13bc7c2/webpack.config.js#L34)
+  and [Angular](TODO) examples.
 
 ### Node.js
 
@@ -46,7 +49,8 @@ require('mediainfo.js')().then((mediainfo) => {
 
 - [Simple](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple)
 - [CDN (CodePen)](https://codepen.io/buzzone/pen/eYNjJrx)
-- [Webpack](https://github.com/buzz/mediainfo.js/tree/gh-pages-src)
+- [React/webpack](https://github.com/buzz/mediainfo.js/tree/gh-pages-src)
+- [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
 - [Node.js](https://github.com/buzz/mediainfo.js/tree/master/examples/node-cli/cli.js)
 
 ### API
