@@ -34,7 +34,6 @@ emcc \
   vendor/Shared/Source/zlib/libz.a \
   -o MediaInfoModule.js
 
-# ln -sf ../src/MediaInfoModule.d.ts .
 echo "import MediaInfoModuleFactory from '../src/MediaInfoModule'" > MediaInfoModule.d.ts
 echo "export default MediaInfoModuleFactory" >> MediaInfoModule.d.ts
 
