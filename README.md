@@ -16,12 +16,20 @@ Try mediainfo.js in your browser: [https://mediainfo.js.org](https://mediainfo.j
 You can either use a CDN to include the script file directly in your page or
 use a JavaScript bundler like webpack.
 
-- **CDN**: `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
-- **Bundler**: `npm install mediainfo.js`  
-  Note: When using a bundler you need to make sure `mediainfo.wasm` can be
-  loaded by the library. Check the
-  [React/webpack](https://github.com/buzz/mediainfo.js/blob/50830088bd775942a3962416ce61f759b13bc7c2/webpack.config.js#L34)
-  and [Angular](TODO) examples.
+- **CDN**:  
+  `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
+- **Bundler**: `npm install mediainfo.js`
+
+Be aware that mediainfo.js is a WebAssembly port of MediaInfoLib. Thus it
+depends on `MediaInfoModule.wasm` which weighs around **2.4 MiB**. The WASM
+module is loaded automatically and needs to be made available from the same
+location `mediainfo.js` is served from. This is the case for the CDN version. If
+you're using a bundler, you need to take care of this yourself. There are
+examples for
+[React/webpack](https://github.com/buzz/mediainfo.js/blob/gh-pages-src/webpack.config.js#L42)
+and
+[Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular#step-1-wasm-module)
+on how to achieve this.
 
 ### Node.js
 
@@ -47,11 +55,11 @@ require('mediainfo.js')().then((mediainfo) => {
 
 ### Examples
 
-- [Simple](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple)
+- [Simple browser](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple)
 - [CDN (CodePen)](https://codepen.io/buzzone/pen/eYNjJrx)
 - [React/webpack](https://github.com/buzz/mediainfo.js/tree/gh-pages-src)
 - [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
-- [Node.js](https://github.com/buzz/mediainfo.js/tree/master/examples/node-cli/cli.js)
+- [Node.js](https://github.com/buzz/mediainfo.js/blob/master/src/cli.ts)
 
 ### API
 
