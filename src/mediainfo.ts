@@ -1,6 +1,6 @@
 import MediaInfoModuleFactory from '../build/MediaInfoModule'
 
-import {
+import type {
   FormatType,
   GetSizeFunc,
   MediaInfo as MediaInfoInterface,
@@ -13,6 +13,7 @@ import {
 import { MediaInfoModule } from './MediaInfoModule'
 
 const DEFAULT_OPTIONS: MediaInfoOptions = {
+  coverData: false,
   chunkSize: 1024 * 1024,
   format: 'object',
 }
@@ -164,10 +165,21 @@ function MediaInfoFactory(
     const format =
       mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
     const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
-      format as FormatType
+      format as FormatType,
+      mergedOptions.coverData as boolean
     )
     callback(new MediaInfo(wasmModuleInstance, mergedOptions))
   })
+}
+
+export type {
+  FormatType,
+  GetSizeFunc,
+  MediaInfo,
+  MediaInfoOptions,
+  MediaInfoWasmInterface,
+  ReadChunkFunc,
+  Result,
 }
 
 export default MediaInfoFactory

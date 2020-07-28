@@ -5,9 +5,12 @@
 class MediaInfoJs {
   MediaInfoLib::MediaInfo mi;
 public:
-  MediaInfoJs(const MediaInfoLib::String &outputFormat) {
+  MediaInfoJs(const MediaInfoLib::String &outputFormat, bool coverData) {
     mi.Option(__T("Output"), outputFormat);
     mi.Option(__T("File_IsSeekable"), __T("1"));
+    if (coverData) {
+      mi.Option(__T("Cover_Data"), __T("base64"));
+    }
   }
   int open(const std::string& data, double fileSize) {
     return mi.Open((const ZenLib::int8u*)data.data(), data.size(), NULL, 0, (ZenLib::int64u)fileSize);
@@ -42,7 +45,7 @@ public:
 
 EMSCRIPTEN_BINDINGS(mediainfojs) {
   emscripten::class_<MediaInfoJs>("MediaInfo")
-    .constructor<const MediaInfoLib::String&>()
+    .constructor<const MediaInfoLib::String&, bool>()
     .function("open", &MediaInfoJs::open)
     .function("open_buffer_init", &MediaInfoJs::open_buffer_init)
     .function("open_buffer_continue", &MediaInfoJs::open_buffer_continue)

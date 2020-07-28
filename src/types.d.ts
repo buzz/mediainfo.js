@@ -11,10 +11,11 @@ export interface MediaInfoWasmInterface {
 }
 
 export interface MediaInfoWasmConstructable {
-  new (format: FormatType): MediaInfoWasmInterface
+  new (format: FormatType, coverData: boolean): MediaInfoWasmInterface
 }
 
 export interface MediaInfoOptions {
+  coverData?: boolean
   chunkSize?: number
   format?: FormatType
 }

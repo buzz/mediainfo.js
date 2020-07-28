@@ -1,21 +1,24 @@
-import path from 'path'
+import { resolve } from 'path'
 import { terser } from 'rollup-plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 
 const name = 'MediaInfo'
 const format = 'umd'
 
+const srcDir = resolve(__dirname, 'src')
+const distDir = resolve(__dirname, 'dist')
+
 export default {
-  input: path.resolve(__dirname, 'src', 'mediainfo.ts'),
+  input: resolve(srcDir, 'mediainfo.ts'),
   output: [
     {
-      file: path.resolve(__dirname, 'dist', 'mediainfo.js'),
+      file: resolve(distDir, 'mediainfo.js'),
       format,
       name,
       sourcemap: true,
     },
     {
-      file: path.resolve(__dirname, 'dist', 'mediainfo.min.js'),
+      file: resolve(distDir, 'mediainfo.min.js'),
       format,
       name,
       plugins: [terser()],
@@ -23,5 +26,5 @@ export default {
     },
   ],
   external: ['fs', 'path'],
-  plugins: [typescript()],
+  plugins: [typescript({ exclude: ['src/cli.ts'] })],
 }
