@@ -14,7 +14,7 @@ import { MediaInfoModule } from './MediaInfoModule'
 
 const DEFAULT_OPTIONS: MediaInfoOptions = {
   coverData: false,
-  chunkSize: 1024 * 1024,
+  chunkSize: 256 * 1024,
   format: 'object',
 }
 
@@ -113,8 +113,8 @@ class MediaInfo implements MediaInfoInterface {
   }
 
   openBufferContinue(data: Uint8Array, size: number): boolean {
-    // bit 0 set -> done
-    return !!(this.wasmInstance.open_buffer_continue(data, size) & 0x02)
+    // bit 3 set -> done
+    return !!(this.wasmInstance.open_buffer_continue(data, size) & 0x08)
   }
 
   openBufferContinueGotoGet(): number {

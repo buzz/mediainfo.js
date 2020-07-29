@@ -41,10 +41,10 @@ describe('mediainfo.js', () => {
 
   describe('options', () => {
     describe('defaults', () => {
-      it('should use chunk size of 1 MiB', async () => {
+      it('should use chunk size of 256 * 1024 bytes', async () => {
         expect.assertions(1)
         const mi = await MediaInfo()
-        expect(mi.options.chunkSize).toEqual(1024 * 1024)
+        expect(mi.options.chunkSize).toEqual(256 * 1024)
       })
 
       it('should return Object as result', async () => {
