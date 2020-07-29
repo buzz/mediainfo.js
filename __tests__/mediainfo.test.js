@@ -41,6 +41,12 @@ describe('mediainfo.js', () => {
 
   describe('options', () => {
     describe('defaults', () => {
+      it('should use coverData=false', async () => {
+        expect.assertions(1)
+        const mi = await MediaInfo()
+        expect(mi.options.coverData).toBe(false)
+      })
+
       it('should use chunk size of 256 * 1024 bytes', async () => {
         expect.assertions(1)
         const mi = await MediaInfo()
@@ -53,6 +59,11 @@ describe('mediainfo.js', () => {
         const result = await analyzeFakeData(mi)
         expect(result).toBeInstanceOf(Object)
       })
+    })
+
+    it('should return true for coverData', async () => {
+      const mi = await MediaInfo({ coverData: true })
+      expect(mi.options.coverData).toBe(true)
     })
 
     it('should use custom chunk size', async () => {
