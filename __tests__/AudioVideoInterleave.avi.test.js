@@ -1,14 +1,17 @@
 import path from 'path'
 
 import MediaInfo from '../dist/mediainfo'
-import { analyzeFile } from './util'
+import analyzeFile from './analyzeFile'
 
-describe('test.avi', () => {
-  it('should parse minimal test.avi', async () => {
+describe('AudioVideoInterleave.avi', () => {
+  it('should parse file', async () => {
     expect.assertions(16)
 
     const mi = await MediaInfo()
-    const result = await analyzeFile(mi, path.resolve(__dirname, 'test.avi'))
+    const result = await analyzeFile(
+      mi,
+      path.resolve(__dirname, 'fixtures', 'AudioVideoInterleave.avi')
+    )
     expect(result).toBeInstanceOf(Object)
     const { track } = result.media
     expect(track).toHaveLength(2)
