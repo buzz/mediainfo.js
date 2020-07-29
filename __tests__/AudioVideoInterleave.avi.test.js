@@ -3,11 +3,18 @@ import path from 'path'
 import MediaInfo from '../dist/mediainfo'
 import analyzeFile from './analyzeFile'
 
+let mi
+
+beforeEach(async () => {
+  mi = await MediaInfo()
+})
+
+afterEach(() => mi.close)
+
 describe('AudioVideoInterleave.avi', () => {
   it('should parse file', async () => {
     expect.assertions(16)
 
-    const mi = await MediaInfo()
     const result = await analyzeFile(
       mi,
       path.resolve(__dirname, 'fixtures', 'AudioVideoInterleave.avi')
