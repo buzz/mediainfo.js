@@ -28,7 +28,7 @@ you're using a bundler, you need to take care of this yourself. There are
 examples for
 [React/webpack](https://github.com/buzz/mediainfo.js/blob/gh-pages-src/webpack.config.js#L42)
 and
-[Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular#step-1-wasm-module)
+[Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
 on how to achieve this.
 
 ### Node.js
