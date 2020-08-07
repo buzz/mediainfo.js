@@ -67,10 +67,11 @@ require('mediainfo.js')().then((mediainfo) => {
 
 > Create an instance of `mediainfo`.
 
-Defaults: `opts = { chunkSize: 1024*1024, format: 'object' }`
+Defaults: `opts = { chunkSize: 256*1024, coverData: false, format: 'object' }`
 
-- As output format you can try `object`, `JSON`, `XML`, `HTML` or `text`. The
-  chunk size is used by `analyzeData` and set to 1 MiB.
+- `chunkSize`: Chunk size used by `analyzeData` (in bytes)
+- `coverData`: Whether to extract binary cover data (Base64-encoded)
+- `format`: Format of result value (choices: `object`, `JSON`, `XML`, `HTML` or `text`)
 - Returns a Promise if no callback is given.
 
 ```js
