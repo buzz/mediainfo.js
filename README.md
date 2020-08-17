@@ -64,7 +64,7 @@ require('mediainfo.js')().then((mediainfo) => {
 
 ### API
 
-#### `MediaInfo(opts, cb)`
+#### `MediaInfo(opts, successCallback, errorCallback)`
 
 > Create an instance of `mediainfo`.
 
@@ -77,7 +77,7 @@ Defaults: `opts = { chunkSize: 256*1024, coverData: false, format: 'object' }`
 
 ```js
 const MediaInfo = require('mediainfo.js')
-MediaInfo(opts, cb)
+MediaInfo(opts, callback, errorCallback)
 ```
 
 Media files can be several gigabytes in size. The preferred way is to load data

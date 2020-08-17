@@ -149,27 +149,42 @@ function MediaInfoFactory(
   options: MediaInfoOptions,
   callback: (mediainfo: MediaInfoInterface) => void
 ): void
+function MediaInfoFactory(
+  options: MediaInfoOptions,
+  callback: (mediainfo: MediaInfoInterface) => void,
+  errCallback: (error: Error) => void
+): void
 
 function MediaInfoFactory(
   options: MediaInfoOptions = {},
-  callback?: (mediainfo: MediaInfoInterface) => void
+  callback?: (mediainfo: MediaInfoInterface) => void,
+  errCallback?: (error: Error) => void
 ): Promise<MediaInfoInterface> | void {
   if (callback === undefined) {
-    return new Promise((resolve) => MediaInfoFactory(options, resolve))
+    return new Promise((resolve, reject) =>
+      MediaInfoFactory(options, resolve, reject)
+    )
   }
 
   const mergedOptions: MediaInfoOptions = { ...DEFAULT_OPTIONS, ...options }
 
+  const mediaInfoModuleFactoryOpts: Partial<MediaInfoModule> = {}
+  if (errCallback) {
+    mediaInfoModuleFactoryOpts.onAbort = errCallback
+  }
+
   // Wait for WASM module to be fetched and loaded
-  MediaInfoModuleFactory().then((wasmModule: MediaInfoModule) => {
-    const format =
-      mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
-    const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
-      format as FormatType,
-      mergedOptions.coverData as boolean
-    )
-    callback(new MediaInfo(wasmModuleInstance, mergedOptions))
-  })
+  MediaInfoModuleFactory(mediaInfoModuleFactoryOpts).then(
+    (wasmModule: MediaInfoModule) => {
+      const format =
+        mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
+      const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
+        format as FormatType,
+        mergedOptions.coverData as boolean
+      )
+      callback(new MediaInfo(wasmModuleInstance, mergedOptions))
+    }
+  )
 }
 
 export type {
