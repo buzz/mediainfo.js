@@ -18,6 +18,7 @@ export interface MediaInfoOptions {
   coverData?: boolean
   chunkSize?: number
   format?: FormatType
+  locateFile?(url: string, scriptDirectory: string): string
 }
 
 export interface MediaInfo {

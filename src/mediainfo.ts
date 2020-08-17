@@ -172,6 +172,10 @@ function MediaInfoFactory(
   if (errCallback) {
     mediaInfoModuleFactoryOpts.onAbort = errCallback
   }
+  if (mergedOptions.locateFile) {
+    mediaInfoModuleFactoryOpts.locateFile = mergedOptions.locateFile
+    delete mergedOptions.locateFile
+  }
 
   // Wait for WASM module to be fetched and loaded
   MediaInfoModuleFactory(mediaInfoModuleFactoryOpts).then(
