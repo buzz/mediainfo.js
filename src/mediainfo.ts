@@ -50,9 +50,7 @@ class MediaInfo implements MediaInfoInterface {
 
     if (callback === undefined) {
       return new Promise((resolve) =>
-        this.analyzeData(getSize, readChunk, (result: Result) =>
-          resolve(result)
-        )
+        this.analyzeData(getSize, readChunk, (result: Result) => resolve(result))
       )
     }
 
@@ -146,9 +144,7 @@ class MediaInfo implements MediaInfoInterface {
   }
 }
 
-function MediaInfoFactory(
-  options?: MediaInfoOptions
-): Promise<MediaInfoInterface>
+function MediaInfoFactory(options?: MediaInfoOptions): Promise<MediaInfoInterface>
 function MediaInfoFactory(
   options: MediaInfoOptions,
   callback: (mediainfo: MediaInfoInterface) => void
@@ -165,9 +161,7 @@ function MediaInfoFactory(
   errCallback?: (error: Error) => void
 ): Promise<MediaInfoInterface> | void {
   if (callback === undefined) {
-    return new Promise((resolve, reject) =>
-      MediaInfoFactory(options, resolve, reject)
-    )
+    return new Promise((resolve, reject) => MediaInfoFactory(options, resolve, reject))
   }
 
   const mergedOptions: MediaInfoOptions = { ...DEFAULT_OPTIONS, ...options }
@@ -188,17 +182,14 @@ function MediaInfoFactory(
   }
 
   // Wait for WASM module to be fetched and loaded
-  MediaInfoModuleFactory(mediaInfoModuleFactoryOpts).then(
-    (wasmModule: MediaInfoModule) => {
-      const format =
-        mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
-      const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
-        format as FormatType,
-        mergedOptions.coverData as boolean
-      )
-      callback(new MediaInfo(wasmModuleInstance, mergedOptions))
-    }
-  )
+  MediaInfoModuleFactory(mediaInfoModuleFactoryOpts).then((wasmModule: MediaInfoModule) => {
+    const format = mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
+    const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
+      format as FormatType,
+      mergedOptions.coverData as boolean
+    )
+    callback(new MediaInfo(wasmModuleInstance, mergedOptions))
+  })
 }
 
 export type {

@@ -4,11 +4,7 @@ import crypto from 'crypto'
 import MediaInfo from '../dist/mediainfo'
 import analyzeFile from './analyzeFile'
 
-const FILEPATH = path.resolve(
-  __dirname,
-  'fixtures',
-  'Dead_Combo_-_01_-_Povo_Que_Cas_Descalo.mp3'
-)
+const FILEPATH = path.resolve(__dirname, 'fixtures', 'Dead_Combo_-_01_-_Povo_Que_Cas_Descalo.mp3')
 let mi
 
 afterEach(() => mi.close)
@@ -64,9 +60,7 @@ describe('coverData: Dead_Combo_-_01_-_Povo_Que_Cas_Descalo.mp3', () => {
     expect(track1.StreamSize).toBe('6182244')
     expect(track1.StreamSize_Proportion).toBe('0.97239')
     expect(track1.Encoded_Library).toBe('LAME3.99r')
-    expect(track1.Encoded_Library_Settings).toBe(
-      '-m j -V 0 -q 0 -lowpass 22.1 --vbr-mt -b 32'
-    )
+    expect(track1.Encoded_Library_Settings).toBe('-m j -V 0 -q 0 -lowpass 22.1 --vbr-mt -b 32')
   }
 
   it('should return cover data', async () => {

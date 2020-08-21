@@ -3,11 +3,7 @@ import path from 'path'
 import MediaInfo from '../dist/mediainfo'
 import analyzeFile from './analyzeFile'
 
-const FILEPATH = path.resolve(
-  __dirname,
-  'fixtures',
-  'file_example_MP4_640_3MG.mp4'
-)
+const FILEPATH = path.resolve(__dirname, 'fixtures', 'file_example_MP4_640_3MG.mp4')
 let mi
 
 afterEach(() => mi.close)

@@ -91,14 +91,7 @@ export interface MediaInfo {
 }
 
 interface Track {
-  '@type':
-    | 'General'
-    | 'Video'
-    | 'Audio'
-    | 'Text'
-    | 'Image'
-    | 'Chapters'
-    | 'Menu'
+  '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Chapters' | 'Menu'
   // Endless more properties:
   // https://github.com/MediaArea/MediaInfoLib/tree/master/Source/Resource/Text/Stream
 }

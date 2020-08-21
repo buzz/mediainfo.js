@@ -9,10 +9,7 @@ import { MediaInfo, ReadChunkFunc, Result } from 'mediainfo.js/dist/types'
 export class AppComponent {
   videoInfo = 'No file'
 
-  getMetadata(
-    mediainfo: MediaInfo,
-    fileinput: HTMLInputElement
-  ): Promise<string> {
+  getMetadata(mediainfo: MediaInfo, fileinput: HTMLInputElement): Promise<string> {
     return new Promise<string>((resolve) => {
       const file = fileinput.files[0]
       if (!file) {

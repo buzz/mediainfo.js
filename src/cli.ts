@@ -20,9 +20,7 @@ const analyze = async ({ file, format, coverData }: Arguments) => {
   let mediainfo: MediaInfo | undefined
 
   if (coverData && !['JSON', 'XML'].includes(format)) {
-    throw TypeError(
-      'For cover data you need to choose JSON or XML as output format!'
-    )
+    throw TypeError('For cover data you need to choose JSON or XML as output format!')
   }
 
   const readChunk: ReadChunkFunc = async (size, offset) => {

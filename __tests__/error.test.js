@@ -16,8 +16,6 @@ describe('error', () => {
 
   it('should return error via Promise', async () => {
     expect.assertions(1)
-    await expect(
-      MediaInfo({ locateFile: () => 'file_does_not_exist.wasm' })
-    ).rejects.toThrow()
+    await expect(MediaInfo({ locateFile: () => 'file_does_not_exist.wasm' })).rejects.toThrow()
   })
 })
