@@ -18,6 +18,10 @@ const DEFAULT_OPTIONS: MediaInfoOptions = {
   format: 'object',
 }
 
+const noopPrint = () => {
+  // No-op
+}
+
 /**
  * Wrapper around MediaInfoLib WASM module.
  */
@@ -169,8 +173,14 @@ function MediaInfoFactory(
   const mergedOptions: MediaInfoOptions = { ...DEFAULT_OPTIONS, ...options }
 
   const mediaInfoModuleFactoryOpts: Partial<MediaInfoModule> = {}
-  if (errCallback) {
-    mediaInfoModuleFactoryOpts.onAbort = errCallback
+  // Silence all print in module
+  mediaInfoModuleFactoryOpts.print = noopPrint
+  mediaInfoModuleFactoryOpts.printErr = noopPrint
+
+  mediaInfoModuleFactoryOpts.onAbort = (err) => {
+    if (errCallback) {
+      errCallback(err)
+    }
   }
   if (mergedOptions.locateFile) {
     mediaInfoModuleFactoryOpts.locateFile = mergedOptions.locateFile
