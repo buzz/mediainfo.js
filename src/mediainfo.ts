@@ -44,13 +44,13 @@ class MediaInfo implements MediaInfoInterface {
   analyzeData(
     getSize: GetSizeFunc,
     readChunk: ReadChunkFunc,
-    callback?: (result: Result) => void
+    callback?: (result: Result, err?: Error) => void
   ): Promise<Result> | void {
     let offset = 0
 
     if (callback === undefined) {
-      return new Promise((resolve) =>
-        this.analyzeData(getSize, readChunk, (result: Result) => resolve(result))
+      return new Promise((resolve, reject) =>
+        this.analyzeData(getSize, readChunk, (result: Result, err) => err ? reject(err) : resolve(result))
       )
     }
 
@@ -63,12 +63,15 @@ class MediaInfo implements MediaInfoInterface {
             finalize()
           }
         }
-        const dataValue = readChunk(
-          Math.min(this.options.chunkSize as number, fileSize - offset),
-          offset
-        )
+        let dataValue
+        try {
+          const safeSize = Math.min(this.options.chunkSize as number, fileSize - offset)
+          dataValue = readChunk(safeSize, offset)
+        } catch (e) {
+          return callback('', e)
+        }
         if (dataValue instanceof Promise) {
-          dataValue.then(readNextChunk)
+          dataValue.then(readNextChunk).catch(e => callback('', e))
         } else {
           readNextChunk(dataValue)
         }
