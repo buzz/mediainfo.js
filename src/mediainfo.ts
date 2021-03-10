@@ -50,7 +50,9 @@ class MediaInfo implements MediaInfoInterface {
 
     if (callback === undefined) {
       return new Promise((resolve, reject) =>
-        this.analyzeData(getSize, readChunk, (result: Result, err) => err ? reject(err) : resolve(result))
+        this.analyzeData(getSize, readChunk, (result: Result, err) =>
+          err ? reject(err) : resolve(result)
+        )
       )
     }
 
@@ -71,7 +73,7 @@ class MediaInfo implements MediaInfoInterface {
           return callback('', e)
         }
         if (dataValue instanceof Promise) {
-          dataValue.then(readNextChunk).catch(e => callback('', e))
+          dataValue.then(readNextChunk).catch((e) => callback('', e))
         } else {
           readNextChunk(dataValue)
         }
