@@ -39,28 +39,28 @@
     "mediainfo.js": "./dist/cli.js"
   },
   "dependencies": {
-    "yargs": "^15.4.1"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.11.0",
-    "@rollup/plugin-commonjs": "^14.0.0",
-    "@rollup/plugin-typescript": "^5.0.2",
+    "@babel/preset-env": "^7.13.10",
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-typescript": "^8.2.0",
     "@types/emscripten": "^1.39.4",
-    "@types/jest": "^26.0.10",
-    "@typescript-eslint/eslint-plugin": "^3.8.0",
-    "@typescript-eslint/parser": "^3.8.0",
+    "@types/jest": "^26.0.20",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^26.2.2",
-    "eslint": "^7.6.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-jest": "^23.20.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "jest": "^26.2.2",
-    "prettier": "^2.0.5",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-jest": "^24.2.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.23.0",
-    "rollup-plugin-terser": "^6.1.0",
-    "typescript": "^3.9.7",
+    "rollup": "^2.41.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.2.3",
     "xml2js": "^0.4.23"
   }
 }
