@@ -1,6 +1,6 @@
 import MediaInfo from '../dist/mediainfo'
 
-describe('error', () => {
+describe('Error on WASM loading', () => {
   it('should return error via callback', (done) => {
     MediaInfo(
       { locateFile: () => 'file_does_not_exist.wasm' },
@@ -14,8 +14,6 @@ describe('error', () => {
     )
   })
 
-  it('should return error via Promise', async () => {
-    expect.assertions(1)
-    await expect(MediaInfo({ locateFile: () => 'file_does_not_exist.wasm' })).rejects.toThrow()
-  })
+  it('should return error via Promise', () =>
+    expect(MediaInfo({ locateFile: () => 'file_does_not_exist.wasm' })).rejects.toThrow())
 })
