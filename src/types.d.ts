@@ -90,13 +90,13 @@ export interface MediaInfo {
   openBufferInit(size: number, offset: number): void
 }
 
-interface Track {
+export type Track = {
   '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Chapters' | 'Menu'
   // Endless more properties:
   // https://github.com/MediaArea/MediaInfoLib/tree/master/Source/Resource/Text/Stream
-}
+} & Record<string, unknown>
 
-interface ResultObject {
+export interface ResultObject {
   '@ref': string
   media: {
     track: Track[]
