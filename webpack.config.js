@@ -1,8 +1,6 @@
 const { resolve } = require('path')
 
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const HtmlWebpackPartialsPlugin = require('html-webpack-partials-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('mini-css-extract-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
@@ -12,7 +10,6 @@ const pkginfo = require('./package.json')
 const devMode = process.env.NODE_ENV !== 'production'
 const srcPath = resolve(__dirname, 'src')
 const distPath = resolve(__dirname, 'dist')
-const bodyPartialFile = resolve(srcPath, 'body.html')
 const wasmFile = resolve(
   __dirname,
   'node_modules',
@@ -36,6 +33,17 @@ module.exports = {
       },
       minify: false,
       title: 'mediainfo.js',
+      templateContent: ({ htmlWebpackPlugin }) => `
+        <html>
+          <head>
+            ${htmlWebpackPlugin.tags.headTags}
+          </head>
+          <body>
+            <div id="root" />
+            ${htmlWebpackPlugin.tags.bodyTags}
+          </body>
+        </html>
+      `,
     }),
     new CopyPlugin({
       patterns: [
@@ -43,9 +51,8 @@ module.exports = {
         { from: 'CNAME', to: '.' },
       ],
     }),
-    new HtmlWebpackPartialsPlugin({ path: bodyPartialFile }),
     ...(devMode
-      ? [new webpack.HotModuleReplacementPlugin()]
+      ? []
       : [
           new CleanWebpackPlugin([distPath]), // clean dist folder before build
           new MiniCssExtractPlugin({ filename: '[name].css' }),
@@ -94,11 +101,12 @@ module.exports = {
       },
     ],
   },
-  node: {
-    fs: 'empty',
-  },
   resolve: {
     extensions: ['*', '.js'],
+    fallback: {
+      fs: false,
+      path: false,
+    },
   },
   ...(devMode ? { devtool: 'inline-source-map' } : {}),
 }
