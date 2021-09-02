@@ -70,11 +70,15 @@ class MediaInfo implements MediaInfoInterface {
           const safeSize = Math.min(this.options.chunkSize as number, fileSize - offset)
           dataValue = readChunk(safeSize, offset)
         } catch (e) {
-          return callback('', e)
+          if (e instanceof Error) {
+            return callback('', e)
+          } else if (typeof e === 'string') {
+            return callback('', new Error(e))
+          }
         }
         if (dataValue instanceof Promise) {
           dataValue.then(readNextChunk).catch((e) => callback('', e))
-        } else {
+        } else if (dataValue !== undefined) {
           readNextChunk(dataValue)
         }
       }
