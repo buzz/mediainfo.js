@@ -3,7 +3,7 @@
 set -xe
 
 LIBMEDIAINFO_VERSION=21.03
-LIBZEN_VERSION=0.4.38
+LIBZEN_VERSION=0.4.39
 ZLIB_VERSION=1.2.11
 
 LIBMEDIAINFO_URL="https://mediaarea.net/download/source/libmediainfo/${LIBMEDIAINFO_VERSION}/libmediainfo_${LIBMEDIAINFO_VERSION}.tar.bz2"
