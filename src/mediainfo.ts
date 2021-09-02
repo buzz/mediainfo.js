@@ -191,14 +191,20 @@ function MediaInfoFactory(
   }
 
   // Wait for WASM module to be fetched and loaded
-  MediaInfoModuleFactory(mediaInfoModuleFactoryOpts).then((wasmModule: MediaInfoModule) => {
-    const format = mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
-    const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
-      format as FormatType,
-      mergedOptions.coverData as boolean
-    )
-    callback(new MediaInfo(wasmModuleInstance, mergedOptions))
-  })
+  MediaInfoModuleFactory(mediaInfoModuleFactoryOpts)
+    .then((wasmModule: MediaInfoModule) => {
+      const format = mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
+      const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
+        format as FormatType,
+        mergedOptions.coverData as boolean
+      )
+      callback(new MediaInfo(wasmModuleInstance, mergedOptions))
+    })
+    .catch((err) => {
+      if (errCallback) {
+        errCallback(err)
+      }
+    })
 }
 
 export type {

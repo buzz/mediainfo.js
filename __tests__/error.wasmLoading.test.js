@@ -15,5 +15,7 @@ describe('Error on WASM loading', () => {
   })
 
   it('should return error via Promise', () =>
-    expect(MediaInfo({ locateFile: () => 'file_does_not_exist.wasm' })).rejects.toThrow())
+    expect(MediaInfo({ locateFile: () => 'file_does_not_exist.wasm' })).rejects.toThrow(
+      /no such file/
+    ))
 })
