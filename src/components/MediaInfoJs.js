@@ -22,15 +22,16 @@ const readChunk = (file) => (chunkSize, offset) =>
 const getRandomId = () => Math.random().toString(36).substr(2, 9)
 
 const collapseAll = (restoredResults) =>
-  Object.entries(restoredResults).reduce((acc, [key, val]) => {
-    return {
+  Object.entries(restoredResults).reduce(
+    (acc, [key, val]) => ({
       ...acc,
       [key]: {
         ...val,
         collapsed: true,
       },
-    }
-  }, {})
+    }),
+    {}
+  )
 
 const MediaInfoJs = ({ className }) => {
   const [analyzing, setAnalyzing] = useState(false)
