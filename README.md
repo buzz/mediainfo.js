@@ -115,14 +115,11 @@ Install Emscripten preferably using
 ```bash
 $ git clone https://github.com/emscripten-core/emsdk.git
 $ cd emsdk
-$ ./emsdk install 1.39.15
-$ ./emsdk activate 1.39.15
+$ ./emsdk install latest
+$ ./emsdk activate latest
 $ source ./emsdk_env.sh
 $ export PATH=$PATH:$(pwd)/upstream/bin # for wasm-opt
 ```
-
-Note: Versions 1.39.16 and later of Emscripten give
-[compile errors](https://github.com/buzz/mediainfo.js/issues/29).
 
 In the project root of mediainfo.js run the following to build.
 
