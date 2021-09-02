@@ -15,6 +15,8 @@ source scripts/build-opts
 mkdir -p build/vendor
 cd build/vendor
 
+export EM_NODE_JS="${NODE}"
+
 # download sources
 wget ${LIBMEDIAINFO_URL} -q -O - | tar -xj
 wget ${LIBZEN_URL} -q -O - | tar -xj

@@ -7,6 +7,8 @@ source scripts/build-opts
 mkdir -p build dist
 cd build
 
+export EM_NODE_JS="${NODE}"
+
 emcc \
   ${CXXFLAGS} \
   ${MediaInfoLib_CXXFLAGS} \
