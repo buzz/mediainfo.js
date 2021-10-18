@@ -14,8 +14,9 @@ beforeEach(async () => {
 
 afterEach(() => mi.close)
 
-describe('Issue #36: centaur_1.mpg', () => {
-  it('should parse file', async () => {
+// test suspended due to offline source file
+xdescribe('Issue #36: centaur_1.mpg', () => {
+  xit('should parse file', async () => {
     expect.assertions(33)
 
     const result = await analyzeFile(mi, FILEPATH)
