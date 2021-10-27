@@ -12,10 +12,10 @@ import type {
 
 import { MediaInfoModule } from './MediaInfoModule'
 
-const DEFAULT_OPTIONS: MediaInfoOptions = {
+const DEFAULT_OPTIONS = {
   coverData: false,
   chunkSize: 256 * 1024,
-  format: 'object',
+  format: 'object' as const,
 }
 
 const noopPrint = () => {
@@ -67,7 +67,10 @@ class MediaInfo implements MediaInfoInterface {
         }
         let dataValue
         try {
-          const safeSize = Math.min(this.options.chunkSize as number, fileSize - offset)
+          const safeSize = Math.min(
+            this.options.chunkSize ?? DEFAULT_OPTIONS.chunkSize,
+            fileSize - offset
+          )
           dataValue = readChunk(safeSize, offset)
         } catch (e) {
           if (e instanceof Error) {
@@ -195,8 +198,8 @@ function MediaInfoFactory(
     .then((wasmModule: MediaInfoModule) => {
       const format = mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
       const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
-        format as FormatType,
-        mergedOptions.coverData as boolean
+        format ?? DEFAULT_OPTIONS.format,
+        mergedOptions.coverData ?? DEFAULT_OPTIONS.coverData
       )
       callback(new MediaInfo(wasmModuleInstance, mergedOptions))
     })
