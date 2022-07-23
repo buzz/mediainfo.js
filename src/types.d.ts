@@ -11,13 +11,21 @@ export interface MediaInfoWasmInterface {
 }
 
 export interface MediaInfoWasmConstructable {
-  new (format: FormatType, coverData: boolean): MediaInfoWasmInterface
+  /**
+   * Create MediaInfoWasm instance.
+   *
+   * @param format Output format.
+   * @param coverData Include cover data in the output.
+   * @param full Full information display (all internal tags).
+   */
+  new (format: FormatType, coverData: boolean, full: boolean): MediaInfoWasmInterface
 }
 
 export interface MediaInfoOptions {
   coverData?: boolean
   chunkSize?: number
   format?: FormatType
+  full?: boolean
   locateFile?(url: string, scriptDirectory: string): string
 }
 

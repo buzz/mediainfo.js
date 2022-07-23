@@ -15,6 +15,10 @@ public:
     {
       mi.Option(__T("Cover_Data"), __T("base64"));
     }
+    if (full)
+    {
+      mi.Option(__T("Complete"), __T("1"));
+    }
   }
   int open(const std::string &data, double fileSize)
   {
@@ -59,7 +63,7 @@ public:
 EMSCRIPTEN_BINDINGS(mediainfojs)
 {
   emscripten::class_<MediaInfoJs>("MediaInfo")
-      .constructor<const MediaInfoLib::String &, bool>()
+      .constructor<const MediaInfoLib::String &, bool, bool>()
       .function("open", &MediaInfoJs::open)
       .function("open_buffer_init", &MediaInfoJs::open_buffer_init)
       .function("open_buffer_continue", &MediaInfoJs::open_buffer_continue)

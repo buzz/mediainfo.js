@@ -8,9 +8,10 @@ import MediaInfoFactory from '../dist/mediainfo'
 import type { FormatType, MediaInfo, ReadChunkFunc, Result } from './types'
 
 interface Arguments {
+  coverData: boolean
   file: string
   format: FormatType
-  coverData: boolean
+  full: boolean
 }
 
 const formatChoices: ReadonlyArray<FormatType> = ['JSON', 'XML', 'HTML', 'text']
@@ -26,6 +27,11 @@ const parser = yargs
   .option('cover-data', {
     default: false,
     describe: 'Output cover data as base64',
+    type: 'boolean',
+  })
+  .option('full', {
+    default: false,
+    describe: 'Full information display (all internal tags)',
     type: 'boolean',
   })
   .command('$0 <file>', 'Show information about media files', (yargs: Argv) => {
@@ -45,7 +51,7 @@ const parser = yargs
     process.exit(1)
   })
 
-const analyze = async ({ coverData, file, format }: Arguments) => {
+const analyze = async ({ coverData, file, format, full }: Arguments) => {
   let fileHandle: fsPromises.FileHandle | undefined
   let fileSize: number
   let mediainfo: MediaInfo | undefined
@@ -64,7 +70,7 @@ const analyze = async ({ coverData, file, format }: Arguments) => {
   try {
     fileHandle = await fsPromises.open(file, 'r')
     fileSize = (await fileHandle.stat()).size
-    mediainfo = (await MediaInfoFactory({ format, coverData })) as MediaInfo
+    mediainfo = await MediaInfoFactory({ format, coverData, full })
     result = (await mediainfo.analyzeData(() => fileSize, readChunk)) as Result
   } finally {
     fileHandle && (await fileHandle.close())
@@ -82,6 +88,7 @@ const analyze = async ({ coverData, file, format }: Arguments) => {
       coverData: argv.coverData,
       file: argv.file as string,
       format: argv.format as FormatType,
+      full: argv.full,
     })
     console.log(result)
   } catch (err) {

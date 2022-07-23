@@ -16,6 +16,7 @@ const DEFAULT_OPTIONS = {
   coverData: false,
   chunkSize: 256 * 1024,
   format: 'object' as const,
+  full: false,
 }
 
 const noopPrint = () => {
@@ -199,7 +200,8 @@ function MediaInfoFactory(
       const format = mergedOptions.format === 'object' ? 'JSON' : mergedOptions.format
       const wasmModuleInstance: MediaInfoWasmInterface = new wasmModule.MediaInfo(
         format ?? DEFAULT_OPTIONS.format,
-        mergedOptions.coverData ?? DEFAULT_OPTIONS.coverData
+        mergedOptions.coverData ?? DEFAULT_OPTIONS.coverData,
+        mergedOptions.full ?? DEFAULT_OPTIONS.full
       )
       callback(new MediaInfo(wasmModuleInstance, mergedOptions))
     })
