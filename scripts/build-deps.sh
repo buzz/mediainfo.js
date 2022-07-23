@@ -2,9 +2,9 @@
 
 set -xe
 
-LIBMEDIAINFO_VERSION=21.09
+LIBMEDIAINFO_VERSION=22.06
 LIBZEN_VERSION=0.4.39
-ZLIB_VERSION=1.2.11
+ZLIB_VERSION=1.2.12
 
 LIBMEDIAINFO_URL="https://mediaarea.net/download/source/libmediainfo/${LIBMEDIAINFO_VERSION}/libmediainfo_${LIBMEDIAINFO_VERSION}.tar.bz2"
 LIBZEN_URL="https://mediaarea.net/download/source/libzen/${LIBZEN_VERSION}/libzen_${LIBZEN_VERSION}.tar.bz2"
