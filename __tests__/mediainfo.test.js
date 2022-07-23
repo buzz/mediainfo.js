@@ -64,11 +64,24 @@ describe('mediainfo.js', () => {
         expect(result).toBeInstanceOf(Object)
         mi.close()
       })
+
+      it('should use full=false', async () => {
+        expect.assertions(1)
+        const mi = await MediaInfo()
+        expect(mi.options.full).toBe(false)
+        mi.close()
+      })
     })
 
     it('should return true for coverData', async () => {
       const mi = await MediaInfo({ coverData: true })
       expect(mi.options.coverData).toBe(true)
+      mi.close()
+    })
+
+    it('should return true for full', async () => {
+      const mi = await MediaInfo({ full: true })
+      expect(mi.options.full).toBe(true)
       mi.close()
     })
 
