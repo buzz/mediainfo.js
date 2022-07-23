@@ -22,7 +22,7 @@ describe('file_example_MP4_640_3MG.mp4', () => {
 
     expect(track0['@type']).toBe('General')
     expect(track0.Format).toBe('MPEG-4')
-    expect(track0.Format_Profile).toBe('Base Media')
+    expect(track0.Format_Profile).toBe('Base Media / Version 2')
     expect(track0.CodecID).toBe('mp42')
     expect(track0.CodecID_Compatible).toBe('mp42/mp41/isom/avc1')
     expect(track0.FileSize).toBe('3114374')
