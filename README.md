@@ -68,11 +68,12 @@ require('mediainfo.js')().then((mediainfo) => {
 
 > Create an instance of `mediainfo`.
 
-Defaults: `opts = { chunkSize: 256*1024, coverData: false, format: 'object' }`
+Defaults: `opts = { chunkSize: 256*1024, coverData: false, format: 'object', full: false }`
 
 - `chunkSize`: Chunk size used by `analyzeData` (in bytes)
 - `coverData`: Whether to extract binary cover data (Base64-encoded)
 - `format`: Format of result value (choices: `object`, `JSON`, `XML`, `HTML` or `text`)
+- `full`: Full information display (all internal tags)
 - `locateFile`: Optional callback function to override `MediaInfo.wasm` location. Must return URL/path to file. Helpful if you want to serve `MediaInfoModule.wasm` from a custom location.  
   `(url, scriptDirectory) => pathToFile`
 - Returns a Promise if no callback is given.
