@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🙋 Ask a question on Stack Overflow
+    url: https://stackoverflow.com/search?q=mediainfo.js
+    about: Check if your question has been answered at Stack Overflow. Or create a new question.
