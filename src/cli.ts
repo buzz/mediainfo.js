@@ -71,7 +71,10 @@ const analyze = async ({ coverData, file, format, full }: Arguments) => {
     fileHandle = await fsPromises.open(file, 'r')
     fileSize = (await fileHandle.stat()).size
     mediainfo = await MediaInfoFactory({ format, coverData, full })
-    result = (await mediainfo.analyzeData(() => fileSize, readChunk)) as Result
+    if (mediainfo === undefined) {
+      throw new Error('Failed to initialize MediaInfo')
+    }
+    result = await mediainfo.analyzeData(() => fileSize, readChunk)
   } finally {
     fileHandle && (await fileHandle.close())
     mediainfo && mediainfo.close()

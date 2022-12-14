@@ -42,6 +42,12 @@ class MediaInfo implements MediaInfoInterface {
     this.options = options
   }
 
+  analyzeData(getSize: GetSizeFunc, readChunk: ReadChunkFunc): Promise<Result>
+  analyzeData(
+    getSize: GetSizeFunc,
+    readChunk: ReadChunkFunc,
+    callback: (result: Result, err?: Error) => void
+  ): void
   analyzeData(
     getSize: GetSizeFunc,
     readChunk: ReadChunkFunc,

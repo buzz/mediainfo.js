@@ -33,7 +33,8 @@
     "build": "npm run build:deps && npm run build:wasm && npm run build:js-wrapper && cp src/types.d.ts dist/ && npm run build:declaration && npm run build:cli",
     "clean": "rimraf build dist vendor",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "type-check": "tsc --noEmit --project ."
   },
   "bin": {
     "mediainfo.js": "./dist/cli.js"

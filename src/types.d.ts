@@ -33,7 +33,15 @@ export interface MediaInfo {
   readonly options: MediaInfoOptions
 
   /**
-   * Convenient method for analyzing a buffer chunk by chunk.
+   * Convenience method for analyzing a buffer chunk by chunk.
+   *
+   * @param getSize Return total buffer size in bytes.
+   * @param readChunk Read chunk of data and return an {@link Uint8Array}.
+   */
+  analyzeData(getSize: GetSizeFunc, readChunk: ReadChunkFunc): Promise<Result>
+
+  /**
+   * Convenience method for analyzing a buffer chunk by chunk (sync version).
    *
    * @param getSize Return total buffer size in bytes.
    * @param readChunk Read chunk of data and return an {@link Uint8Array}.
@@ -42,8 +50,8 @@ export interface MediaInfo {
   analyzeData(
     getSize: GetSizeFunc,
     readChunk: ReadChunkFunc,
-    callback?: (result: Result) => void
-  ): Promise<Result> | void
+    callback: (result: Result, err?: Error) => void
+  ): void
 
   /**
    * Close the MediaInfoLib WASM instance.

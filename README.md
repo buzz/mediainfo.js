@@ -89,7 +89,7 @@ facilitates this somewhat cumbersome process.
 
 #### `mediainfo.analyzeData(getSize, readChunk, cb)`
 
-> Convenient method for analyzing a buffer chunk by chunk.
+> Convenience method for analyzing a buffer chunk by chunk.
 
 - You need to provide two callback functions. They can either return a Promise
   or directly the value.

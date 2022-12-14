@@ -4,5 +4,5 @@
     "sourceMap": true,
     "strict": true
   },
-  "exclude": ["examples"]
+  "exclude": ["examples", "node_modules", "dist"]
 }
