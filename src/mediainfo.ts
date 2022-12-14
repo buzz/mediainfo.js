@@ -163,22 +163,19 @@ class MediaInfo implements MediaInfoInterface {
   }
 }
 
-function MediaInfoFactory(options?: MediaInfoOptions): Promise<MediaInfoInterface>
+function MediaInfoFactory(options?: MediaInfoOptions): Promise<MediaInfo>
+function MediaInfoFactory(options: MediaInfoOptions, callback: (mediainfo: MediaInfo) => void): void
 function MediaInfoFactory(
   options: MediaInfoOptions,
-  callback: (mediainfo: MediaInfoInterface) => void
-): void
-function MediaInfoFactory(
-  options: MediaInfoOptions,
-  callback: (mediainfo: MediaInfoInterface) => void,
+  callback: (mediainfo: MediaInfo) => void,
   errCallback: (error: Error) => void
 ): void
 
 function MediaInfoFactory(
   options: MediaInfoOptions = {},
-  callback?: (mediainfo: MediaInfoInterface) => void,
+  callback?: (mediainfo: MediaInfo) => void,
   errCallback?: (error: Error) => void
-): Promise<MediaInfoInterface> | void {
+): Promise<MediaInfo> | void {
   if (callback === undefined) {
     return new Promise((resolve, reject) => MediaInfoFactory(options, resolve, reject))
   }
