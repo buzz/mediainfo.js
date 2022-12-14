@@ -28,7 +28,7 @@ emcc \
   -s LEGACY_VM_SUPPORT=0 \
   -s MODULARIZE=1 \
   -s NO_FILESYSTEM=1 \
-  -s USE_ES6_IMPORT_META=0 \
+  -s USE_ES6_IMPORT_META=1 \
   --bind \
   MediaInfoModule.o \
   vendor/MediaInfoLib/Project/GNU/Library/.libs/libmediainfo.a \
