@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 
 const name = 'MediaInfo'
