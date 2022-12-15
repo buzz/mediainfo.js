@@ -22,9 +22,9 @@ export default {
       format,
       name,
       plugins: [terser()],
-      sourcemap: true,
+      sourcemap: false,
     },
   ],
-  external: ['fs', 'path'],
+  external: ['fs', 'path', 'module'],
   plugins: [typescript({ exclude: ['src/cli.ts'] })],
 }

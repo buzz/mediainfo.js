@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "noEmitOnError": true,
-    "sourceMap": true,
     "strict": true
   },
   "exclude": ["examples", "node_modules", "dist"]

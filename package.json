@@ -28,7 +28,7 @@
     "build:cli": "tsc --outDir ./dist/ --module commonjs --esModuleInterop src/cli.ts",
     "build:declaration": "tsc --emitDeclarationOnly --declarationDir ./dist/ --declaration true src/mediainfo.ts",
     "build:deps": "bash scripts/build-deps.sh",
-    "build:js-wrapper": "rollup -c",
+    "build:js-wrapper": "rollup --bundleConfigAsCjs --config",
     "build:wasm": "bash scripts/build.sh",
     "build": "npm run build:deps && npm run build:wasm && npm run build:js-wrapper && cp src/types.d.ts dist/ && npm run build:declaration && npm run build:cli",
     "clean": "rimraf build dist vendor",
