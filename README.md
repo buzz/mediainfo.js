@@ -21,7 +21,7 @@ use a JavaScript bundler like webpack.
 - **Bundler**: `npm install mediainfo.js`
 
 Be aware that mediainfo.js is a WebAssembly port of MediaInfoLib. Thus it
-depends on `MediaInfoModule.wasm` which weighs around **2.4 MiB**. The WASM
+depends on `MediaInfoModule.wasm` which weighs around **4.2 MiB**. The WASM
 module is loaded automatically and needs to be made available from the same
 location `mediainfo.js` is served from. This is the case for the CDN version. If
 you're using a bundler, you need to take care of this yourself. There are
