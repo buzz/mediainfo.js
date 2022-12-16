@@ -33,43 +33,42 @@ const collapseAll = (restoredResults) =>
     {}
   )
 
-const MediaInfoJs = ({ className }) => {
+function MediaInfoJs({ className }) {
   const [analyzing, setAnalyzing] = useState(false)
-  const [results, setResults] = useState({})
-
-  usePersist({
+  const [results, setResults] = usePersist({
     key: 'results',
     onRestore: collapseAll,
-    setState: setResults,
-    state: results,
   })
 
-  const onDrop = useCallback(([file]) => {
-    if (file) {
-      setAnalyzing(true)
-      MediaInfoFactory().then((mediainfo) =>
-        mediainfo
-          .analyzeData(() => file.size, readChunk(file))
-          .then((result) =>
-            setResults((prevResults) => ({
-              [getRandomId()]: {
-                ...result,
-                name: file.name,
-                collapsed: false,
-              },
-              ...prevResults,
-            }))
-          )
-          .catch((error) =>
-            setResults((prevResults) => ({
-              [getRandomId()]: { collapsed: false, error: error.stack },
-              ...prevResults,
-            }))
-          )
-          .finally(() => setAnalyzing(false))
-      )
-    }
-  }, [])
+  const onDrop = useCallback(
+    ([file]) => {
+      if (file) {
+        setAnalyzing(true)
+        MediaInfoFactory().then((mediainfo) =>
+          mediainfo
+            .analyzeData(() => file.size, readChunk(file))
+            .then((result) =>
+              setResults((prevResults) => ({
+                [getRandomId()]: {
+                  ...result,
+                  name: file.name,
+                  collapsed: false,
+                },
+                ...prevResults,
+              }))
+            )
+            .catch((error) =>
+              setResults((prevResults) => ({
+                [getRandomId()]: { collapsed: false, error: error.stack },
+                ...prevResults,
+              }))
+            )
+            .finally(() => setAnalyzing(false))
+        )
+      }
+    },
+    [setResults]
+  )
 
   const onCollapse = useCallback(
     (resultId) =>
@@ -80,12 +79,12 @@ const MediaInfoJs = ({ className }) => {
           collapsed: !prevResults[resultId].collapsed,
         },
       })),
-    []
+    [setResults]
   )
 
   const onRemove = useCallback(
     (resultId) => setResults(({ [resultId]: _, ...rest }) => rest),
-    []
+    [setResults]
   )
 
   const resultsContainer = Object.entries(results).map(([resultId, result]) => (
