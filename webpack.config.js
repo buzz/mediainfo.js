@@ -106,6 +106,8 @@ module.exports = {
     fallback: {
       fs: false,
       path: false,
+      url: false,
+      module: false,
     },
   },
   ...(devMode ? { devtool: 'inline-source-map' } : {}),

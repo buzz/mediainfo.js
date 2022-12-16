@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import MediaInfo from 'mediainfo.js'
+import MediaInfoFactory from 'mediainfo.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faList } from '@fortawesome/free-solid-svg-icons'
 
@@ -47,7 +47,7 @@ const MediaInfoJs = ({ className }) => {
   const onDrop = useCallback(([file]) => {
     if (file) {
       setAnalyzing(true)
-      MediaInfo().then((mediainfo) =>
+      MediaInfoFactory().then((mediainfo) =>
         mediainfo
           .analyzeData(() => file.size, readChunk(file))
           .then((result) =>
