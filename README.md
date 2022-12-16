@@ -20,15 +20,23 @@ use a JavaScript bundler like webpack.
   `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
 - **Bundler**: `npm install mediainfo.js`
 
+#### WASM file loading
+
 Be aware that mediainfo.js is a WebAssembly port of MediaInfoLib. Thus it
 depends on `MediaInfoModule.wasm` which weighs around **4.2 MiB**. The WASM
-module is loaded automatically and needs to be made available from the same
-location `mediainfo.js` is served from. This is the case for the CDN version. If
-you're using a bundler, you need to take care of this yourself. There are
-examples for
+module is loaded and instantiated automatically. By default it uses
+`location.href` as the base for constructing the module file URL.
+
+E.g. if the webpage is served from `https://example.com/`, the WASM module file
+is loaded from `https://example.com/MediaInfoModule.wasm`. You can freely
+override this behavior using [Emscripten Module
+`locateFile`](https://emscripten.org/docs/api_reference/module.html#Module.locateFile)
+though.
+
+For the CDN version have a look at this [example](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple). If you're using a bundler
+there are examples for
 [React/webpack](https://github.com/buzz/mediainfo.js/blob/gh-pages-src/webpack.config.js#L42)
-and
-[Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
+and [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
 on how to achieve this.
 
 ### Node.js
@@ -68,14 +76,13 @@ require('mediainfo.js')().then((mediainfo) => {
 
 > Create an instance of `mediainfo`.
 
-Defaults: `opts = { chunkSize: 256*1024, coverData: false, format: 'object', full: false }`
+Defaults: `opts = { chunkSize: 256*1024, coverData: false, format: 'object', full: false, ... }`
 
 - `chunkSize`: Chunk size used by `analyzeData` (in bytes)
 - `coverData`: Whether to extract binary cover data (Base64-encoded)
 - `format`: Format of result value (choices: `object`, `JSON`, `XML`, `HTML` or `text`)
 - `full`: Full information display (all internal tags)
-- `locateFile`: Optional callback function to override `MediaInfo.wasm` location. Must return URL/path to file. Helpful if you want to serve `MediaInfoModule.wasm` from a custom location.  
-  `(url, scriptDirectory) => pathToFile`
+- Other [Emscripten Module attributes](https://emscripten.org/docs/api_reference/module.html)
 - Returns a Promise if no callback is given.
 
 ```js
