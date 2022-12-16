@@ -2,7 +2,7 @@ const { resolve } = require('path')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CleanWebpackPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 
 const pkginfo = require('./package.json')
@@ -24,7 +24,6 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: resolve(distPath, 'index.html'),
-      // favicon: resolve(srcPath, 'static', 'favicon.png'),
       meta: {
         description: pkginfo.description,
         author: pkginfo.author,
@@ -54,8 +53,8 @@ module.exports = {
     ...(devMode
       ? []
       : [
-          new CleanWebpackPlugin([distPath]), // clean dist folder before build
-          new MiniCssExtractPlugin({ filename: '[name].css' }),
+          new CleanWebpackPlugin(), // clean dist folder before build
+          new MiniCssExtractPlugin(),
         ]),
   ],
   output: {
