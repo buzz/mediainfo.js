@@ -30,11 +30,11 @@ module is loaded and instantiated automatically. By default it uses
 E.g. if the webpage is served from `https://example.com/`, the WASM module file
 is loaded from `https://example.com/MediaInfoModule.wasm`. You can freely
 override this behavior using [Emscripten Module
-`locateFile`](https://emscripten.org/docs/api_reference/module.html#Module.locateFile)
-though.
+`locateFile`](https://emscripten.org/docs/api_reference/module.html#Module.locateFile).
 
-For the CDN version have a look at this [example](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple). If you're using a bundler
-there are examples for
+For the CDN version have a look at this
+[example](https://github.com/buzz/mediainfo.js/blob/0b18458780338eeefa829be48781cfc017503ee3/examples/browser-simple/example.js#L37).
+If you're using a bundler there are examples for
 [React/webpack](https://github.com/buzz/mediainfo.js/blob/gh-pages-src/webpack.config.js#L42)
 and [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
 on how to achieve this.
