@@ -74,7 +74,7 @@ const App = () => {
           </a>
           <span className="pull-right">
             <FontAwesomeIcon flip="horizontal" icon={faCopyright} />{' '}
-            <a href="https://github.com/buzz">buzz</a> 2021
+            <a href="https://github.com/buzz">buzz</a> 2022
           </span>
         </p>
       </footer>
