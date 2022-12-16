@@ -5,7 +5,7 @@ import { faCaretRight, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import ResultTable from './ResultTable'
 
-const Result = ({ id, result, onCollapse, onRemove }) => {
+function Result({ id, result, onCollapse, onRemove }) {
   const handleKeyPress = useCallback(
     (resultId, event) => {
       // Enter, Space

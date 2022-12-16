@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { faHandRock } from '@fortawesome/free-regular-svg-icons'
 
-const DropZone = ({ analyzing, onDrop }) => {
+function DropZone({ analyzing, onDrop }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     disabled: analyzing,
     multiple: false,

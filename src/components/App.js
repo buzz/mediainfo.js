@@ -11,7 +11,7 @@ import MediaInfoJs from './MediaInfoJs'
 
 const PAGE_FADE_TIME = 400
 
-const App = () => {
+function App() {
   const [page, setPage] = useState('mediainfojs')
   const onClickMediaInfoJs = useCallback(() => setPage('mediainfojs'), [])
   const onClickAbout = useCallback(() => setPage('about'), [])
