@@ -1,3 +1,5 @@
+import { MediaInfoType } from './types.generated'
+
 export type FormatType = 'object' | 'JSON' | 'XML' | 'HTML' | 'text'
 
 export interface MediaInfoWasmInterface {
@@ -106,20 +108,8 @@ export interface MediaInfo {
   openBufferInit(size: number, offset: number): void
 }
 
-export type Track = {
-  '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Chapters' | 'Menu'
-  // Endless more properties:
-  // https://github.com/MediaArea/MediaInfoLib/tree/master/Source/Resource/Text/Stream
-} & Record<string, unknown>
-
-export interface ResultObject {
-  '@ref': string
-  media: {
-    track: Track[]
-  }
-}
-
-export type Result = ResultObject | string
+/** MediaInfo result object. */
+export type Result = MediaInfoType | string
 
 export interface GetSizeFunc {
   (): Promise<number> | number

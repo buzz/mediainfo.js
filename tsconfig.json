@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "noEmitOnError": true,
-    "strict": true
+    "strict": true,
+    "target": "ES6"
   },
   "exclude": ["examples", "node_modules", "dist"]
 }
