@@ -5,7 +5,7 @@ set -e
 urls=(
   "a51c3aff106210abcf32a9d4285628a6,https://github.com/mathiasbynens/small/raw/master/AudioVideoInterleave.avi"
   "b02fc030703403a13c9a6cef5922c6d1,https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Creative_Commons/Dead_Combo/CC_Affiliates_Mixtape_1/Dead_Combo_-_01_-_Povo_Que_Cas_Descalo.mp3"
-  "82d9b86b01560ce17d310f3fd2a79ca9,https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_640_3MG.mp4"
+  "82d9b86b01560ce17d310f3fd2a79ca9,https://file-examples.com/storage/feeb72b10363daaeba4c0c9/2017/04/file_example_MP4_640_3MG.mp4"
   # source file went offline
   # "66a70e17283177d43992f0f895bd0237,http://hubblesource.stsci.edu/sources/video/clips/details/images/centaur_1.mpg"
 )
