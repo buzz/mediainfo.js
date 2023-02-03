@@ -1,30 +1,50 @@
-import { resolve } from 'path'
+import { join } from 'path'
+
+import babel from '@rollup/plugin-babel'
+import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
-import typescript from '@rollup/plugin-typescript'
 
-const name = 'MediaInfo'
-const format = 'umd'
-
-const srcDir = resolve(__dirname, 'src')
-const distDir = resolve(__dirname, 'dist')
+const umdName = 'MediaInfo'
+const srcDir = join(__dirname, 'src')
+const bundlesDir = join(__dirname, 'dist', 'bundles')
 
 export default {
-  input: resolve(srcDir, 'index.ts'),
+  external: ['fs', 'path', 'module'],
+  input: join(srcDir, 'index.ts'),
   output: [
     {
-      file: resolve(distDir, 'index.js'),
-      format,
-      name,
+      format: 'esm',
+      file: join(bundlesDir, 'index.esm.js'),
       sourcemap: true,
     },
     {
-      file: resolve(distDir, 'index.min.js'),
-      format,
-      name,
+      format: 'esm',
+      file: join(bundlesDir, 'index.esm.min.js'),
       plugins: [terser()],
-      sourcemap: false,
+      sourcemap: true,
+    },
+    {
+      format: 'umd',
+      file: join(bundlesDir, 'index.umd.js'),
+      name: umdName,
+      sourcemap: true,
+    },
+    {
+      format: 'umd',
+      file: join(bundlesDir, 'index.umd.min.js'),
+      name: umdName,
+      plugins: [terser()],
+      sourcemap: true,
     },
   ],
-  external: ['fs', 'path', 'module'],
-  plugins: [typescript({ exclude: ['src/cli.ts'] })],
+  plugins: [
+    resolve({ extensions: ['.ts'] }),
+    babel({
+      babelHelpers: 'bundled',
+      envName: 'ESM_BUNDLED',
+      exclude: ['./node_modules/**', './src/cli.ts'],
+      extensions: ['.ts'],
+      include: ['./src/**'],
+    }),
+  ],
 }

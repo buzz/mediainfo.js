@@ -1,0 +1,11 @@
+{
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "MediaInfo": "readonly"
+  },
+  "parserOptions": {
+    "sourceType": "script"
+  }
+}
