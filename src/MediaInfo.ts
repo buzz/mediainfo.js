@@ -174,7 +174,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    */
   close(): void {
     if (this.mediainfoModuleInstance) this.mediainfoModuleInstance.close()
-    if (this.mediainfoModule) this.mediainfoModule.destroy(this.mediainfoModuleInstance)
+    if (this.mediainfoModule && typeof this.mediainfoModule?.destroy === 'function')
+      this.mediainfoModule.destroy(this.mediainfoModuleInstance)
   }
 
   /**
