@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "esModuleInterop": true,
-    "module": "ESNext",
+    "module": "ES6",
     "moduleResolution": "node",
     "noEmitOnError": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ESNext"
+    "target": "ES6"
   },
-  "exclude": ["examples", "node_modules", "dist", "__tests__", "src/cli.ts"]
+  "exclude": ["examples", "node_modules", "dist", "__tests__"]
 }

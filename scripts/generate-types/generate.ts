@@ -4,7 +4,7 @@ import ts from 'typescript'
 import { createInterface, createProperty, exportModifier, readonlyModifier } from './factories'
 import parseXsd from './parseXsd'
 
-const topComment = '// DO NOT EDIT! File generated using `npm run generate-types`'
+const topComment = '// DO NOT EDIT! File generated using `generate-types` script.'
 
 async function generate(outFilename: string) {
   // CreationType

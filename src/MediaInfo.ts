@@ -29,6 +29,8 @@ interface ResultMap {
   text: string
 }
 
+const FORMAT_CHOICES = ['JSON', 'XML', 'HTML', 'text'] as const
+
 const DEFAULT_OPTIONS = {
   coverData: false,
   chunkSize: 256 * 1024,
@@ -165,8 +167,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * Close the MediaInfoLib WASM instance.
    */
   close(): void {
-    this.mediainfoModuleInstance.close()
-    this.mediainfoModule.destroy(this.mediainfoModuleInstance)
+    if (this.mediainfoModuleInstance) this.mediainfoModuleInstance.close()
+    if (this.mediainfoModule) this.mediainfoModule.destroy(this.mediainfoModuleInstance)
   }
 
   /**
@@ -239,5 +241,5 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
 }
 
 export type { FormatType, GetSizeFunc, ReadChunkFunc, ResultMap }
-export { DEFAULT_OPTIONS }
+export { DEFAULT_OPTIONS, FORMAT_CHOICES }
 export default MediaInfo

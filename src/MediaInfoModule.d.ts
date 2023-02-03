@@ -1,6 +1,6 @@
-const formatChoices = ['JSON', 'XML', 'HTML', 'text'] as const
+import type { FORMAT_CHOICES } from './MediaInfo'
 
-type WasmConstructableFormatType = (typeof formatChoices)[number]
+type WasmConstructableFormatType = (typeof FORMAT_CHOICES)[number]
 
 interface MediaInfoWasmInterface {
   close(): void
@@ -26,7 +26,6 @@ interface MediaInfoModule extends EmscriptenModule {
 
 declare const mediaInfoModuleFactory: EmscriptenModuleFactory<MediaInfoModule>
 
-export { formatChoices }
 export type {
   MediaInfoModule,
   MediaInfoWasmConstructable,

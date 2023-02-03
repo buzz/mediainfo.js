@@ -1,4 +1,4 @@
-// DO NOT EDIT! File generated using `npm run generate-types`
+// DO NOT EDIT! File generated using `generate-types` script.'
 
 export interface CreationType {
   readonly version: string

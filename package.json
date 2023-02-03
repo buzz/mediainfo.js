@@ -20,38 +20,43 @@
   "files": [
     "LICENSE.txt",
     "README.md",
-    "dist/"
+    "dist/",
+    "src/"
   ],
   "scripts": {
     "build:bundles": "rollup --bundleConfigAsCjs --config",
-    "build:cli": "tsc --outDir ./dist/ --module commonjs src/cli.ts",
-    "build:cjs": "cross-env BABEL_ENV=CJS babel --extensions '.ts' --out-dir dist/cjs ./src",
-    "build:declaration": "tsc --emitDeclarationOnly --declarationDir ./dist/ --declaration true src/index.ts",
+    "build:cli": "BABEL_ENV=CJS babel --extensions .ts --out-dir dist/cjs --out-file-extension .cjs src/cli.ts",
+    "build:cjs": "BABEL_ENV=CJS babel --extensions .ts --out-dir dist/cjs --out-file-extension .cjs src && cp build/MediaInfoModule.cjs.js dist/cjs/MediaInfoModule.cjs",
+    "build:declaration": "tsc --emitDeclarationOnly --declarationDir dist --declaration true src/index.ts",
     "build:deps": "bash scripts/build-deps.sh",
-    "build:esm": "cross-env BABEL_ENV=ESM_UNBUNDLED babel --extensions '.ts' --out-dir dist/esm ./src",
+    "build:esm": "BABEL_ENV=ESM babel --extensions .ts --out-dir dist/esm src && cp build/MediaInfoModule.esm.js dist/esm/MediaInfoModule.js",
     "build:wasm": "bash scripts/build.sh",
-    "build": "npm run build:deps && npm run build:wasm && npm run build:esm && npm run build:cjs && npm run build:bundles && npm run build:declaration && npm run build:cli",
+    "build": "pnpm run build:deps && pnpm run build:wasm && pnpm run build:esm && pnpm run build:cjs && pnpm run build:bundles && pnpm run build:declaration && pnpm run build:cli",
     "generate-types": "ts-node scripts/generate-types/main.ts && npx prettier -w src/types.generated.d.ts",
     "lint": "eslint .",
     "test": "jest",
     "type-check": "tsc --noEmit --project ."
   },
+  "packageManager": "pnpm@6.32.4",
+  "engines": {
+    "node": ">=14.16"
+  },
   "bin": {
-    "mediainfo.js": "./dist/cli.js"
+    "mediainfo.js": "./dist/esm/cli.js"
   },
   "type": "module",
-  "main": "./dist/cjs/index.js",
+  "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.js",
-  "browser": "./dist/bundles/index.esm.min.js",
+  "browser": "./dist/esm-bundle/index.min.js",
   "types": "./dist/index.d.ts",
-  "unpkg": "./dist/bundles/index.umd.min.js",
-  "jsdelivr": "./dist/bundles/index.umd.min.js",
+  "unpkg": "./dist/umd/index.min.js",
+  "jsdelivr": "./dist/umd/index.min.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "module": "./dist/bundles/index.esm.js",
+      "module": "./dist/esm-bundle/index.js",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.js"
     },
     "./MediaInfoModule.wasm": "./dist/MediaInfoModule.wasm",
@@ -71,13 +76,14 @@
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
+    "@rollup/plugin-virtual": "^3.0.1",
     "@types/emscripten": "^1.39.6",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "babel-jest": "^29.4.1",
-    "cross-env": "^7.0.3",
+    "babel-plugin-add-import-extension": "^1.6.0",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-jest": "^27.2.1",

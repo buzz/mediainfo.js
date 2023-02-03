@@ -1,8 +1,7 @@
-import MediaInfoModuleFactory from '../build/MediaInfoModule'
-
 import MediaInfo, { DEFAULT_OPTIONS, type FormatType } from './MediaInfo'
 
-import { MediaInfoModule } from './MediaInfoModule'
+import type { MediaInfoModule } from './MediaInfoModule'
+import mediaInfoModuleFactory from './MediaInfoModule'
 
 interface MediaInfoFactoryOptions<TFormat extends FormatType> {
   /** Output cover data as base64 */
@@ -59,6 +58,7 @@ function MediaInfoFactory<TFormat extends FormatType>(
   errCallback: (error: Error) => void
 ): void
 
+// TODO pass through all emscripten module options
 function MediaInfoFactory<TFormat extends FormatType>(
   options: MediaInfoFactoryOptions<TFormat> = {},
   callback?: (mediainfo: MediaInfo<TFormat>) => void,
@@ -79,16 +79,26 @@ function MediaInfoFactory<TFormat extends FormatType>(
     print: noopPrint,
     printErr: noopPrint,
 
+    locateFile: locateFile
+      ? locateFile
+      : (path: string, prefix: string) => {
+          console.log(`path=${path} prefix=${prefix} return=${prefix}../${path}`)
+          return `${prefix}../${path}`
+        },
+
     onAbort: (err: Error) => {
       if (errCallback) {
         errCallback(err)
       }
     },
   }
-  if (locateFile) mediaInfoModuleFactoryOpts.locateFile = locateFile
 
-  // Wait for WASM module to be fetched and loaded
-  MediaInfoModuleFactory(mediaInfoModuleFactoryOpts)
+  mediaInfoModuleFactoryOpts.locateFile = locateFile
+    ? locateFile
+    : (path: string, prefix: string) => `${prefix}../${path}`
+
+  // Fetch and load WASM module
+  mediaInfoModuleFactory(mediaInfoModuleFactoryOpts)
     .then((wasmModule) => callback(new MediaInfo<TFormat>(wasmModule, mergedOptions)))
     .catch((err) => {
       if (errCallback) {

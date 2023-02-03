@@ -126,7 +126,6 @@ $ cd emsdk
 $ ./emsdk install latest
 $ ./emsdk activate latest
 $ source ./emsdk_env.sh
-$ export PATH=$PATH:$(pwd)/upstream/bin # for wasm-opt
 ```
 
 In the project root of mediainfo.js run the following to build.

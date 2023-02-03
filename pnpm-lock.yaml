@@ -11,13 +11,14 @@ specifiers:
   '@rollup/plugin-commonjs': ^24.0.1
   '@rollup/plugin-node-resolve': ^15.0.1
   '@rollup/plugin-terser': ^0.4.0
+  '@rollup/plugin-virtual': ^3.0.1
   '@types/emscripten': ^1.39.6
   '@types/jest': ^29.4.0
   '@types/node': ^18.11.18
   '@typescript-eslint/eslint-plugin': ^5.50.0
   '@typescript-eslint/parser': ^5.50.0
   babel-jest: ^29.4.1
-  cross-env: ^7.0.3
+  babel-plugin-add-import-extension: ^1.6.0
   eslint: ^8.33.0
   eslint-config-prettier: ^8.6.0
   eslint-plugin-jest: ^27.2.1
@@ -47,13 +48,14 @@ devDependencies:
   '@rollup/plugin-commonjs': 24.0.1_rollup@3.13.0
   '@rollup/plugin-node-resolve': 15.0.1_rollup@3.13.0
   '@rollup/plugin-terser': 0.4.0_rollup@3.13.0
+  '@rollup/plugin-virtual': 3.0.1_rollup@3.13.0
   '@types/emscripten': 1.39.6
   '@types/jest': 29.4.0
   '@types/node': 18.11.18
   '@typescript-eslint/eslint-plugin': 5.50.0_go4drrxstycfikanvu45pi4vgq
   '@typescript-eslint/parser': 5.50.0_4vsywjlpuriuw3tl5oq6zy5a64
   babel-jest: 29.4.1_@babel+core@7.20.12
-  cross-env: 7.0.3
+  babel-plugin-add-import-extension: 1.6.0_@babel+core@7.20.12
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0_eslint@8.33.0
   eslint-plugin-jest: 27.2.1_mxgixfkotof7s3ejq6qsq3dgw4
@@ -1769,6 +1771,18 @@ packages:
       terser: 5.16.3
     dev: true
 
+  /@rollup/plugin-virtual/3.0.1_rollup@3.13.0:
+    resolution: {integrity: sha512-fK8O0IL5+q+GrsMLuACVNk2x21g3yaw+sG2qn16SnUd3IlBsQyvWxLMGHmCmXRMecPjGRSZ/1LmZB4rjQm68og==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: 3.13.0
+    dev: true
+
   /@rollup/pluginutils/5.0.2_rollup@3.13.0:
     resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
     engines: {node: '>=14.0.0'}
@@ -2173,6 +2187,15 @@ packages:
       - supports-color
     dev: true
 
+  /babel-plugin-add-import-extension/1.6.0_@babel+core@7.20.12:
+    resolution: {integrity: sha512-JVSQPMzNzN/S4wPRoKQ7+u8PlkV//BPUMnfWVbr63zcE+6yHdU2Mblz10Vf7qe+6Rmu4svF5jG7JxdcPi9VvKg==}
+    peerDependencies:
+      '@babel/core': '>=7.0.0'
+    dependencies:
+      '@babel/core': 7.20.12
+      '@babel/helper-plugin-utils': 7.20.2
+    dev: true
+
   /babel-plugin-istanbul/6.1.1:
     resolution: {integrity: sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==}
     engines: {node: '>=8'}
@@ -2475,14 +2498,6 @@ packages:
 
   /create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
-    dev: true
-
-  /cross-env/7.0.3:
-    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
-    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
-    hasBin: true
-    dependencies:
-      cross-spawn: 7.0.3
     dev: true
 
   /cross-spawn/7.0.3:
