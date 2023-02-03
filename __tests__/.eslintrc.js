@@ -4,12 +4,12 @@ module.exports = {
     node: true,
     'jest/globals': true,
   },
-  parser: '@babel/eslint-parser',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  extends: ['eslint:recommended', 'prettier', 'plugin:prettier/recommended'],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   plugins: ['jest', 'prettier'],
   rules: {
     'jest/no-disabled-tests': 'off',
