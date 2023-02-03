@@ -5,13 +5,17 @@ import * as yargs from 'yargs'
 import { Argv } from 'yargs'
 
 import MediaInfoFactory from '../dist/mediainfo'
-import type { FormatType, MediaInfo, ReadChunkFunc, Result } from './types'
+import type {
+  FormatType,
+  MediaInfo,
+  MediaInfoFactoryOptions,
+  ReadChunkFunc,
+  ResultMap,
+} from './_types'
 
-interface Arguments {
-  coverData: boolean
+interface Arguments<TFormat extends FormatType>
+  extends Required<Pick<MediaInfoFactoryOptions<TFormat>, 'coverData' | 'format' | 'full'>> {
   file: string
-  format: FormatType
-  full: boolean
 }
 
 const formatChoices: ReadonlyArray<FormatType> = ['JSON', 'XML', 'HTML', 'text']
@@ -51,19 +55,22 @@ const parser = yargs
     process.exit(1)
   })
 
-const analyze = async ({ coverData, file, format, full }: Arguments) => {
+const analyze = async <TFormat extends FormatType>(args: Arguments<TFormat>) => {
+  const { coverData, file, format, full } = args
+
   let fileHandle: fsPromises.FileHandle | undefined
   let fileSize: number
   let mediainfo: MediaInfo | undefined
-  let result: Result
+  let result: ResultMap[FormatType]
 
   if (coverData && !['JSON', 'XML'].includes(format)) {
     throw TypeError('For cover data you need to choose JSON or XML as output format!')
   }
 
   const readChunk: ReadChunkFunc = async (size, offset) => {
+    if (fileHandle === undefined) throw new Error('File unavailable')
     const buffer = new Uint8Array(size)
-    await (fileHandle as fsPromises.FileHandle).read(buffer, 0, size, offset)
+    await fileHandle.read(buffer, 0, size, offset)
     return buffer
   }
 

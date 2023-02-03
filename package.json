@@ -3,8 +3,8 @@
   "version": "0.1.9",
   "description": "Emscripten port of MediaInfoLib displays information about video and audio files.",
   "author": "buzz",
-  "main": "dist/mediainfo.js",
-  "types": "dist/mediainfo.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/buzz/mediainfo.js"
@@ -26,11 +26,11 @@
   ],
   "scripts": {
     "build:cli": "tsc --outDir ./dist/ --module commonjs src/cli.ts",
-    "build:declaration": "tsc --emitDeclarationOnly --declarationDir ./dist/ --declaration true src/mediainfo.ts",
+    "build:declaration": "tsc --emitDeclarationOnly --declarationDir ./dist/ --declaration true src/index.ts",
     "build:deps": "bash scripts/build-deps.sh",
     "build:js-wrapper": "rollup --bundleConfigAsCjs --config",
     "build:wasm": "bash scripts/build.sh",
-    "build": "npm run build:deps && npm run build:wasm && npm run build:js-wrapper && cp src/types.d.ts src/types.generated.d.ts dist/ && npm run build:declaration && npm run build:cli",
+    "build": "npm run build:deps && npm run build:wasm && npm run build:js-wrapper && cp src/types.generated.d.ts dist/ && npm run build:declaration && npm run build:cli",
     "clean": "rimraf build dist vendor",
     "generate-types": "ts-node scripts/generate-types/main.ts && npx prettier -w src/types.generated.d.ts",
     "lint": "eslint .",
@@ -44,8 +44,11 @@
     "yargs": "^17.6.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "@jest/globals": "^29.4.1",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.0.0",

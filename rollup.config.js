@@ -9,16 +9,16 @@ const srcDir = resolve(__dirname, 'src')
 const distDir = resolve(__dirname, 'dist')
 
 export default {
-  input: resolve(srcDir, 'mediainfo.ts'),
+  input: resolve(srcDir, 'index.ts'),
   output: [
     {
-      file: resolve(distDir, 'mediainfo.js'),
+      file: resolve(distDir, 'index.js'),
       format,
       name,
       sourcemap: true,
     },
     {
-      file: resolve(distDir, 'mediainfo.min.js'),
+      file: resolve(distDir, 'index.min.js'),
       format,
       name,
       plugins: [terser()],
