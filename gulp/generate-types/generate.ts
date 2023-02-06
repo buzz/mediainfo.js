@@ -1,12 +1,17 @@
 import fs from 'fs/promises'
+import { join } from 'path'
 import ts from 'typescript'
 
+import { BUILD_DIR, SRC_DIR } from '../constants'
+import { format } from '../utils'
 import { createInterface, createProperty, exportModifier, readonlyModifier } from './factories'
 import parseXsd from './parseXsd'
 
 const topComment = '// DO NOT EDIT! File generated using `generate-types` script.'
+const filename = 'types.generated.d.ts'
+const outFilename = join(SRC_DIR, filename)
 
-async function generate(outFilename: string) {
+async function generate() {
   // CreationType
   const ICreationType = createInterface('CreationType', [
     createProperty('version', 'string', { required: true }),
@@ -78,7 +83,14 @@ async function generate(outFilename: string) {
   ].join('\n\n')
 
   // Save generated source
-  await fs.writeFile(outFilename, tsSrc)
+  const buildOutFilename = join(BUILD_DIR, filename)
+  await fs.writeFile(buildOutFilename, tsSrc)
+
+  // Format sources
+  format(buildOutFilename, outFilename)
 }
+
+generate.displayName = 'generate-types'
+generate.description = 'Generate MediaInfo result types from XSD'
 
 export default generate

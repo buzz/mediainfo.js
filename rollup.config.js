@@ -1,51 +1,40 @@
 import { join } from 'path'
 import fs from 'fs'
+import url from 'url'
 
 import babel from '@rollup/plugin-babel'
 import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 import virtual from '@rollup/plugin-virtual'
 
+const dirname = url.fileURLToPath(new URL('.', import.meta.url))
+
 // Global variable name for UMD build
 const umdName = 'MediaInfo'
 
-const srcDir = join(__dirname, 'src')
-const distDir = join(__dirname, 'dist')
+const srcDir = join(dirname, 'src')
+const distDir = join(dirname, 'dist')
 const esmBundleDir = join(distDir, 'esm-bundle')
-const umdDir = join(distDir, 'umd')
+const umdBundleDir = join(distDir, 'umd')
 
 const mediaInfoModuleContent = fs
-  .readFileSync(join(__dirname, 'build', 'MediaInfoModule.browser.js'))
+  .readFileSync(join(dirname, 'build', 'MediaInfoModule.browser.js'))
   .toString()
+
+const makeOutput = (format, minify = false) => ({
+  file: join(format === 'esm' ? esmBundleDir : umdBundleDir, `index${minify ? '.min' : ''}.js`),
+  format,
+  name: format === 'umd' ? umdName : undefined,
+  plugins: minify ? [terser()] : undefined,
+  sourcemap: 'inline',
+})
 
 export default {
   input: join(srcDir, 'index.ts'),
-  output: [
-    {
-      format: 'esm',
-      file: join(esmBundleDir, 'index.js'),
-      sourcemap: true,
-    },
-    {
-      format: 'esm',
-      file: join(esmBundleDir, 'index.min.js'),
-      plugins: [terser()],
-      sourcemap: true,
-    },
-    {
-      format: 'umd',
-      file: join(umdDir, 'index.js'),
-      name: umdName,
-      sourcemap: true,
-    },
-    {
-      format: 'umd',
-      file: join(umdDir, 'index.min.js'),
-      name: umdName,
-      plugins: [terser()],
-      sourcemap: true,
-    },
-  ],
+  output: ['esm', 'umd'].reduce(
+    (acc, format) => [...acc, makeOutput(format), makeOutput(format, true)],
+    []
+  ),
   plugins: [
     resolve({ extensions: ['.ts'] }),
 

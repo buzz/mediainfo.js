@@ -6,7 +6,7 @@ module.exports = (api) => {
 
   const buildMixin = {
     ignore: ['./__tests__', './**/*.d.ts'],
-    sourceMaps: true,
+    sourceMaps: 'inline',
   }
 
   return {
@@ -15,14 +15,15 @@ module.exports = (api) => {
       '@babel/preset-typescript',
     ],
     ignore: ['./**/*.d.ts'],
-    sourceMaps: false,
+    sourceMaps: true,
 
     env: {
       // ESM build
       ESM: {
         presets: [['@babel/preset-env', { modules: false, targets: nodeTarget }]],
         plugins: [
-          'babel-plugin-add-import-extension', // Node.js ESM needs extensions in import statements
+          // Node.js ESM needs extensions in import statements
+          'babel-plugin-add-import-extension',
         ],
         ...buildMixin,
       },
@@ -30,6 +31,10 @@ module.exports = (api) => {
       // CommonJS build
       CJS: {
         presets: [['@babel/preset-env', { modules: 'commonjs', targets: nodeTarget }]],
+        plugins: [
+          // Node.js CJS needs extensions in require statements
+          ['babel-plugin-add-import-extension', { extension: 'cjs' }],
+        ],
         ...buildMixin,
       },
 

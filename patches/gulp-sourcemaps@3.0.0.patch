@@ -1,0 +1,14 @@
+diff --git a/src/utils.js b/src/utils.js
+index 33a0003d7293e502c508b63ef748aae77ca2754f..199564829258dd72e1167f0f67d1d0381ffa0364 100644
+--- a/src/utils.js
++++ b/src/utils.js
+@@ -28,6 +28,9 @@ var commentFormatters = {
+   js: function jsCommentFormatter(preLine, newline, url) {
+     return preLine + '//# sourceMappingURL=' + url + newline;
+   },
++  cjs: function jsCommentFormatter(preLine, newline, url) {
++    return preLine + '//# sourceMappingURL=' + url + newline;
++  },
+   default: function defaultFormatter() {
+     return '';
+   },
