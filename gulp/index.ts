@@ -1,14 +1,14 @@
 import gulp from 'gulp'
 
-import download from './download'
 import mediainfolib from './compile/mediainfolib'
+import wasm from './compile/wasm'
 import zenlib from './compile/zenlib'
 import zlib from './compile/zlib'
-import wasm from './compile/wasm'
+import declaration from './declaration'
+import download from './download'
+import generateTypes from './generate-types/generate'
 import babel from './transpile/babel'
 import rollup from './transpile/rollup'
-import declaration from './declaration'
-import generateTypes from './generate-types/generate'
 
 const task = gulp.series([
   download,

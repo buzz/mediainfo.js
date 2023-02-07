@@ -3,15 +3,65 @@
     "node": true,
     "es6": true
   },
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
-  "plugins": ["prettier"],
+  "extends": ["plugin:import/recommended", "plugin:prettier/recommended"],
+  "plugins": ["prettier", "import"],
   "root": true,
   "rules": {
+    // Custom import order
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "groups": ["builtin", "external", "internal", "unknown", "parent", "sibling", "index"],
+        "newlines-between": "always"
+      }
+    ],
+
+    // Missing imports
+    "import/no-unresolved": "error",
+
+    // File extensions
+    "import/extensions": ["error", "never"],
+
     "prettier/prettier": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      },
+      "rules": {
+        // Indentation is handled by prettier
+        // https://github.com/typescript-eslint/typescript-eslint/issues/1824
+        "@typescript-eslint/indent": "off",
+
+        // Consistent use of type imports
+        "@typescript-eslint/consistent-type-imports": "error",
+
+        // Prefer interfaces for type definitions
+        "@typescript-eslint/consistent-type-definitions": ["error", "interface"]
+      }
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "."
+      }
+    }
   }
 }

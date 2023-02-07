@@ -1,14 +1,16 @@
 import fs from 'fs/promises'
 import { join } from 'path'
+
 import ts from 'typescript'
 
 import { BUILD_DIR, SRC_DIR } from '../constants'
 import { format } from '../utils'
+
 import { createInterface, createProperty, exportModifier, readonlyModifier } from './factories'
 import parseXsd from './parseXsd'
 
 const topComment = '// DO NOT EDIT! File generated using `generate-types` script.'
-const filename = 'types.generated.d.ts'
+const filename = 'MediaInfoType.d.ts'
 const outFilename = join(SRC_DIR, filename)
 
 async function generate() {
@@ -87,7 +89,7 @@ async function generate() {
   await fs.writeFile(buildOutFilename, tsSrc)
 
   // Format sources
-  format(buildOutFilename, outFilename)
+  await format(buildOutFilename, outFilename)
 }
 
 generate.displayName = 'generate-types'

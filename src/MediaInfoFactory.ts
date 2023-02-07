@@ -1,7 +1,5 @@
 import MediaInfo, { DEFAULT_OPTIONS, type FormatType } from './MediaInfo'
-
-import type { MediaInfoModule } from './MediaInfoModule'
-import mediaInfoModuleFactory from './MediaInfoModule'
+import mediaInfoModuleFactory, { type MediaInfoModule } from './MediaInfoModule'
 
 interface MediaInfoFactoryOptions<TFormat extends FormatType> {
   /** Output cover data as base64 */
@@ -17,12 +15,15 @@ interface MediaInfoFactoryOptions<TFormat extends FormatType> {
   full?: boolean
 
   /** Customize loading path for files */
-  locateFile?(url: string, scriptDirectory: string): string
+  locateFile?(this: void, url: string, scriptDirectory: string): string
 }
 
 const noopPrint = () => {
   // No-op
 }
+
+type FactoryCallback<TFormat extends FormatType> = (mediainfo: MediaInfo<TFormat>) => void
+type ErrorCallback = (error: unknown) => void
 
 /**
  * Factory function for {@link MediaInfo}.
@@ -42,7 +43,7 @@ function MediaInfoFactory<TFormat extends FormatType>(
  */
 function MediaInfoFactory<TFormat extends FormatType>(
   options: MediaInfoFactoryOptions<TFormat>,
-  callback: (mediainfo: MediaInfo<TFormat>) => void
+  callback: FactoryCallback<TFormat>
 ): void
 
 /**
@@ -54,15 +55,15 @@ function MediaInfoFactory<TFormat extends FormatType>(
  */
 function MediaInfoFactory<TFormat extends FormatType>(
   options: MediaInfoFactoryOptions<TFormat>,
-  callback: (mediainfo: MediaInfo<TFormat>) => void,
-  errCallback: (error: Error) => void
+  callback: FactoryCallback<TFormat>,
+  errCallback: ErrorCallback
 ): void
 
 // TODO pass through all emscripten module options
 function MediaInfoFactory<TFormat extends FormatType>(
   options: MediaInfoFactoryOptions<TFormat> = {},
-  callback?: (mediainfo: MediaInfo<TFormat>) => void,
-  errCallback?: (error: Error) => void
+  callback?: FactoryCallback<TFormat>,
+  errCallback?: ErrorCallback
 ): Promise<MediaInfo<TFormat>> | void {
   if (callback === undefined) {
     return new Promise((resolve, reject) => MediaInfoFactory(options, resolve, reject))
@@ -101,9 +102,7 @@ function MediaInfoFactory<TFormat extends FormatType>(
   mediaInfoModuleFactory(mediaInfoModuleFactoryOpts)
     .then((wasmModule) => callback(new MediaInfo<TFormat>(wasmModule, mergedOptions)))
     .catch((err) => {
-      if (errCallback) {
-        errCallback(err)
-      }
+      if (errCallback) errCallback(err)
     })
 }
 

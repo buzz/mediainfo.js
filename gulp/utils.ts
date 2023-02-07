@@ -12,7 +12,10 @@ function downloadFile(dlUrl: string, destDir: string) {
     https.get(dlUrl, function (response) {
       if (response.statusCode !== 200) {
         file.close()
-        reject(new Error(`Status code ${response.statusCode}`))
+        const msg =
+          `Failed to download ${dlUrl}` +
+          (response.statusCode !== undefined ? `, status=${response.statusCode}` : '')
+        reject(new Error(msg))
       } else {
         response.pipe(file)
         file.on('finish', () => {
@@ -38,11 +41,15 @@ async function format(filepath: string, destFilepath: string) {
 function spawn(cmd: string, args: string[], cwd: string) {
   return new Promise<void>((resolve, reject) => {
     const proc = spawnChild(cmd, args, { cwd })
-    proc.stdout.on('data', (data) => process.stdout.write(data.toString()))
-    proc.stderr.on('data', (data) => process.stderr.write(data.toString()))
+    proc.stdout.on('data', (data) => {
+      if (Buffer.isBuffer(data)) process.stdout.write(data.toString())
+    })
+    proc.stderr.on('data', (data) => {
+      if (Buffer.isBuffer(data)) process.stderr.write(data.toString())
+    })
     proc.on('close', (code) => {
       if (code === 0) resolve()
-      else reject(new Error(`Program exited with status code ${code}`))
+      else reject(new Error(`Program exited with status code ${code ?? 'null'}`))
     })
     proc.stderr.on('error', (err) => reject(err))
   })

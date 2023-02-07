@@ -4,7 +4,7 @@ import type {
   MediaInfoWasmInterface,
   WasmConstructableFormatType,
 } from './MediaInfoModule'
-import type { MediaInfoType } from './types.generated'
+import type { MediaInfoType } from './MediaInfoType'
 
 /** Format of the result type */
 type FormatType = 'object' | WasmConstructableFormatType
@@ -37,6 +37,11 @@ const DEFAULT_OPTIONS = {
   format: 'object',
   full: false,
 } as const
+
+type ResultCallback<TFormat extends FormatType> = (
+  result: ResultMap[TFormat] | null,
+  err?: unknown
+) => void
 
 /**
  * Convenience wrapper for MediaInfoLib WASM module.
@@ -83,24 +88,24 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   analyzeData(
     getSize: GetSizeFunc,
     readChunk: ReadChunkFunc,
-    callback: (result: ResultMap[TFormat], err?: Error) => void
+    callback: ResultCallback<TFormat>
   ): void
 
   analyzeData(
     getSize: GetSizeFunc,
     readChunk: ReadChunkFunc,
-    callback?: (result: ResultMap[TFormat], err?: Error) => void
-  ): Promise<ResultMap[TFormat]> | void {
-    let offset = 0
-
+    callback?: ResultCallback<TFormat>
+  ): Promise<ResultMap[TFormat] | null> | void {
+    // Support promise signature
     if (callback === undefined) {
-      return new Promise((resolve, reject) =>
-        this.analyzeData(getSize, readChunk, (result: ResultMap[TFormat], err) =>
+      return new Promise((resolve, reject) => {
+        const resultCb: ResultCallback<TFormat> = (result, err) =>
           err ? reject(err) : resolve(result)
-        )
-      )
+        this.analyzeData(getSize, readChunk, resultCb)
+      })
     }
 
+    let offset = 0
     const runReadDataLoop = (fileSize: number) => {
       const getChunk = () => {
         const readNextChunk = (data: Uint8Array) => {
@@ -148,7 +153,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
       const finalize = () => {
         this.openBufferFinalize()
         const result = this.inform()
-        callback(this.options.format === 'object' ? JSON.parse(result) : result)
+        if (this.options.format === 'object') callback(JSON.parse(result) as ResultMap[TFormat])
+        else callback(result)
       }
 
       this.openBufferInit(fileSize, offset)
@@ -157,7 +163,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
 
     const fileSizeValue = getSize()
     if (fileSizeValue instanceof Promise) {
-      fileSizeValue.then(runReadDataLoop)
+      fileSizeValue.then(runReadDataLoop).catch((err) => callback(null, err))
     } else {
       runReadDataLoop(fileSizeValue)
     }

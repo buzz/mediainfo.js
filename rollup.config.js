@@ -1,5 +1,5 @@
-import { join } from 'path'
 import fs from 'fs'
+import { join } from 'path'
 import url from 'url'
 
 import babel from '@rollup/plugin-babel'
