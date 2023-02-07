@@ -17,7 +17,7 @@ You can either use a CDN to include the script file directly in your page or
 use a JavaScript bundler like webpack.
 
 - **CDN**:  
-  `<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>`
+  `<script type="text/javascript" src="https://unpkg.com/mediainfo.js"></script>`
 - **Bundler**: `npm install mediainfo.js`
 
 #### WASM file loading

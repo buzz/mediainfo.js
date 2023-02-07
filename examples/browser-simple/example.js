@@ -31,13 +31,7 @@ const onChangeFile = (mediainfo) => {
   }
 }
 
-MediaInfo(
-  {
-    format: 'text',
-    locateFile: (path, prefix) => prefix + path, // Make sure WASM file is loaded from CDN location
-  },
-  (mediainfo) => {
-    fileinput.removeAttribute('disabled')
-    fileinput.addEventListener('change', () => onChangeFile(mediainfo))
-  }
-)
+MediaInfo({ format: 'text' }, (mediainfo) => {
+  fileinput.removeAttribute('disabled')
+  fileinput.addEventListener('change', () => onChangeFile(mediainfo))
+})
