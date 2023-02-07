@@ -64,7 +64,6 @@ require('mediainfo.js')().then((mediainfo) => {
 ### Examples
 
 - [Simple browser](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple)
-- [Multi-file browser](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-multiple)
 - [CDN (CodePen)](https://codepen.io/buzzone/pen/eYNjJrx)
 - [React/webpack](https://github.com/buzz/mediainfo.js/tree/gh-pages-src)
 - [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
