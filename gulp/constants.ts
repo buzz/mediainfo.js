@@ -7,8 +7,8 @@ const BUILD_DIR = join(PROJECT_DIR, 'build')
 const VENDOR_DIR = join(BUILD_DIR, 'vendor')
 const ZLIB_DIR = join(VENDOR_DIR, 'Shared', 'Source')
 
-const LIBMEDIAINFO_VERSION = '22.12'
-const LIBZEN_VERSION = '0.4.40'
+const LIBMEDIAINFO_VERSION = '23.03'
+const LIBZEN_VERSION = '0.4.41'
 const ZLIB_VERSION = '1.2.13'
 
 const CFLAGS = '-Oz -DUNICODE -g0'
