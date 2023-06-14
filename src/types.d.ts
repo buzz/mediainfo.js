@@ -107,7 +107,7 @@ export interface MediaInfo {
 }
 
 export type Track = {
-  '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Chapters' | 'Menu'
+  '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Chapters' | 'Menu' | 'Other'
   // Endless more properties:
   // https://github.com/MediaArea/MediaInfoLib/tree/master/Source/Resource/Text/Stream
 } & Record<string, unknown>
