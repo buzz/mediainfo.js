@@ -55,7 +55,7 @@ async function generate() {
         "'@type'",
         undefined,
         ts.factory.createUnionTypeNode(
-          ['General', 'Video', 'Audio', 'Text', 'Image', 'Chapters', 'Menu'].map((t) =>
+          ['General', 'Video', 'Audio', 'Text', 'Image', 'Chapters', 'Menu', 'Other'].map((t) =>
             ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(t))
           )
         )
