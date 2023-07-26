@@ -1,4 +1,5 @@
 !/.eslintrc.js
 /dist
 /build
-/examples/angular/dist
+/examples/angular
+/babel.config.cjs

@@ -31,7 +31,7 @@ type ErrorCallback = (error: unknown) => void
  * @param options User options
  * @returns MediaInfo object
  */
-function MediaInfoFactory<TFormat extends FormatType>(
+function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options?: MediaInfoFactoryOptions<TFormat>
 ): Promise<MediaInfo<TFormat>>
 
@@ -41,7 +41,7 @@ function MediaInfoFactory<TFormat extends FormatType>(
  * @param options User options
  * @param callback Function that is called once the module is created
  */
-function MediaInfoFactory<TFormat extends FormatType>(
+function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options: MediaInfoFactoryOptions<TFormat>,
   callback: FactoryCallback<TFormat>
 ): void
@@ -53,14 +53,14 @@ function MediaInfoFactory<TFormat extends FormatType>(
  * @param callback Function that is called once the module is created
  * @param callback Error callback
  */
-function MediaInfoFactory<TFormat extends FormatType>(
+function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options: MediaInfoFactoryOptions<TFormat>,
   callback: FactoryCallback<TFormat>,
   errCallback: ErrorCallback
 ): void
 
 // TODO pass through all emscripten module options
-function MediaInfoFactory<TFormat extends FormatType>(
+function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options: MediaInfoFactoryOptions<TFormat> = {},
   callback?: FactoryCallback<TFormat>,
   errCallback?: ErrorCallback

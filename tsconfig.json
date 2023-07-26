@@ -10,5 +10,6 @@
     "inlineSourceMap": true,
     "inlineSources": true
   },
-  "exclude": ["examples", "node_modules", "dist", "build", "__tests__"]
+  "include": ["src", "__tests__", "gulp", "gulpfile.babel.ts"],
+  "exclude": ["examples", "node_modules", "dist", "build"]
 }

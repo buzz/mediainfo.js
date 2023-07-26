@@ -9,4 +9,5 @@ npm-debug.log
 /build
 /dist
 /__tests__/fixtures
+!/__tests__/fixtures/many_tracks.mp4
 /TODO.txt

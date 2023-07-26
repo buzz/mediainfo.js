@@ -1,22 +1,11 @@
 import path from 'path'
 
-import MediaInfoFactory from '../dist/cjs/index.cjs'
-import { type MediaInfo } from '..'
-import analyzeFile from './analyzeFile'
-
-let mi: MediaInfo
-
-beforeEach(async () => {
-  mi = await MediaInfoFactory()
-})
-
-afterEach(() => mi.close)
+const FILEPATH = path.resolve(__dirname, 'fixtures', 'many_tracks.mp4')
 
 it('should parse file with many tracks', async () => {
-  expect.assertions(9)
+  expect.assertions(8)
 
-  const result = await analyzeFile(mi, path.resolve(__dirname, 'fixtures', 'many_tracks.mp4'))
-  expect(result).toBeInstanceOf(Object)
+  const result = await analyzeFile(FILEPATH)
   if (!result.media) throw new Error()
   const { track } = result.media
   expect(track).toHaveLength(102)
