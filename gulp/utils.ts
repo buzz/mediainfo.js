@@ -35,7 +35,7 @@ async function format(filepath: string, destFilepath: string) {
   const text = await readFile(filepath, 'utf8')
   const options = await prettier.resolveConfig(filepath)
   if (options === null) throw new Error('Could not find prettier config')
-  await writeFile(destFilepath, prettier.format(text, { ...options, filepath }))
+  await writeFile(destFilepath, await prettier.format(text, { ...options, filepath }))
 }
 
 function spawn(cmd: string, args: string[], cwd: string) {
