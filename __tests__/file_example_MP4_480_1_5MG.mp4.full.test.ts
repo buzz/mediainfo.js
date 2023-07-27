@@ -7,6 +7,7 @@ describe('full: file_example_MP4_640_3MG.mp4', () => {
     expect.assertions(16)
 
     const result = await analyzeFile(FILEPATH, { full: true })
+    if (!result.media) throw new Error()
 
     const { track } = result.media
     const [track0, track1, track2] = track
@@ -35,6 +36,7 @@ describe('full: file_example_MP4_640_3MG.mp4', () => {
     expect.assertions(16)
 
     const result = await analyzeFile(FILEPATH, { full: false })
+    if (!result.media) throw new Error()
 
     const { track } = result.media
     const [track0, track1, track2] = track

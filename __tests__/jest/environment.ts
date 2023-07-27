@@ -3,8 +3,7 @@ import fs from 'fs/promises'
 import { TestEnvironment } from 'jest-environment-node'
 
 import MediaInfoFactory from '../..'
-import type { ReadChunkFunc } from '../..'
-import type { DEFAULT_OPTIONS, FormatType } from '../../dist/MediaInfo'
+import type { FormatType, MediaInfoFactoryOptions, ReadChunkFunc } from '../..'
 
 class MediaInfoEnvironment extends TestEnvironment {
   async setup() {
@@ -15,11 +14,11 @@ class MediaInfoEnvironment extends TestEnvironment {
     return super.getVmContext()
   }
 
-  static async analyzeFile<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
+  static async analyzeFile<TFormat extends FormatType = 'object'>(
     filepath: string,
-    opts?: Parameters<typeof MediaInfoFactory<TFormat>>[0]
+    opts?: MediaInfoFactoryOptions<TFormat>
   ) {
-    const mi = await MediaInfoFactory<TFormat>(opts)
+    const mi = await MediaInfoFactory(opts)
     const fileHandle = await fs.open(filepath, 'r')
     const getSize = async () => (await fileHandle.stat()).size
     const readChunk: ReadChunkFunc = async (size, offset) => {

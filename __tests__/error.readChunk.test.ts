@@ -1,4 +1,5 @@
 import MediaInfoFactoryFactory, { MediaInfo } from '..'
+import { isErrorObject } from './jest/utils'
 
 describe('Error in readChunk', () => {
   let mi: MediaInfo
@@ -16,6 +17,9 @@ describe('Error in readChunk', () => {
 
   it('should return error via callback', (done) => {
     mi.analyzeData(getSize, readChunk, (result, error) => {
+      if (!isErrorObject(error)) {
+        throw new Error('Expected to received error object')
+      }
       expect(error?.message).toBe('Foo error')
       done()
     })
