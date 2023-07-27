@@ -33,8 +33,12 @@ async function parseXsd() {
   const xmlDoc = parseXml(xmlDocData)
   const attrs = xmlDoc.find('//xmlns:complexType[@name="trackType"]/xmlns:all/*', namespace)
 
-  return attrs.filter(isElement).map((element) => {
-    let name = element.attr('name')?.value()
+  // Collect int/float types
+  const intFields: string[] = []
+  const floatFields: string[] = []
+
+  const nodes = attrs.filter(isElement).map((element) => {
+    const name = element.attr('name')?.value()
     const minOccurs = element.attr('minOccurs')?.value()
     const maxOccurs = element.attr('maxOccurs')?.value()
     const xsdType = element.attr('type')?.value()
@@ -42,9 +46,7 @@ async function parseXsd() {
       throw new Error('Element missing attribute')
     }
 
-    name = name.includes('-') ? `'${name}'` : name
-
-    // all attributes should be required
+    // all attributes should be optional
     if (minOccurs !== '0' || maxOccurs !== '1')
       throw new Error(`minOccurs=${minOccurs} maxOccurs=${maxOccurs}`)
 
@@ -52,9 +54,13 @@ async function parseXsd() {
     let type: string
     if (xsdType === 'extraType') type = 'ExtraType'
     else if (xsdType === 'xsd:string') type = 'string'
-    else if (xsdType === 'xsd:integer') type = 'number'
-    else if (xsdType === 'xsd:float') type = 'number'
-    else throw new Error(`Unknown type: ${xsdType}`)
+    else if (xsdType === 'xsd:integer') {
+      type = 'number'
+      intFields.push(name)
+    } else if (xsdType === 'xsd:float') {
+      type = 'number'
+      floatFields.push(name)
+    } else throw new Error(`Unknown type: ${xsdType}`)
 
     // extract docstring
     let docString: string | undefined
@@ -64,7 +70,8 @@ async function parseXsd() {
     }
 
     // create property
-    const prop = createProperty(name, type, { required: false })
+    const quotedName = name.includes('-') ? `'${name}'` : name
+    const prop = createProperty(quotedName, type, { required: false })
     return docString
       ? ts.addSyntheticLeadingComment(
           prop,
@@ -74,6 +81,8 @@ async function parseXsd() {
         )
       : prop
   })
+
+  return { nodes, intFields, floatFields }
 }
 
 export default parseXsd

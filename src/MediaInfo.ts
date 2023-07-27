@@ -4,7 +4,7 @@ import type {
   MediaInfoWasmInterface,
   WasmConstructableFormatType,
 } from './MediaInfoModule'
-import type { MediaInfoType } from './MediaInfoType'
+import { FLOAT_FIELDS, INT_FIELDS, type MediaInfoType, type TrackType } from './MediaInfoType'
 
 /** Format of the result type */
 type FormatType = 'object' | WasmConstructableFormatType
@@ -153,8 +153,11 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
       const finalize = () => {
         this.openBufferFinalize()
         const result = this.inform()
-        if (this.options.format === 'object') callback(JSON.parse(result) as ResultMap[TFormat])
-        else callback(result)
+        if (this.options.format === 'object') {
+          callback(this.parseResultJson(result))
+        } else {
+          callback(result)
+        }
       }
 
       this.openBufferInit(fileSize, offset)
@@ -244,6 +247,49 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    */
   openBufferInit(size: number, offset: number): void {
     this.mediainfoModuleInstance.open_buffer_init(size, offset)
+  }
+
+  /**
+   * Parse result JSON. Convert integer/float fields.
+   *
+   * @param result Serialized JSON from MediaInfo
+   * @returns Parsed JSON object
+   */
+  private parseResultJson(resultString: string): ResultMap[TFormat] {
+    type Writable<T> = { -readonly [P in keyof T]: T[P] }
+
+    const intFields = INT_FIELDS as ReadonlyArray<string>
+    const floatFields = FLOAT_FIELDS as ReadonlyArray<string>
+
+    // Parse JSON
+    const result = JSON.parse(resultString) as MediaInfoType
+
+    if (result.media) {
+      const newMedia = { ...result.media, track: [] as Writable<TrackType>[] }
+
+      if (result.media.track && Array.isArray(result.media.track)) {
+        for (const track of result.media.track) {
+          let newTrack: Writable<TrackType> = { '@type': track['@type'] }
+          for (const [key, val] of Object.entries(track) as [string, unknown][]) {
+            if (key === '@type') {
+              continue
+            }
+            if (typeof val === 'string' && intFields.includes(key)) {
+              newTrack = { ...newTrack, [key]: parseInt(val, 10) }
+            } else if (typeof val === 'string' && floatFields.includes(key)) {
+              newTrack = { ...newTrack, [key]: parseFloat(val) }
+            } else {
+              newTrack = { ...newTrack, [key]: val }
+            }
+          }
+          newMedia.track.push(newTrack)
+        }
+      }
+
+      return { ...result, media: newMedia } as ResultMap[TFormat]
+    }
+
+    return result as ResultMap[TFormat]
   }
 }
 

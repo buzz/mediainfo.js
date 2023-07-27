@@ -29,3 +29,25 @@ export function createInterface(name: string, members: readonly ts.TypeElement[]
     members
   )
 }
+
+export function createArrayAsConst(name: string, elements: string[]) {
+  return ts.factory.createVariableStatement(
+    [exportModifier],
+    ts.factory.createVariableDeclarationList(
+      [
+        ts.factory.createVariableDeclaration(
+          ts.factory.createIdentifier(name),
+          undefined,
+          undefined,
+          ts.factory.createAsExpression(
+            ts.factory.createArrayLiteralExpression(
+              elements.map((e) => ts.factory.createStringLiteral(e))
+            ),
+            ts.factory.createTypeReferenceNode('const')
+          )
+        ),
+      ],
+      ts.NodeFlags.Const
+    )
+  )
+}

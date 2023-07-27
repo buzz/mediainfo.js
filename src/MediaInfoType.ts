@@ -1,5 +1,124 @@
 // DO NOT EDIT! File generated using `generate-types` script.
 
+export const INT_FIELDS = [
+  'AudioCount',
+  'Audio_Channels_Total',
+  'BitDepth_Detected',
+  'BitDepth',
+  'BitDepth_Stored',
+  'Channels',
+  'Channels_Original',
+  'Chapters_Pos_Begin',
+  'Chapters_Pos_End',
+  'Comic_Position_Total',
+  'Count',
+  'DataSize',
+  'ElementCount',
+  'EPG_Positions_Begin',
+  'EPG_Positions_End',
+  'FirstPacketOrder',
+  'FooterSize',
+  'Format_Settings_GMC',
+  'Format_Settings_RefFrames',
+  'FrameCount',
+  'FrameRate_Den',
+  'FrameRate_Num',
+  'GeneralCount',
+  'HeaderSize',
+  'Height_CleanAperture',
+  'Height',
+  'Height_Offset',
+  'Height_Original',
+  'ImageCount',
+  'Matrix_Channels',
+  'MenuCount',
+  'OtherCount',
+  'Part_Position',
+  'Part_Position_Total',
+  'Played_Count',
+  'Reel_Position',
+  'Reel_Position_Total',
+  'Resolution',
+  'Sampled_Height',
+  'Sampled_Width',
+  'SamplingCount',
+  'Season_Position',
+  'Season_Position_Total',
+  'Source_FrameCount',
+  'Source_SamplingCount',
+  'Source_StreamSize_Encoded',
+  'Source_StreamSize',
+  'Status',
+  'Stored_Height',
+  'Stored_Width',
+  'StreamCount',
+  'StreamKindID',
+  'StreamKindPos',
+  'StreamOrder',
+  'StreamSize_Demuxed',
+  'StreamSize_Encoded',
+  'StreamSize',
+  'TextCount',
+  'Track_Position',
+  'Track_Position_Total',
+  'Video0_Delay',
+  'VideoCount',
+  'Width_CleanAperture',
+  'Width',
+  'Width_Offset',
+  'Width_Original',
+] as const
+
+export const FLOAT_FIELDS = [
+  'BitRate_Encoded',
+  'BitRate_Maximum',
+  'BitRate_Minimum',
+  'BitRate',
+  'BitRate_Nominal',
+  'Bits-Pixel_Frame',
+  'BitsPixel_Frame',
+  'Compression_Ratio',
+  'Delay',
+  'Delay_Original',
+  'DisplayAspectRatio_CleanAperture',
+  'DisplayAspectRatio',
+  'DisplayAspectRatio_Original',
+  'Duration_End_Command',
+  'Duration_End',
+  'Duration_FirstFrame',
+  'Duration_LastFrame',
+  'Duration',
+  'Duration_Start2End',
+  'Duration_Start_Command',
+  'Duration_Start',
+  'Events_MinDuration',
+  'FrameRate_Maximum',
+  'FrameRate_Minimum',
+  'FrameRate',
+  'FrameRate_Nominal',
+  'FrameRate_Original_Den',
+  'FrameRate_Original',
+  'FrameRate_Original_Num',
+  'FrameRate_Real',
+  'Interleave_Duration',
+  'Interleave_Preload',
+  'Interleave_VideoFrames',
+  'OverallBitRate_Maximum',
+  'OverallBitRate_Minimum',
+  'OverallBitRate',
+  'OverallBitRate_Nominal',
+  'PixelAspectRatio_CleanAperture',
+  'PixelAspectRatio',
+  'PixelAspectRatio_Original',
+  'SamplesPerFrame',
+  'SamplingRate',
+  'Source_Duration_FirstFrame',
+  'Source_Duration_LastFrame',
+  'Source_Duration',
+  'TimeStamp_FirstFrame',
+  'Video_Delay',
+] as const
+
 export interface CreationType {
   readonly version: string
   readonly url?: string
@@ -14,7 +133,7 @@ export interface TrackType {
   /** Documents the type of encoded media with the track, ie: General, Video, Audio, Text, Image, etc. */
   readonly '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Chapters' | 'Menu'
   /** If there is more than one track of the same type (i.e. four audio tracks) this attribute will number them according to storage order within the bitstream. */
-  readonly '@typeorder': string
+  readonly '@typeorder'?: string
   readonly Accompaniment?: string
   /** This element describes Active Format Description (AFD) codes as described in the DVB standard TS 101 154. */
   readonly ActiveFormatDescription?: string
@@ -44,6 +163,7 @@ export interface TrackType {
   readonly AssistantDirector?: string
   readonly Audio_Codec_List?: string
   readonly AudioCount?: number
+  readonly Audio_Channels_Total?: number
   readonly Audio_Format_List?: string
   readonly Audio_Format_WithHint_List?: string
   readonly Audio_Language_List?: string
@@ -572,6 +692,9 @@ export interface TrackType {
   readonly Rating?: string
   readonly Recorded_Date?: string
   readonly Recorded_Location?: string
+  readonly Reel?: string
+  readonly Reel_Position?: number
+  readonly Reel_Position_Total?: number
   readonly Released_Date?: string
   readonly RemixedBy?: string
   readonly ReplayGain_Gain?: string
@@ -780,5 +903,4 @@ export interface MediaInfoType {
   readonly creatingApplication?: CreationType
   readonly creatingLibrary?: CreationType
   readonly media?: MediaType
-  readonly track?: TrackType
 }
