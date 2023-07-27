@@ -80,23 +80,13 @@ function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
     print: noopPrint,
     printErr: noopPrint,
 
-    locateFile: locateFile
-      ? locateFile
-      : (path: string, prefix: string) => {
-          console.log(`path=${path} prefix=${prefix} return=${prefix}../${path}`)
-          return `${prefix}../${path}`
-        },
-
+    locateFile: locateFile ? locateFile : (path: string, prefix: string) => `${prefix}../${path}`,
     onAbort: (err: Error) => {
       if (errCallback) {
         errCallback(err)
       }
     },
   }
-
-  mediaInfoModuleFactoryOpts.locateFile = locateFile
-    ? locateFile
-    : (path: string, prefix: string) => `${prefix}../${path}`
 
   // Fetch and load WASM module
   mediaInfoModuleFactory(mediaInfoModuleFactoryOpts)

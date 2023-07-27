@@ -10,8 +10,7 @@ import { format, spawn } from '../utils'
 
 const moduleFilepath = join(BUILD_DIR, 'MediaInfoModule.js')
 
-function makeArgs(environment: 'web' | 'node', es6: boolean) {
-  const es6Val = es6 ? '1' : '0'
+function makeArgs(environment: 'web' | 'node', es6: boolean, es6ImportMeta: boolean) {
   return [
     ...CXXFLAGS.split(' '),
     ...MediaInfoLib_CXXFLAGS.split(' '),
@@ -22,7 +21,7 @@ function makeArgs(environment: 'web' | 'node', es6: boolean) {
     '-s',
     `ENVIRONMENT=${environment}`,
     '-s',
-    `EXPORT_ES6=${es6Val}`,
+    `EXPORT_ES6=${es6 ? '1' : '0'}`,
     '-s',
     'LEGACY_VM_SUPPORT=0',
     '-s',
@@ -30,7 +29,7 @@ function makeArgs(environment: 'web' | 'node', es6: boolean) {
     '-s',
     'NO_FILESYSTEM=1',
     '-s',
-    `USE_ES6_IMPORT_META=${es6Val}`,
+    `USE_ES6_IMPORT_META=${es6ImportMeta ? '1' : '0'}`,
     '-lembind',
     'MediaInfoModule.o',
     'vendor/MediaInfoLib/Project/GNU/Library/.libs/libmediainfo.a',
@@ -65,7 +64,7 @@ compileMediaInfoModule.description = 'Compile MediaInfoModule'
 
 // MediaInfoModule.js (Node CJS)
 async function buildNodeCjs() {
-  await spawn('emcc', makeArgs('node', false), BUILD_DIR)
+  await spawn('emcc', makeArgs('node', false, false), BUILD_DIR)
   await format(moduleFilepath, join(BUILD_DIR, 'MediaInfoModule.cjs.js'))
 }
 
@@ -74,7 +73,7 @@ buildNodeCjs.description = 'Build WASM (Node CJS)'
 
 // MediaInfoModule.js (Node ESM)
 async function buildNodeEsm() {
-  await spawn('emcc', makeArgs('node', true), BUILD_DIR)
+  await spawn('emcc', makeArgs('node', true, true), BUILD_DIR)
   await format(moduleFilepath, join(BUILD_DIR, 'MediaInfoModule.esm.js'))
 }
 
@@ -83,7 +82,7 @@ buildNodeEsm.description = 'Build WASM (Node ESM)'
 
 // MediaInfoModule.js (Browser)
 async function buildBrowser() {
-  await spawn('emcc', makeArgs('web', true), BUILD_DIR)
+  await spawn('emcc', makeArgs('web', true, false), BUILD_DIR)
   await format(moduleFilepath, join(BUILD_DIR, 'MediaInfoModule.browser.js'))
 }
 
