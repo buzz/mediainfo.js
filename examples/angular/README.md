@@ -1,6 +1,6 @@
 # mediainfo.js Angular example
 
-## Step #1: WASM module
+## WASM module
 
 Add `MediaInfoModule.wasm` to the `assets` section in the options of the build
 target in your `angular.json`.
@@ -13,17 +13,6 @@ target in your `angular.json`.
     "output": ""
   }
 ]
-```
-
-## Step #2: Ignore `fs` and `path`
-
-Add this section to your `package.json`.
-
-```json
-"browser": {
-  "fs": false,
-  "path": false
-},
 ```
 
 ## Credits

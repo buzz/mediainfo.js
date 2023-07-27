@@ -3,27 +3,24 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --live-reload --host 0.0.0.0 --poll=2000",
+    "dev": "ng serve --live-reload --host 0.0.0.0 --poll=2000",
     "build": "ng build"
   },
+  "type": "module",
   "private": true,
-  "browser": {
-    "fs": false,
-    "path": false
-  },
   "dependencies": {
-    "@angular/common": "~10.0.5",
-    "@angular/compiler": "~10.0.5",
-    "@angular/core": "~10.0.5",
-    "@angular/platform-browser": "~10.0.5",
-    "@angular/platform-browser-dynamic": "~10.0.5",
-    "mediainfo.js": "^0.1.2",
-    "zone.js": "~0.10.3"
+    "@angular/common": "~16.1.7",
+    "@angular/compiler": "~16.1.7",
+    "@angular/core": "~16.1.7",
+    "@angular/platform-browser": "~16.1.7",
+    "@angular/platform-browser-dynamic": "~16.1.7",
+    "mediainfo.js": "file:../..",
+    "zone.js": "~0.13.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1000.4",
-    "@angular/cli": "~10.0.4",
-    "@angular/compiler-cli": "~10.0.5",
-    "typescript": "~3.9.7"
+    "@angular-devkit/build-angular": "~16.1.6",
+    "@angular/cli": "~16.1.6",
+    "@angular/compiler-cli": "~16.1.7",
+    "typescript": "~5.1.6"
   }
 }

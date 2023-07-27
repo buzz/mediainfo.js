@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import MediaInfoFactory from 'mediainfo.js'
-import { MediaInfo, ReadChunkFunc, Result } from 'mediainfo.js/dist/types'
+import type { MediaInfo, ReadChunkFunc } from 'mediainfo.js'
 
 @Component({
   selector: 'app-root',
@@ -9,8 +9,8 @@ import { MediaInfo, ReadChunkFunc, Result } from 'mediainfo.js/dist/types'
 export class AppComponent {
   videoInfo = 'No file'
 
-  getMetadata(mediainfo: MediaInfo, fileinput: HTMLInputElement): Promise<string> {
-    return new Promise<string>((resolve) => {
+  getMetadata(mediainfo: MediaInfo<'text'>, fileinput: HTMLInputElement): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
       const file = fileinput.files[0]
       if (!file) {
         return resolve("Can't get media information")
@@ -28,18 +28,33 @@ export class AppComponent {
           }
           reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize))
         })
-      const p = <Promise<Result>>mediainfo.analyzeData(getSize, readChunk)
-      p.then((result: string) => resolve(result)).catch(() =>
-        resolve("Can't get media information")
-      )
+
+      mediainfo
+        .analyzeData(getSize, readChunk)
+        .then((result) => {
+          resolve(result)
+        })
+        .catch(() => {
+          reject(new Error("Can't get media information"))
+        })
     })
   }
 
-  onChangeFile(input: HTMLInputElement): void {
-    MediaInfoFactory({ format: 'text' }, (mediainfo: MediaInfo) => {
-      this.getMetadata(mediainfo, input).then((info) => {
-        this.videoInfo = info.replace(/(?:\r\n|\r|\n)/g, '<br>')
+  onChangeFile(input: HTMLInputElement) {
+    MediaInfoFactory({ format: 'text' })
+      .then((mi) => {
+        this.getMetadata(mi, input)
+          .then((info) => {
+            this.videoInfo = info.replace(/(?:\r\n|\r|\n)/g, '<br>')
+            return undefined
+          })
+          .catch((err) => {
+            console.error('Failed to process file:', err)
+          })
+        return undefined
       })
-    })
+      .catch((err) => {
+        console.error('Failed to instantiate MediaInfo:', err)
+      })
   }
 }
