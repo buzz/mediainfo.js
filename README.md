@@ -24,18 +24,21 @@ use a JavaScript bundler like webpack.
 
 Be aware that mediainfo.js is a WebAssembly port of MediaInfoLib. Thus it
 depends on `MediaInfoModule.wasm` which weighs around **4.2 MiB**. The WASM
-module is loaded and instantiated automatically. By default it uses
-`location.href` as the base for constructing the module file URL.
+module is loaded and instantiated automatically. By default its load path
+is determined from the script location.
 
-E.g. if the webpage is served from `https://example.com/`, the WASM module file
-is loaded from `https://example.com/MediaInfoModule.wasm`. You can freely
-override this behavior using [Emscripten Module
-`locateFile`](https://emscripten.org/docs/api_reference/module.html#Module.locateFile).
+E.g. if the script is loaded from `https://example.com/dist/umd/index.js`, the
+WASM module file is loaded from `https://example.com/dist/MediaInfoModule.wasm`.
+This setup works out-of-the-box for the UMD build.
 
-For the CDN version have a look at this
-[example](https://github.com/buzz/mediainfo.js/blob/0b18458780338eeefa829be48781cfc017503ee3/examples/browser-simple/example.js#L37).
+You can override the location by specifying a custom
+[`locateFile`](https://emscripten.org/docs/api_reference/module.html#Module.locateFile)
+function to `MediaInfoFactory`.
+
+For the CDN/UMD version have a look at this
+[example](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-umd).
 If you're using a bundler there are examples for
-[React/webpack](https://github.com/buzz/mediainfo.js/blob/gh-pages-src/webpack.config.js#L42)
+[React/webpack](https://github.com/buzz/mediainfo.js/tree/master/examples/webpack)
 and [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
 on how to achieve this.
 
@@ -63,9 +66,10 @@ require('mediainfo.js')().then((mediainfo) => {
 
 ### Examples
 
-- [Simple browser](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-simple)
+- [Browser UMD/CDN](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-umd)
 - [CDN (CodePen)](https://codepen.io/buzzone/pen/eYNjJrx)
-- [React/webpack](https://github.com/buzz/mediainfo.js/tree/gh-pages-src)
+- [Vite/React](https://github.com/buzz/mediainfo.js/tree/master/examples/vite-react)
+- [Webpack/React](https://github.com/buzz/mediainfo.js/tree/master/examples/webpack-react)
 - [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
 - [Node.js](https://github.com/buzz/mediainfo.js/blob/master/src/cli.ts)
 
@@ -130,19 +134,18 @@ $ source ./emsdk_env.sh
 In the project root of mediainfo.js run the following to build.
 
 ```sh
-$ npm install
-$ npm run build
+$ pnpm install
+$ pnpm build
 ```
 
-Find the resulting files `mediainfo.js`, `mediainfo.min.js` and `mediainfo.wasm`
-in the `dist` directory.
+Find the resulting files in the `dist` directory.
 
 ## Tests
 
 You can run a test suite against the dist build.
 
 ```sh
-$ npm run test
+$ pnpm test
 ```
 
 ## License
