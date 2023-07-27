@@ -13,15 +13,11 @@ assignees: ''
   For example, "I'm always frustrated when..."
 -->
 
-(Write your answer here.)
-
 ### Describe the solution you'd like
 
 <!--
   Provide a clear and concise description of what you want to happen.
 -->
-
-(Describe your proposed solution here.)
 
 ### Additional context
 
@@ -30,12 +26,8 @@ assignees: ''
   You might want to link to related issues here, if you haven't already.
 -->
 
-(Write your answer here.)
-
 ### Contribution
 
 <!--
   Are you able to create a PR for this?
 -->
-
-(Write your answer here.)
