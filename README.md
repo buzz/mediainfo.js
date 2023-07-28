@@ -36,10 +36,10 @@ You can override the location by specifying a custom
 function to `MediaInfoFactory`.
 
 For the CDN/UMD version have a look at this
-[example](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-umd).
+[example](https://github.com/buzz/mediainfo.js/tree/main/examples/browser-umd).
 If you're using a bundler there are examples for
-[React/webpack](https://github.com/buzz/mediainfo.js/tree/master/examples/webpack)
-and [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
+[React/webpack](https://github.com/buzz/mediainfo.js/tree/main/examples/webpack)
+and [Angular](https://github.com/buzz/mediainfo.js/tree/main/examples/angular)
 on how to achieve this.
 
 ### Node.js
@@ -66,12 +66,12 @@ require('mediainfo.js')().then((mediainfo) => {
 
 ### Examples
 
-- [Browser UMD/CDN](https://github.com/buzz/mediainfo.js/tree/master/examples/browser-umd)
+- [Browser UMD/CDN](https://github.com/buzz/mediainfo.js/tree/main/examples/browser-umd)
 - [CDN (CodePen)](https://codepen.io/buzzone/pen/eYNjJrx)
-- [Vite/React](https://github.com/buzz/mediainfo.js/tree/master/examples/vite-react)
-- [Webpack/React](https://github.com/buzz/mediainfo.js/tree/master/examples/webpack-react)
-- [Angular](https://github.com/buzz/mediainfo.js/tree/master/examples/angular)
-- [Node.js](https://github.com/buzz/mediainfo.js/blob/master/src/cli.ts)
+- [Vite/React](https://github.com/buzz/mediainfo.js/tree/main/examples/vite-react)
+- [Webpack/React](https://github.com/buzz/mediainfo.js/tree/main/examples/webpack-react)
+- [Angular](https://github.com/buzz/mediainfo.js/tree/main/examples/angular)
+- [Node.js](https://github.com/buzz/mediainfo.js/blob/main/src/cli.ts)
 
 ### API
 
