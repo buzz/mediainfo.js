@@ -27,6 +27,7 @@
     "build": "gulp",
     "clean": "rimraf dist build",
     "lint": "eslint .",
+    "release": "commit-and-tag-version",
     "test": "jest",
     "type-check": "tsc --noEmit --project ."
   },
@@ -92,6 +93,7 @@
     "@typescript-eslint/parser": "^6.2.0",
     "babel-jest": "^29.6.1",
     "babel-plugin-add-import-extension": "^1.6.0",
+    "commit-and-tag-version": "^11.2.2",
     "decompress": "^4.2.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
