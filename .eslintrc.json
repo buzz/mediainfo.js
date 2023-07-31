@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "node": true,
     "es6": true
@@ -9,7 +10,6 @@
   },
   "extends": ["plugin:import/recommended", "plugin:prettier/recommended"],
   "plugins": ["prettier", "import"],
-  "root": true,
   "rules": {
     // Custom import order
     "import/order": [

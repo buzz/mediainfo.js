@@ -1,5 +1,6 @@
 import React, { type ChangeEvent, useState, useEffect, useRef } from 'react'
-import MediaInfoFactory, { ReadChunkFunc, type MediaInfo } from 'mediainfo.js'
+import MediaInfoFactory from 'mediainfo.js'
+import type { ReadChunkFunc, MediaInfo } from 'mediainfo.js'
 
 function getMetadata(mi: MediaInfo<'text'>, file: File) {
   const getSize = () => file.size
