@@ -33,7 +33,7 @@ const analyze = async ({ coverData, file, format, full }: ReturnType<typeof pars
   try {
     fileHandle = await fsPromises.open(file, 'r')
     fileSize = (await fileHandle.stat()).size
-    const mediainfo = await MediaInfoFactory({ format, coverData, full })
+    mediainfo = await MediaInfoFactory({ format, coverData, full })
     if (mediainfo === undefined) {
       throw new Error('Failed to initialize MediaInfo')
     }
@@ -68,9 +68,9 @@ function parseArgs() {
     .positional('file', { describe: 'File to analyze', type: 'string' })
     .help('h')
     .alias('h', 'help')
-    .fail(function (msg: string, err: Error, yargs) {
+    .fail((msg: string, err: Error, argv) => {
       if (msg) {
-        console.error(yargs.help())
+        console.error(argv.help())
         console.error(msg)
       }
       if (err) {

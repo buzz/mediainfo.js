@@ -30,6 +30,8 @@
     // File extensions
     "import/extensions": ["error", "never"],
 
+    "no-shadow": "warn",
+
     "prettier/prettier": "error"
   },
   "overrides": [
