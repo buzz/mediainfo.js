@@ -1,17 +1,10 @@
 import { access, mkdir } from 'fs/promises'
 import { basename, join } from 'path'
-import url from 'url'
 
 import decompress from 'decompress'
 import gulp from 'gulp'
 
-import {
-  LIBMEDIAINFO_VERSION,
-  LIBZEN_VERSION,
-  VENDOR_DIR,
-  ZLIB_DIR,
-  ZLIB_VERSION,
-} from './constants'
+import { LIBMEDIAINFO_VERSION, LIBZEN_VERSION, VENDOR_DIR } from './constants'
 import { downloadFile } from './utils'
 
 const urls = {
@@ -23,17 +16,13 @@ const urls = {
     url: `https://mediaarea.net/download/source/libzen/${LIBZEN_VERSION}/libzen_${LIBZEN_VERSION}.tar.bz2`,
     dir: VENDOR_DIR,
   },
-  zlib: {
-    url: `https://zlib.net/zlib-${ZLIB_VERSION}.tar.gz`,
-    dir: ZLIB_DIR,
-  },
 }
 
 const task = gulp.parallel(
   Object.entries(urls).map(([name, { url: dlUrl, dir }]) => {
     const dlTask = async () => {
       await mkdir(dir, { recursive: true })
-      const { pathname } = url.parse(dlUrl)
+      const { pathname } = new URL(dlUrl)
       if (pathname === null) throw new Error('URL pathname is null')
       const filename = basename(pathname)
       const filepath = join(VENDOR_DIR, filename)

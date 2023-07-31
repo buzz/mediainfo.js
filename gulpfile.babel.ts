@@ -7,8 +7,7 @@ import defaultTask, {
   rollup,
   wasm,
   zenlib,
-  zlib,
 } from './gulp/index'
 
-export { babel, declaration, download, generateTypes, mediainfolib, rollup, wasm, zenlib, zlib }
+export { babel, declaration, download, generateTypes, mediainfolib, rollup, wasm, zenlib }
 export default defaultTask

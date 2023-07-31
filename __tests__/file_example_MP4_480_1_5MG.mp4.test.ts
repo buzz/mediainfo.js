@@ -72,7 +72,7 @@ describe('file_example_MP4_640_3MG.mp4', () => {
     expect(track2.ID).toBe('2')
     expect(track2.Format).toBe('AAC')
     expect(track2.Format_AdditionalFeatures).toBe('LC')
-    expect(track2.CodecID).toBe('mp4a-40-2')
+    expect(track2.CodecID).toBe('2 / 40 / mp4a-40-2')
     expect(track2.Duration).toBeCloseTo(53.76)
     expect(track2.BitRate_Mode).toBe('CBR')
     expect(track2.BitRate).toBeNear(128041, 2)

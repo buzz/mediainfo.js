@@ -34,7 +34,7 @@ use a JavaScript bundler like webpack.
 
 Be aware that mediainfo.js is a [WebAssembly](https://webassembly.org/) port of
 MediaInfoLib. Thus it depends on `MediaInfoModule.wasm` which weighs around
-**4.2 MiB**. The WASM module is loaded and instantiated automatically. By
+**3.5 MiB**. The WASM module is loaded and instantiated automatically. By
 default its load path is determined from the script location.
 
 E.g. if the script is loaded from `https://example.com/dist/umd/index.js`, the
