@@ -51,9 +51,10 @@ Explain what actually happened when performing the steps above. Include any erro
 Include information on your environment.
 -->
 
-- mediainfo.js version: [e.g., 1.2.3]
-- Operating System: [e.g., Windows 10, macOS Big Sur]
-- Browser (if applicable): [e.g., Chrome 90, Firefox 87]
+- mediainfo.js version: [e.g. 1.2.3]
+- Operating System: [e.g. Windows 10, macOS Big Sur]
+- Browser (if applicable): [e.g. Chrome 90, Firefox 87]
+- Node.js (if applicable): [e.g. 18.16.0]
 
 ### Additional Information
 
