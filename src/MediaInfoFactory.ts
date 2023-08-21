@@ -26,6 +26,27 @@ type FactoryCallback<TFormat extends FormatType> = (mediainfo: MediaInfo<TFormat
 type ErrorCallback = (error: unknown) => void
 
 /**
+ * This method will be called to look up the path for the `MediaInfoModule.wasm`
+ * file. It handles the special case of loading from a CDN that serves
+ * mediainfo.js from the root (e.g. `https://unpkg.com/mediainfo.js`).
+ *
+ * @see https://emscripten.org/docs/api_reference/module.html#Module.locateFile
+ *
+ * @param path File name
+ * @param prefix Filepath prefix
+ * @returns Full path to file
+ */
+function defaultLocateFile(path: string, prefix: string) {
+  try {
+    const url = new URL(prefix)
+    if (url.pathname === '/') {
+      return `${prefix}mediainfo.js/dist/${path}`
+    }
+  } catch {}
+  return `${prefix}../${path}`
+}
+
+/**
  * Factory function for {@link MediaInfo}.
  *
  * @param options User options
@@ -80,7 +101,7 @@ function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
     print: noopPrint,
     printErr: noopPrint,
 
-    locateFile: locateFile ? locateFile : (path: string, prefix: string) => `${prefix}../${path}`,
+    locateFile: locateFile ? locateFile : defaultLocateFile,
     onAbort: (err: Error) => {
       if (errCallback) {
         errCallback(err)

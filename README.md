@@ -32,20 +32,15 @@ use a JavaScript bundler like webpack.
 
 #### WASM file loading
 
-Be aware that mediainfo.js is a [WebAssembly](https://webassembly.org/) port of
-MediaInfoLib. Thus it depends on `MediaInfoModule.wasm` which weighs around
-**3.5 MiB**. The WASM module is loaded and instantiated automatically. By
-default its load path is determined from the script location.
+Be aware that mediainfo.js needs to load the `MediaInfoModule.wasm` file (around
+**3.5 MiB**). The WASM module is loaded and instantiated automatically. By
+default its load path is determined from the script location. This works
+out-of-the-box for the UMD and Node.js version.
 
-E.g. if the script is loaded from `https://example.com/dist/umd/index.js`, the
-WASM module file is loaded from `https://example.com/dist/MediaInfoModule.wasm`.
-This setup works out-of-the-box for the UMD build.
+❗️ **If using a bundler, you need to ensure the module loader can fetch the WASM
+file by configuring your bundler/web server accordingly** ([examples](#examples)).
 
-❗️ *If you're bundling your project, you need to ensure the module loader can fetch
-the WASM binary by configuring your bundler/web server accordingly* (see the
-[examples section](#examples)).
-
-You can also override the WASM binary location by specifying a custom
+Note that you can override the WASM file location by specifying a custom
 [`locateFile`](https://emscripten.org/docs/api_reference/module.html#Module.locateFile)
 function to `MediaInfoFactory`.
 
