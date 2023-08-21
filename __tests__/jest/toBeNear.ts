@@ -11,7 +11,7 @@ const passMessage = (received: number, value: number, offset: number) => () =>
   `Interval: [${printExpected(value - offset)}, ${printExpected(value + offset)}]\n` +
   `Received: ${printReceived(received)}`
 
-const failMessage = (received, value, offset) => () =>
+const failMessage = (received: number, value: number, offset: number) => () =>
   matcherHint('.toBeNear', 'received', 'value', { secondArgument: 'offset' }) +
   '\n\n' +
   `Value:    ${printExpected(value)}\n` +
@@ -20,7 +20,7 @@ const failMessage = (received, value, offset) => () =>
   `Received: ${printReceived(received)}`
 
 expect.extend({
-  toBeNear: (received, value, offset) => {
+  toBeNear: (received: number, value: number, offset: number) => {
     const pass = Math.abs(received - value) <= offset
     if (pass) {
       return { pass: true, message: passMessage(received, value, offset) }
