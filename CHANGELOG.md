@@ -2,7 +2,19 @@
 
 All notable changes to this project will be documented in this file. Please ensure that all commits follow the standard [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format.
 
-**Changes prior to version 1.0.0 are not documented in the changelog.**
+**Changes prior to version 0.2.0 are not documented in the changelog.**
+
+## [0.2.1](https://github.com/buzz/mediainfo.js/compare/v0.2.0...v0.2.1) (2023-08-21)
+
+
+### Features
+
+* **umd:** add custom `locateFile` code that handles the CDN version (closes [#142](https://github.com/buzz/mediainfo.js/issues/142)) ([c223eb7](https://github.com/buzz/mediainfo.js/commit/c223eb7fb16355e2ae75febb183fd7107df1d77c))
+
+
+### Bug Fixes
+
+* **examples:** fix scope error in cli.ts ([cd044ff](https://github.com/buzz/mediainfo.js/commit/cd044ff82d46092eb765f2fdab7d1f8d47e824ba)), closes [/github.com/buzz/mediainfo.js/issues/136#issuecomment-1657697043](https://github.com/buzz//github.com/buzz/mediainfo.js/issues/136/issues/issuecomment-1657697043)
 
 ## [0.2.0](https://github.com/buzz/mediainfo.js/compare/v0.1.8...v0.2.0) (2023-07-28)
 
