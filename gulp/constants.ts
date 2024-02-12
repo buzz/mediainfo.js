@@ -7,7 +7,7 @@ const DIST_DIR = join(PROJECT_DIR, 'dist')
 const BUILD_DIR = join(PROJECT_DIR, 'build')
 const VENDOR_DIR = join(BUILD_DIR, 'vendor')
 
-const LIBMEDIAINFO_VERSION = '23.07'
+const LIBMEDIAINFO_VERSION = '24.01'
 const LIBZEN_VERSION = '0.4.41'
 
 const CFLAGS = '-Oz'
