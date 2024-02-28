@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. Please ensu
 
 **Changes prior to version 0.2.0 are not documented in the changelog.**
 
+## [0.2.2](https://github.com/buzz/mediainfo.js/compare/v0.2.1...v0.2.2) (2024-02-28)
+
+
+### Upgrades
+
+* **deps:** upgrade libmediainfo to v24.01 ([63422ca](https://github.com/buzz/mediainfo.js/commit/63422ca1fef1295c0d4649b19f493ce1af4dc987))
+
 ## [0.2.1](https://github.com/buzz/mediainfo.js/compare/v0.2.0...v0.2.1) (2023-08-21)
 
 
