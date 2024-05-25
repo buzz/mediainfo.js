@@ -30,7 +30,7 @@ describe('file_example_MP4_640_3MG.mp4', () => {
     expect(track0.IsStreamable).toBe('No')
 
     expect(track1['@type']).toBe('Video')
-    expect(track1.StreamOrder).toBe(0)
+    expect(track1.StreamOrder).toBe('0')
     expect(track1.ID).toBe('1')
     expect(track1.Format).toBe('AVC')
     expect(track1.Format_Profile).toBe('High')
@@ -68,7 +68,7 @@ describe('file_example_MP4_640_3MG.mp4', () => {
     expect(track1.extra.CodecConfigurationBox).toBe('avcC')
 
     expect(track2['@type']).toBe('Audio')
-    expect(track2.StreamOrder).toBe(1)
+    expect(track2.StreamOrder).toBe('1')
     expect(track2.ID).toBe('2')
     expect(track2.Format).toBe('AAC')
     expect(track2.Format_AdditionalFeatures).toBe('LC')
