@@ -1,4 +1,5 @@
-import { type Element, parseXmlString } from 'libxmljs2'
+import { DOMParser } from '@xmldom/xmldom'
+import xpath from 'xpath'
 
 import MediaInfoFactory from '..'
 import type { FormatType, MediaInfo } from '..'
@@ -77,14 +78,17 @@ it('should return XML string', async () => {
   const mi = await MediaInfoFactory({ format: 'XML' })
   const result = await analyzeFakeData(mi)
   expect(result).toEqual(expect.any(String))
-  const doc = parseXmlString(result)
 
-  const ns = { mi: 'https://mediaarea.net/mediainfo' }
-  const elem = doc.get<Element>('mi:media/mi:track/mi:FileSize', ns)
-  if (elem === null) {
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(result, 'text/xml')
+  const select = xpath.useNamespaces({ mi: 'https://mediaarea.net/mediainfo' })
+
+  const elems = select('//mi:media/mi:track/mi:FileSize/text()', doc)
+
+  if (!xpath.isArrayOfNodes(elems) || !xpath.isTextNode(elems[0])) {
     throw new Error('FileSize not found')
   }
 
-  expect(elem.text()).toBe('20')
+  expect(elems[0].nodeValue?.trim()).toBe('20')
   mi.close()
 })
