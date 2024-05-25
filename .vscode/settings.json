@@ -1,0 +1,12 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.experimental.useFlatConfig": true,
+  "search.exclude": {
+    "**/.husky": true,
+    "**/build": true,
+    "**/dist": true,
+    "**/docs": true,
+    "**/node_modules": true
+  },
+  "editor.rulers": [100]
+}
