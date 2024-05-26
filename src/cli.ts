@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
-import { promises as fsPromises } from 'fs'
+import { promises as fsPromises } from 'node:fs'
 
 import { hideBin } from 'yargs/helpers'
 import yargs from 'yargs/yargs'
 
-import type { ReadChunkFunc } from './MediaInfo'
-import type MediaInfo from './MediaInfo'
-import { FORMAT_CHOICES } from './MediaInfo'
-import MediaInfoFactory from './MediaInfoFactory'
+import { unknownToError } from './error.js'
+import { FORMAT_CHOICES } from './MediaInfo.js'
+import MediaInfoFactory from './MediaInfoFactory.js'
+import type { ReadChunkFunc } from './MediaInfo.js'
+import type MediaInfo from './MediaInfo.js'
 
 const analyze = async ({ coverData, file, format, full }: ReturnType<typeof parseArgs>) => {
   let fileHandle: fsPromises.FileHandle | undefined
@@ -16,15 +17,17 @@ const analyze = async ({ coverData, file, format, full }: ReturnType<typeof pars
   let mediainfo: MediaInfo<typeof format> | undefined
 
   if (!file) {
-    throw TypeError('No file received!')
+    throw new TypeError('No file received!')
   }
 
   if (coverData && !['JSON', 'XML'].includes(format)) {
-    throw TypeError('For cover data you need to choose JSON or XML as output format!')
+    throw new TypeError('For cover data you need to choose JSON or XML as output format!')
   }
 
   const readChunk: ReadChunkFunc = async (size, offset) => {
-    if (fileHandle === undefined) throw new Error('File unavailable')
+    if (fileHandle === undefined) {
+      throw new Error('File unavailable')
+    }
     const buffer = new Uint8Array(size)
     await fileHandle.read(buffer, 0, size, offset)
     return buffer
@@ -32,10 +35,12 @@ const analyze = async ({ coverData, file, format, full }: ReturnType<typeof pars
 
   try {
     fileHandle = await fsPromises.open(file, 'r')
-    fileSize = (await fileHandle.stat()).size
-    mediainfo = await MediaInfoFactory({ format, coverData, full })
-    if (mediainfo === undefined) {
-      throw new Error('Failed to initialize MediaInfo')
+    const fileStat = await fileHandle.stat()
+    fileSize = fileStat.size
+    try {
+      mediainfo = await MediaInfoFactory({ format, coverData, full })
+    } catch (error: unknown) {
+      throw unknownToError(error)
     }
     console.log(await mediainfo.analyzeData(() => fileSize, readChunk))
   } finally {
@@ -68,17 +73,19 @@ function parseArgs() {
     .positional('file', { describe: 'File to analyze', type: 'string' })
     .help('h')
     .alias('h', 'help')
-    .fail((msg: string, err: Error, argv) => {
-      if (msg) {
+    .fail((message: string, error: Error, argv) => {
+      if (message) {
         console.error(argv.help())
-        console.error(msg)
+        console.error(message)
       }
-      if (err) {
-        console.error(err.message)
-      }
+      console.error(error.message)
       process.exit(1)
     })
     .parseSync()
 }
 
-analyze(parseArgs()).catch(console.error)
+try {
+  await analyze(parseArgs())
+} catch (error: unknown) {
+  console.error(unknownToError(error).message)
+}

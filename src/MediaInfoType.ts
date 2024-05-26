@@ -1,6 +1,8 @@
 // DO NOT EDIT! File generated using `generate-types` script.
 
 export const INT_FIELDS = [
+  'Active_Height',
+  'Active_Width',
   'AudioCount',
   'Audio_Channels_Total',
   'BitDepth_Detected',
@@ -20,6 +22,7 @@ export const INT_FIELDS = [
   'FooterSize',
   'Format_Settings_GMC',
   'Format_Settings_RefFrames',
+  'Format_Settings_SliceCount',
   'FrameCount',
   'FrameRate_Den',
   'FrameRate_Num',
@@ -54,7 +57,6 @@ export const INT_FIELDS = [
   'StreamCount',
   'StreamKindID',
   'StreamKindPos',
-  'StreamOrder',
   'StreamSize_Demuxed',
   'StreamSize_Encoded',
   'StreamSize',
@@ -70,6 +72,7 @@ export const INT_FIELDS = [
 ] as const
 
 export const FLOAT_FIELDS = [
+  'Active_DisplayAspectRatio',
   'BitRate_Encoded',
   'BitRate_Maximum',
   'BitRate_Minimum',
@@ -131,7 +134,7 @@ export type ExtraType = Record<string, unknown>
 
 export interface TrackType {
   /** Documents the type of encoded media with the track, ie: General, Video, Audio, Text, Image, etc. */
-  readonly '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Chapters' | 'Menu'
+  readonly '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Chapters' | 'Menu' | 'Other'
   /** If there is more than one track of the same type (i.e. four audio tracks) this attribute will number them according to storage order within the bitstream. */
   readonly '@typeorder'?: string
   readonly Accompaniment?: string
@@ -148,6 +151,9 @@ export interface TrackType {
   readonly Album_ReplayGain_Gain?: string
   /** This element describes peak loudness levels when measuring a signal on a per-album basis. */
   readonly Album_ReplayGain_Peak?: string
+  readonly Active_DisplayAspectRatio?: number
+  readonly Active_Height?: number
+  readonly Active_Width?: number
   readonly ActiveFormatDescription_MuxingMode?: string
   readonly ActiveFormatDescription_String?: string
   readonly Album_Performer_Url?: string
@@ -492,6 +498,8 @@ export interface TrackType {
   readonly Format_Settings_SBR?: string
   readonly Format_Settings_SBR_String?: string
   readonly Format_Settings_Sign?: string
+  readonly Format_Settings_SliceCount?: number
+  readonly Format_Settings_SliceCount_String?: string
   readonly Format_Settings_Wrapping?: string
   readonly Format_String?: string
   readonly Format_Tier?: string
@@ -785,7 +793,7 @@ export interface TrackType {
   readonly StreamKind?: string
   readonly StreamKindPos?: number
   readonly StreamKind_String?: string
-  readonly StreamOrder?: number
+  readonly StreamOrder?: string
   readonly StreamSize_Demuxed?: number
   readonly StreamSize_Demuxed_String1?: string
   readonly StreamSize_Demuxed_String2?: string
@@ -856,6 +864,7 @@ export interface TrackType {
   readonly transfer_characteristics_Original_Source?: string
   readonly transfer_characteristics_Source?: string
   readonly Type?: string
+  readonly UMID?: string
   readonly UniqueID?: string
   readonly UniqueID_String?: string
   readonly UniversalAdID_Registry?: string

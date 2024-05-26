@@ -1,5 +1,5 @@
-import MediaInfo, { DEFAULT_OPTIONS, type FormatType } from './MediaInfo'
-import mediaInfoModuleFactory, { type MediaInfoModule } from './MediaInfoModule'
+import MediaInfo, { DEFAULT_OPTIONS, type FormatType } from './MediaInfo.js'
+import mediaInfoModuleFactory, { type MediaInfoModule } from './MediaInfoModule.js'
 
 interface MediaInfoFactoryOptions<TFormat extends FormatType> {
   /** Output cover data as base64 */
@@ -15,7 +15,7 @@ interface MediaInfoFactoryOptions<TFormat extends FormatType> {
   full?: boolean
 
   /** Customize loading path for files */
-  locateFile?(this: void, url: string, scriptDirectory: string): string
+  locateFile?: EmscriptenModule['locateFile']
 }
 
 const noopPrint = () => {
@@ -42,7 +42,9 @@ function defaultLocateFile(path: string, prefix: string) {
     if (url.pathname === '/') {
       return `${prefix}mediainfo.js/dist/${path}`
     }
-  } catch {}
+  } catch {
+    // empty
+  }
   return `${prefix}../${path}`
 }
 
@@ -61,23 +63,12 @@ function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
  *
  * @param options User options
  * @param callback Function that is called once the module is created
- */
-function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
-  options: MediaInfoFactoryOptions<TFormat>,
-  callback: FactoryCallback<TFormat>
-): void
-
-/**
- * Factory function for {@link MediaInfoFactory}.
- *
- * @param options User options
- * @param callback Function that is called once the module is created
  * @param callback Error callback
  */
 function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options: MediaInfoFactoryOptions<TFormat>,
   callback: FactoryCallback<TFormat>,
-  errCallback: ErrorCallback
+  errCallback?: ErrorCallback
 ): void
 
 // TODO pass through all emscripten module options
@@ -85,9 +76,11 @@ function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
   options: MediaInfoFactoryOptions<TFormat> = {},
   callback?: FactoryCallback<TFormat>,
   errCallback?: ErrorCallback
-): Promise<MediaInfo<TFormat>> | void {
+): Promise<MediaInfo<TFormat>> | undefined {
   if (callback === undefined) {
-    return new Promise((resolve, reject) => MediaInfoFactory(options, resolve, reject))
+    return new Promise((resolve, reject) => {
+      MediaInfoFactory(options, resolve, reject)
+    })
   }
 
   const { locateFile, ...mergedOptions } = {
@@ -101,7 +94,7 @@ function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
     print: noopPrint,
     printErr: noopPrint,
 
-    locateFile: locateFile ? locateFile : defaultLocateFile,
+    locateFile: locateFile ?? defaultLocateFile,
     onAbort: (err: Error) => {
       if (errCallback) {
         errCallback(err)
@@ -111,9 +104,13 @@ function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
 
   // Fetch and load WASM module
   mediaInfoModuleFactory(mediaInfoModuleFactoryOpts)
-    .then((wasmModule) => callback(new MediaInfo<TFormat>(wasmModule, mergedOptions)))
-    .catch((err) => {
-      if (errCallback) errCallback(err)
+    .then((wasmModule) => {
+      callback(new MediaInfo<TFormat>(wasmModule, mergedOptions))
+    })
+    .catch((error: unknown) => {
+      if (errCallback) {
+        errCallback(error)
+      }
     })
 }
 

@@ -1,10 +1,13 @@
-import type { MediaInfoFactoryOptions } from './MediaInfoFactory'
+import { unknownToError } from './error.js'
+import { FLOAT_FIELDS, INT_FIELDS, type MediaInfoType, type TrackType } from './MediaInfoType.js'
+import type { MediaInfoFactoryOptions } from './MediaInfoFactory.js'
 import type {
   MediaInfoModule,
   MediaInfoWasmInterface,
   WasmConstructableFormatType,
-} from './MediaInfoModule'
-import { FLOAT_FIELDS, INT_FIELDS, type MediaInfoType, type TrackType } from './MediaInfoType'
+} from './MediaInfoModule.js'
+
+const MAX_UINT32_PLUS_ONE = 2 ** 32
 
 /** Format of the result type */
 type FormatType = 'object' | WasmConstructableFormatType
@@ -13,13 +16,9 @@ type MediaInfoOptions<TFormat extends FormatType> = Required<
   Omit<MediaInfoFactoryOptions<TFormat>, 'locateFile'>
 >
 
-interface GetSizeFunc {
-  (): Promise<number> | number
-}
+type GetSizeFunc = () => Promise<number> | number
 
-interface ReadChunkFunc {
-  (size: number, offset: number): Promise<Uint8Array> | Uint8Array
-}
+type ReadChunkFunc = (size: number, offset: number) => Promise<Uint8Array> | Uint8Array
 
 interface ResultMap {
   object: MediaInfoType
@@ -95,43 +94,56 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     getSize: GetSizeFunc,
     readChunk: ReadChunkFunc,
     callback?: ResultCallback<TFormat>
-  ): Promise<ResultMap[TFormat] | null> | void {
+  ): Promise<ResultMap[TFormat] | null> | undefined {
     // Support promise signature
     if (callback === undefined) {
       return new Promise((resolve, reject) => {
-        const resultCb: ResultCallback<TFormat> = (result, err) =>
-          err ? reject(err) : resolve(result)
+        const resultCb: ResultCallback<TFormat> = (result, error) => {
+          if (error || !result) {
+            reject(unknownToError(error))
+          } else {
+            resolve(result)
+          }
+        }
         this.analyzeData(getSize, readChunk, resultCb)
       })
     }
 
+    const finalize = () => {
+      this.openBufferFinalize()
+      const result = this.inform()
+      if (this.options.format === 'object') {
+        callback(this.parseResultJson(result))
+      } else {
+        callback(result)
+      }
+    }
+
     let offset = 0
     const runReadDataLoop = (fileSize: number) => {
-      const getChunk = () => {
-        const readNextChunk = (data: Uint8Array) => {
-          if (continueBuffer(data)) {
-            getChunk()
-          } else {
-            finalize()
-          }
+      const readNextChunk = (data: Uint8Array) => {
+        if (continueBuffer(data)) {
+          getChunk()
+        } else {
+          finalize()
         }
+      }
+
+      const getChunk = () => {
         let dataValue
         try {
-          const safeSize = Math.min(
-            this.options.chunkSize ?? DEFAULT_OPTIONS.chunkSize,
-            fileSize - offset
-          )
+          const safeSize = Math.min(this.options.chunkSize, fileSize - offset)
           dataValue = readChunk(safeSize, offset)
-        } catch (e) {
-          if (e instanceof Error) {
-            return callback('', e)
-          } else if (typeof e === 'string') {
-            return callback('', new Error(e))
-          }
+        } catch (error: unknown) {
+          callback('', unknownToError(error))
+          return
         }
+
         if (dataValue instanceof Promise) {
-          dataValue.then(readNextChunk).catch((e) => callback('', e))
-        } else if (dataValue !== undefined) {
+          dataValue.then(readNextChunk).catch((error: unknown) => {
+            callback('', unknownToError(error))
+          })
+        } else {
           readNextChunk(dataValue)
         }
       }
@@ -150,23 +162,15 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
         return true
       }
 
-      const finalize = () => {
-        this.openBufferFinalize()
-        const result = this.inform()
-        if (this.options.format === 'object') {
-          callback(this.parseResultJson(result))
-        } else {
-          callback(result)
-        }
-      }
-
       this.openBufferInit(fileSize, offset)
       getChunk()
     }
 
     const fileSizeValue = getSize()
     if (fileSizeValue instanceof Promise) {
-      fileSizeValue.then(runReadDataLoop).catch((err) => callback(null, err))
+      fileSizeValue.then(runReadDataLoop).catch((error: unknown) => {
+        callback(null, unknownToError(error))
+      })
     } else {
       runReadDataLoop(fileSizeValue)
     }
@@ -176,9 +180,12 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * Close the MediaInfoLib WASM instance.
    */
   close(): void {
-    if (this.mediainfoModuleInstance) this.mediainfoModuleInstance.close()
-    if (this.mediainfoModule && typeof this.mediainfoModule?.destroy === 'function')
+    if (typeof this.mediainfoModuleInstance.close === 'function') {
+      this.mediainfoModuleInstance.close()
+    }
+    if (typeof this.mediainfoModule.destroy === 'function') {
       this.mediainfoModule.destroy(this.mediainfoModuleInstance)
+    }
   }
 
   /**
@@ -225,9 +232,9 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     if (seekToLow == -1 && seekToHigh == -1) {
       seekTo = -1
     } else if (seekToLow < 0) {
-      seekTo = seekToLow + 4294967296 + seekToHigh * 4294967296
+      seekTo = seekToLow + MAX_UINT32_PLUS_ONE + seekToHigh * MAX_UINT32_PLUS_ONE
     } else {
-      seekTo = seekToLow + seekToHigh * 4294967296
+      seekTo = seekToLow + seekToHigh * MAX_UINT32_PLUS_ONE
     }
     return seekTo
   }
@@ -258,8 +265,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   private parseResultJson(resultString: string): ResultMap[TFormat] {
     type Writable<T> = { -readonly [P in keyof T]: T[P] }
 
-    const intFields = INT_FIELDS as ReadonlyArray<string>
-    const floatFields = FLOAT_FIELDS as ReadonlyArray<string>
+    const intFields = INT_FIELDS as readonly string[]
+    const floatFields = FLOAT_FIELDS as readonly string[]
 
     // Parse JSON
     const result = JSON.parse(resultString) as MediaInfoType
@@ -267,7 +274,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     if (result.media) {
       const newMedia = { ...result.media, track: [] as Writable<TrackType>[] }
 
-      if (result.media.track && Array.isArray(result.media.track)) {
+      if (Array.isArray(result.media.track)) {
         for (const track of result.media.track) {
           let newTrack: Writable<TrackType> = { '@type': track['@type'] }
           for (const [key, val] of Object.entries(track) as [string, unknown][]) {
@@ -275,9 +282,9 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
               continue
             }
             if (typeof val === 'string' && intFields.includes(key)) {
-              newTrack = { ...newTrack, [key]: parseInt(val, 10) }
+              newTrack = { ...newTrack, [key]: Number.parseInt(val, 10) }
             } else if (typeof val === 'string' && floatFields.includes(key)) {
-              newTrack = { ...newTrack, [key]: parseFloat(val) }
+              newTrack = { ...newTrack, [key]: Number.parseFloat(val) }
             } else {
               newTrack = { ...newTrack, [key]: val }
             }

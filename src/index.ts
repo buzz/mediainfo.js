@@ -1,19 +1,16 @@
-import type MediaInfo from './MediaInfo'
-import type { FormatType, GetSizeFunc, ReadChunkFunc, ResultMap } from './MediaInfo'
-import MediaInfoFactory, { type MediaInfoFactoryOptions } from './MediaInfoFactory'
-import type { CreationType, ExtraType, TrackType, MediaType, MediaInfoType } from './MediaInfoType'
-
 export type {
   FormatType,
   GetSizeFunc,
-  MediaInfo,
-  MediaInfoFactoryOptions,
+  default as MediaInfo,
   ReadChunkFunc,
   ResultMap,
+} from './MediaInfo.js'
+export type { MediaInfoFactoryOptions } from './MediaInfoFactory.js'
+export { default } from './MediaInfoFactory.js'
+export type {
   CreationType,
   ExtraType,
-  TrackType,
-  MediaType,
   MediaInfoType,
-}
-export default MediaInfoFactory
+  MediaType,
+  TrackType,
+} from './MediaInfoType.js'

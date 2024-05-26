@@ -1,4 +1,4 @@
-import type { FORMAT_CHOICES } from './MediaInfo'
+import type { FORMAT_CHOICES } from './MediaInfo.js'
 
 type WasmConstructableFormatType = (typeof FORMAT_CHOICES)[number]
 
@@ -12,13 +12,11 @@ interface MediaInfoWasmInterface {
   open_buffer_init(estimatedFileSize: number, fileOffset: number): number
 }
 
-interface MediaInfoWasmConstructable {
-  new (
-    format: WasmConstructableFormatType,
-    coverData: boolean,
-    full: boolean
-  ): MediaInfoWasmInterface
-}
+type MediaInfoWasmConstructable = new (
+  format: WasmConstructableFormatType,
+  coverData: boolean,
+  full: boolean
+) => MediaInfoWasmInterface
 
 interface MediaInfoModule extends EmscriptenModule {
   MediaInfo: MediaInfoWasmConstructable
