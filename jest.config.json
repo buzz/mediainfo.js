@@ -1,13 +1,8 @@
 {
   "globalSetup": "<rootDir>/__tests__/jest/setup.ts",
   "setupFilesAfterEnv": ["<rootDir>/__tests__/jest/toBeNear.ts"],
-  "testEnvironment": "./__tests__/jest/environment.ts",
+  "testEnvironment": "jest-environment-node",
   "testMatch": ["**/__tests__/**/*.test.ts"],
-  "testPathIgnorePatterns": [
-    "<rootDir>/build/",
-    "<rootDir>/dist/",
-    "<rootDir>/node_modules/",
-    "<rootDir>/__tests__/.eslintrc.js"
-  ],
+  "testPathIgnorePatterns": ["<rootDir>/build/", "<rootDir>/dist/", "<rootDir>/node_modules/"],
   "verbose": true
 }

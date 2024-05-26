@@ -1,15 +1,28 @@
-import MediaInfoFactoryFactory from '..'
-import { isErrorObject } from './jest/utils'
+import MediaInfoFactory from '..'
+import { expectToBeError } from './utils'
+
+beforeEach(() => {
+  jest.spyOn(console, 'error')
+  // @ts-expect-error TS doesn't know mockImplementation
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  console.error.mockImplementation(() => null)
+})
+
+afterEach(() => {
+  // @ts-expect-error TS doesn't know mockImplementation
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  console.error.mockRestore()
+})
 
 describe('Error on WASM loading', () => {
   it('should return error via callback', (done) => {
-    MediaInfoFactoryFactory(
+    MediaInfoFactory(
       { locateFile: () => 'file_does_not_exist.wasm' },
-      () => undefined,
+      () => {
+        throw new Error('Callback should not fire')
+      },
       (error) => {
-        if (!isErrorObject(error)) {
-          throw new Error('Expected to received error object')
-        }
+        expectToBeError(error)
         expect(error.message).toMatch('no such file')
         done()
       }
@@ -17,7 +30,7 @@ describe('Error on WASM loading', () => {
   })
 
   it('should return error via Promise', () =>
-    expect(
-      MediaInfoFactoryFactory({ locateFile: () => 'file_does_not_exist.wasm' })
-    ).rejects.toThrow(/no such file/))
+    expect(MediaInfoFactory({ locateFile: () => 'file_does_not_exist.wasm' })).rejects.toThrow(
+      /no such file/
+    ))
 })

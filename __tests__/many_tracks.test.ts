@@ -1,12 +1,9 @@
-import path from 'path'
-
-const FILEPATH = path.resolve(__dirname, 'fixtures', 'many_tracks.mp4')
+import { analyzeFile, expectToBeDefined, fixturePath } from './utils'
 
 it('should parse file with many tracks', async () => {
-  expect.assertions(8)
+  const result = await analyzeFile(fixturePath('many_tracks.mp4'))
+  expectToBeDefined(result.media)
 
-  const result = await analyzeFile(FILEPATH)
-  if (!result.media) throw new Error()
   const { track } = result.media
   expect(track).toHaveLength(102)
 
@@ -16,5 +13,5 @@ it('should parse file with many tracks', async () => {
   expect(track[1]['@type']).toBe('Video')
   expect(track[1].Format).toBe('AVC')
   expect(track[101]['@type']).toBe('Text')
-  expect(track[101]['Format']).toBe('Timed Text')
+  expect(track[101].Format).toBe('Timed Text')
 })

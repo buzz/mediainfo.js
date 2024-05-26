@@ -1,12 +1,9 @@
-import path from 'path'
-
-const FILEPATH = path.resolve(__dirname, 'fixtures', 'AudioVideoInterleave.avi')
+import { analyzeFile, expectToBeDefined, fixturePath } from './utils.ts'
 
 it('should parse file', async () => {
-  expect.assertions(15)
+  const result = await analyzeFile(fixturePath('AudioVideoInterleave.avi'))
+  expectToBeDefined(result.media)
 
-  const result = await analyzeFile(FILEPATH)
-  if (!result.media) throw new Error()
   const { track } = result.media
   expect(track).toHaveLength(2)
   const [track0, track1] = track
@@ -21,8 +18,8 @@ it('should parse file', async () => {
   expect(track1.CodecID).toBe('FMP4')
   expect(track1.Height).toBe(1)
   expect(track1.Width).toBe(1)
-  expect(track1.DisplayAspectRatio).toBeCloseTo(1.0)
-  expect(track1.FrameRate).toBeCloseTo(100.0)
+  expect(track1.DisplayAspectRatio).toBeCloseTo(1)
+  expect(track1.FrameRate).toBeCloseTo(100)
   expect(track1.ColorSpace).toBe('YUV')
   expect(track1.ChromaSubsampling).toBe('4:2:0')
   expect(track1.Compression_Mode).toBe('Lossy')

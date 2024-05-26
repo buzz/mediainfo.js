@@ -1,13 +1,11 @@
-import path from 'path'
+import { analyzeFile, expectToBeDefined, fixturePath } from './utils.ts'
 
-const FILEPATH = path.resolve(__dirname, 'fixtures', 'file_example_MP4_480_1_5MG.mp4')
+const filePath = fixturePath('file_example_MP4_480_1_5MG.mp4')
 
-describe('full: file_example_MP4_640_3MG.mp4', () => {
+describe('full: file_example_MP4_480_1_5MG.mp4', () => {
   it('should return full data', async () => {
-    expect.assertions(16)
-
-    const result = await analyzeFile(FILEPATH, { full: true })
-    if (!result.media) throw new Error()
+    const result = await analyzeFile(filePath, { full: true })
+    expectToBeDefined(result.media)
 
     const { track } = result.media
     const [track0, track1, track2] = track
@@ -33,10 +31,8 @@ describe('full: file_example_MP4_640_3MG.mp4', () => {
   })
 
   it('should not return full data', async () => {
-    expect.assertions(16)
-
-    const result = await analyzeFile(FILEPATH, { full: false })
-    if (!result.media) throw new Error()
+    const result = await analyzeFile(filePath, { full: false })
+    expectToBeDefined(result.media)
 
     const { track } = result.media
     const [track0, track1, track2] = track

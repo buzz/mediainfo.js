@@ -28,7 +28,7 @@
     "clean": "rimraf dist build",
     "lint": "eslint .",
     "release": "commit-and-tag-version",
-    "test": "jest",
+    "test": "BABEL_ENV=JEST jest --detectOpenHandles --forceExit",
     "type-check": "tsc --project ."
   },
   "packageManager": "pnpm@9.1.2",

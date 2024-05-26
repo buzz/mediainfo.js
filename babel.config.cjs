@@ -59,6 +59,13 @@ const babel = (api) => {
         plugins: [transformImportMetaDirname],
         sourceMaps: false,
       },
+
+      // Jest
+      JEST: {
+        presets: [['@babel/preset-env', { modules: 'commonjs', targets: nodeTarget }]],
+        plugins: [transformImportMetaDirname],
+        sourceMaps: false,
+      },
     },
   }
 }

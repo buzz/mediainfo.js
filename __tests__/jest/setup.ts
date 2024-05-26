@@ -1,8 +1,8 @@
-import crypto from 'crypto'
-import { readFile } from 'fs/promises'
-import { createWriteStream, statSync } from 'fs'
-import { resolve } from 'path'
-import https from 'https'
+import crypto from 'node:crypto'
+import { createWriteStream, statSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
+import https from 'node:https'
+import path from 'node:path'
 
 const TEST_FILES = {
   'AudioVideoInterleave.avi': {
@@ -30,12 +30,17 @@ function downloadFile(url: string, filePath: string) {
 
       // handle redirects
       if (code > 300 && code < 400 && !!res.headers.location) {
-        return resolve(downloadFile(res.headers.location, filePath))
+        resolve(downloadFile(res.headers.location, filePath))
+        return
       }
 
       const fileStream = createWriteStream(filePath)
-        .on('finish', () => resolve())
-        .on('error', (err) => reject(err))
+        .on('finish', () => {
+          resolve()
+        })
+        .on('error', (err) => {
+          reject(err)
+        })
 
       res.pipe(fileStream)
     })
@@ -44,7 +49,7 @@ function downloadFile(url: string, filePath: string) {
 
 async function downloadFixtures() {
   for (const [fileName, { url, md5 }] of Object.entries(TEST_FILES)) {
-    const filePath = resolve(__dirname, '..', 'fixtures', fileName)
+    const filePath = path.resolve(import.meta.dirname, '..', 'fixtures', fileName)
 
     // Check existing file
     try {
