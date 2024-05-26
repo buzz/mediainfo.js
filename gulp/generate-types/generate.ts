@@ -1,27 +1,26 @@
-import fs from 'fs/promises'
-import { join } from 'path'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
 import ts from 'typescript'
 
-import { BUILD_DIR, SRC_DIR } from '../constants'
-import { format } from '../utils'
-
+import { BUILD_DIR, SRC_DIR } from '../constants.ts'
+import { format } from '../utils.ts'
 import {
   createArrayAsConst,
   createInterface,
   createProperty,
   exportModifier,
   readonlyModifier,
-} from './factories'
-import parseXsd from './parseXsd'
+} from './factories.ts'
+import parseXsd from './parseXsd.ts'
 
 const topComment = '// DO NOT EDIT! File generated using `generate-types` script.'
 const filename = 'MediaInfoType.ts'
-const outFilename = join(SRC_DIR, filename)
+const outFilename = path.join(SRC_DIR, filename)
 
 async function generate() {
   // Parse XSD
-  const { nodes, intFields, floatFields } = await parseXsd()
+  const { properties, intFields, floatFields } = await parseXsd()
 
   // CreationType
   const ICreationType = createInterface('CreationType', [
@@ -71,7 +70,7 @@ async function generate() {
       '* If there is more than one track of the same type (i.e. four audio tracks) this attribute will number them according to storage order within the bitstream. ',
       true
     ),
-    ...nodes, // Take long attribute list from MediaInfo XSD
+    ...properties, // Take long attribute list from MediaInfo XSD
   ])
 
   // MediaType
@@ -105,7 +104,7 @@ async function generate() {
   ].join('\n\n')
 
   // Save generated source
-  const buildOutFilename = join(BUILD_DIR, filename)
+  const buildOutFilename = path.join(BUILD_DIR, filename)
   await fs.writeFile(buildOutFilename, tsSrc)
 
   // Format sources

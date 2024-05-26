@@ -1,7 +1,7 @@
-import { spawn as spawnChild } from 'child_process'
-import { createWriteStream } from 'fs'
-import { readFile, writeFile } from 'fs/promises'
-import https from 'https'
+import { spawn as spawnChild } from 'node:child_process'
+import { createWriteStream } from 'node:fs'
+import { readFile, writeFile } from 'node:fs/promises'
+import https from 'node:https'
 
 import prettier from 'prettier'
 
@@ -10,13 +10,7 @@ function downloadFile(dlUrl: string, destDir: string) {
     const file = createWriteStream(destDir)
 
     https.get(dlUrl, function (response) {
-      if (response.statusCode !== 200) {
-        file.close()
-        const msg =
-          `Failed to download ${dlUrl}` +
-          (response.statusCode !== undefined ? `, status=${response.statusCode}` : '')
-        reject(new Error(msg))
-      } else {
+      if (response.statusCode === 200) {
         response.pipe(file)
         file.on('finish', () => {
           file.close()
@@ -26,6 +20,12 @@ function downloadFile(dlUrl: string, destDir: string) {
           file.close()
           reject(err)
         })
+      } else {
+        file.close()
+        const msg =
+          `Failed to download ${dlUrl}` +
+          (response.statusCode === undefined ? '' : `, status=${response.statusCode}`)
+        reject(new Error(msg))
       }
     })
   })
@@ -34,7 +34,9 @@ function downloadFile(dlUrl: string, destDir: string) {
 async function format(filepath: string, destFilepath: string) {
   const text = await readFile(filepath, 'utf8')
   const options = await prettier.resolveConfig(filepath)
-  if (options === null) throw new Error('Could not find prettier config')
+  if (options === null) {
+    throw new Error('Could not find prettier config')
+  }
   await writeFile(destFilepath, await prettier.format(text, { ...options, filepath }))
 }
 
@@ -42,16 +44,25 @@ function spawn(cmd: string, args: string[], cwd: string) {
   return new Promise<void>((resolve, reject) => {
     const proc = spawnChild(cmd, args, { cwd })
     proc.stdout.on('data', (data) => {
-      if (Buffer.isBuffer(data)) process.stdout.write(data.toString())
+      if (Buffer.isBuffer(data)) {
+        process.stdout.write(data.toString())
+      }
     })
     proc.stderr.on('data', (data) => {
-      if (Buffer.isBuffer(data)) process.stderr.write(data.toString())
+      if (Buffer.isBuffer(data)) {
+        process.stderr.write(data.toString())
+      }
     })
     proc.on('close', (code) => {
-      if (code === 0) resolve()
-      else reject(new Error(`Program exited with status code ${code ?? 'null'}`))
+      if (code === 0) {
+        resolve()
+      } else {
+        reject(new Error(`Program exited with status code ${code ?? 'null'}`))
+      }
     })
-    proc.stderr.on('error', (err) => reject(err))
+    proc.stderr.on('error', (err) => {
+      reject(err)
+    })
   })
 }
 

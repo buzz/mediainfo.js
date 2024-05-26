@@ -1,11 +1,16 @@
-import { cpus } from 'os'
-import { join, resolve } from 'path'
+import { cpus } from 'node:os'
+import path from 'node:path'
 
-const PROJECT_DIR = resolve(__dirname, '..')
-const SRC_DIR = join(PROJECT_DIR, 'src')
-const DIST_DIR = join(PROJECT_DIR, 'dist')
-const BUILD_DIR = join(PROJECT_DIR, 'build')
-const VENDOR_DIR = join(BUILD_DIR, 'vendor')
+const PROJECT_DIR = path.resolve(import.meta.dirname, '..')
+const SRC_DIR = path.join(PROJECT_DIR, 'src')
+const DIST_DIR = path.join(PROJECT_DIR, 'dist')
+const BUILD_DIR = path.join(PROJECT_DIR, 'build')
+const VENDOR_DIR = path.join(BUILD_DIR, 'vendor')
+
+const WASM_INITIAL_MEMORY = 2 ** 25 // 32 MiB
+
+// Global variable name for UMD build
+const UMD_NAME = 'MediaInfo'
 
 const LIBMEDIAINFO_VERSION = '24.04'
 const LIBZEN_VERSION = '0.4.41'
@@ -13,7 +18,7 @@ const LIBZEN_VERSION = '0.4.41'
 const CFLAGS = '-Oz'
 const CXXFLAGS = '-Oz -DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 -fno-rtti -fno-exceptions'
 
-// switch off feature to save some bytes
+// switch off features to save some bytes
 const MediaInfoLib_CXXFLAGS = `-I ../../../Source -I ../../../../ZenLib/Source -s USE_ZLIB=1 \
   -DMEDIAINFO_MINIMAL_YES \
   -DMEDIAINFO_EXPORT_YES \
@@ -56,7 +61,7 @@ const MediaInfoLib_CXXFLAGS = `-I ../../../Source -I ../../../../ZenLib/Source -
   -DMEDIAINFO_DECODE_NO \
   -DMEDIAINFO_IBIUSAGE_NO`
 
-const CPU_CORES = cpus()?.length ?? 1
+const CPU_CORES = cpus().length
 
 export {
   BUILD_DIR,
@@ -69,5 +74,7 @@ export {
   MediaInfoLib_CXXFLAGS,
   PROJECT_DIR,
   SRC_DIR,
+  UMD_NAME,
   VENDOR_DIR,
+  WASM_INITIAL_MEMORY,
 }

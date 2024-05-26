@@ -24,16 +24,16 @@
     "src/"
   ],
   "scripts": {
-    "build": "gulp",
+    "build": "BABEL_ENV=GULP gulp",
     "clean": "rimraf dist build",
     "lint": "eslint .",
     "release": "commit-and-tag-version",
     "test": "jest",
-    "type-check": "tsc --noEmit --project ."
+    "type-check": "tsc --project ."
   },
   "packageManager": "pnpm@9.1.2",
   "engines": {
-    "node": ">=14.16"
+    "node": ">=20.13.1"
   },
   "bin": {
     "mediainfo.js": "./dist/esm/cli.js"
@@ -119,7 +119,6 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-virtual": "^3.0.2",
-    "@rollup/stream": "^3.0.1",
     "@types/decompress": "^4.2.7",
     "@types/emscripten": "^1.39.12",
     "@types/gulp": "^4.0.17",
@@ -156,8 +155,6 @@
     "rollup": "^4.18.0",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.10.0",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0",
     "xpath": "^0.0.34"
   },
   "pnpm": {

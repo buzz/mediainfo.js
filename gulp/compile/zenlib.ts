@@ -1,9 +1,9 @@
-import { join } from 'path'
+import path from 'node:path'
 
-import { CFLAGS, CPU_CORES, CXXFLAGS, VENDOR_DIR } from '../constants'
-import { spawn } from '../utils'
+import { CFLAGS, CPU_CORES, CXXFLAGS, VENDOR_DIR } from '../constants.ts'
+import { spawn } from '../utils.ts'
 
-const zenlibDir = join(VENDOR_DIR, 'ZenLib', 'Project', 'GNU', 'Library')
+const zenlibDir = path.join(VENDOR_DIR, 'ZenLib', 'Project', 'GNU', 'Library')
 
 async function task() {
   await spawn('./autogen.sh', [], zenlibDir)

@@ -1,15 +1,24 @@
 {
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "allowJs": true,
     "esModuleInterop": true,
-    "module": "ES6",
-    "moduleResolution": "node",
-    "noEmitOnError": true,
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "skipLibCheck": true,
     "strict": true,
-    "target": "ES6",
-    "inlineSourceMap": true,
-    "inlineSources": true
+    "target": "es2022",
+    "types": ["@types/emscripten", "@types/node"]
   },
-  "include": ["src", "__tests__", "gulp", "gulpfile.babel.ts"],
-  "exclude": ["examples", "node_modules", "dist", "build"]
+  "include": [
+    "__tests__/**/*",
+    "babel.config.cjs",
+    "eslint.config.js",
+    "gulp/**/*",
+    "gulpfile.ts",
+    "rollup.config.js",
+    "src/**/*.ts"
+  ],
+  "exclude": ["build/**/*", "dist/**/*", "examples/**/*", "node_modules/**/*"]
 }

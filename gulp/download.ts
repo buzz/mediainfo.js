@@ -1,42 +1,39 @@
-import { access, mkdir } from 'fs/promises'
-import { basename, join } from 'path'
+import { access, mkdir } from 'node:fs/promises'
+import path from 'node:path'
 
 import decompress from 'decompress'
 import gulp from 'gulp'
 
-import { LIBMEDIAINFO_VERSION, LIBZEN_VERSION, VENDOR_DIR } from './constants'
-import { downloadFile } from './utils'
+import { LIBMEDIAINFO_VERSION, LIBZEN_VERSION, VENDOR_DIR } from './constants.ts'
+import { downloadFile } from './utils.ts'
 
-const urls = {
-  libmediainfo: {
-    url: `https://mediaarea.net/download/source/libmediainfo/${LIBMEDIAINFO_VERSION}/libmediainfo_${LIBMEDIAINFO_VERSION}.tar.bz2`,
-    dir: VENDOR_DIR,
-  },
-  libzen: {
-    url: `https://mediaarea.net/download/source/libzen/${LIBZEN_VERSION}/libzen_${LIBZEN_VERSION}.tar.bz2`,
-    dir: VENDOR_DIR,
-  },
+const urls = { libmediainfo: LIBMEDIAINFO_VERSION, libzen: LIBZEN_VERSION }
+
+function getUrl(libname: string, version: string) {
+  return `https://mediaarea.net/download/source/${libname}/${version}/${libname}_${version}.tar.bz2`
 }
 
 const task = gulp.parallel(
-  Object.entries(urls).map(([name, { url: dlUrl, dir }]) => {
+  Object.entries(urls).map(([libname, version]) => {
     const dlTask = async () => {
-      await mkdir(dir, { recursive: true })
+      await mkdir(VENDOR_DIR, { recursive: true })
+      const dlUrl = getUrl(libname, version)
       const { pathname } = new URL(dlUrl)
-      if (pathname === null) throw new Error('URL pathname is null')
-      const filename = basename(pathname)
-      const filepath = join(VENDOR_DIR, filename)
+      const filename = path.basename(pathname)
+      const filepath = path.join(VENDOR_DIR, filename)
+
       // skip download if file exists
       try {
         await access(filepath)
       } catch {
         await downloadFile(dlUrl, filepath)
       }
-      await decompress(filepath, dir)
+
+      await decompress(filepath, VENDOR_DIR)
     }
 
-    dlTask.displayName = `download:${name}`
-    dlTask.Description = `Download ${name} sources`
+    dlTask.displayName = `download:${libname}-v${version}`
+    dlTask.Description = `Download ${libname} v${version} sources`
 
     return dlTask
   })

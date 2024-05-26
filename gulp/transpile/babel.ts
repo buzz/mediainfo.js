@@ -1,12 +1,12 @@
-import { copyFile } from 'fs/promises'
-import { join } from 'path'
+import { copyFile } from 'node:fs/promises'
+import path from 'node:path'
 
 import gulp from 'gulp'
 import babel from 'gulp-babel'
 import rename from 'gulp-rename'
 import sourcemaps from 'gulp-sourcemaps'
 
-import { BUILD_DIR, DIST_DIR, SRC_DIR } from '../constants'
+import { BUILD_DIR, DIST_DIR, SRC_DIR } from '../constants.ts'
 
 type Variant = 'cjs' | 'esm'
 
@@ -17,13 +17,17 @@ function changeExtname(val: string) {
 function transpileBabel(variant: Variant) {
   const task = () =>
     gulp
-      .src([join(SRC_DIR, '**', '*.ts'), '!' + join(SRC_DIR, '**', '*.d.ts')])
+      .src([path.join(SRC_DIR, '**', '*.ts'), '!' + path.join(SRC_DIR, '**', '*.d.ts')])
       .pipe(sourcemaps.init())
       .pipe(babel({ envName: variant.toUpperCase() }))
       .pipe(
         rename((path) => {
-          if (variant === 'esm') return path
-          if (path.extname === '.js') return { ...path, extname: '.cjs' }
+          if (variant === 'esm') {
+            return path
+          }
+          if (path.extname === '.js') {
+            return { ...path, extname: '.cjs' }
+          }
           return { ...path, basename: changeExtname(path.basename) } // .map
         })
       )
@@ -31,12 +35,12 @@ function transpileBabel(variant: Variant) {
         // gulp-sourcemaps patched to support .cjs extension
         sourcemaps.write('.', {
           sourceMappingURL:
-            variant !== 'cjs' ? (file) => `${changeExtname(file.relative)}.map` : undefined,
+            variant === 'cjs' ? undefined : (file) => `${changeExtname(file.relative)}.map`,
           mapFile: variant === 'cjs' ? changeExtname : undefined,
           sourceRoot: '../../src',
         })
       )
-      .pipe(gulp.dest(join(DIST_DIR, variant)))
+      .pipe(gulp.dest(path.join(DIST_DIR, variant)))
   task.displayName = `transpile:babel:${variant}`
   return task
 }
@@ -44,8 +48,8 @@ function transpileBabel(variant: Variant) {
 function copyModuleLoader(variant: Variant) {
   const task = () =>
     copyFile(
-      join(BUILD_DIR, `MediaInfoModule.${variant}.js`),
-      join(DIST_DIR, variant, `MediaInfoModule${variant === 'cjs' ? '.cjs' : '.js'}`)
+      path.join(BUILD_DIR, `MediaInfoModule.${variant}.js`),
+      path.join(DIST_DIR, variant, `MediaInfoModule${variant === 'cjs' ? '.cjs' : '.js'}`)
     )
   task.displayName = `transpile:babel:copy-loader:${variant}`
   return task

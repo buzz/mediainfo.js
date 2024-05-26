@@ -1,8 +1,21 @@
-module.exports = (api) => {
+// Babel can't transpile to ES on-the-fly. So, we need to transform `import.meta.dirname` to old `__dirname`.
+function transformImportMetaDirname() {
+  return {
+    visitor: {
+      MemberExpression(path) {
+        if (path.node.object.type === 'MetaProperty' && path.node.property.name === 'dirname') {
+          path.replaceWithSourceString('__dirname')
+        }
+      },
+    },
+  }
+}
+
+const babel = (api) => {
   api.cache(true)
 
   const browserTarget = '> 0.25%, not dead'
-  const nodeTarget = 'node 14.16'
+  const nodeTarget = { node: '20' }
 
   const buildMixin = {
     ignore: ['./__tests__', './**/*.d.ts'],
@@ -21,10 +34,6 @@ module.exports = (api) => {
       // ESM build
       ESM: {
         presets: [['@babel/preset-env', { modules: false, targets: nodeTarget }]],
-        plugins: [
-          // Node.js ESM needs extensions in import statements
-          'babel-plugin-add-import-extension',
-        ],
         ...buildMixin,
       },
 
@@ -38,11 +47,20 @@ module.exports = (api) => {
         ...buildMixin,
       },
 
-      // Bundled esm
+      // Bundled ESM
       ESM_ROLLUP: {
         presets: [['@babel/preset-env', { targets: browserTarget }]],
         ...buildMixin,
       },
+
+      // Gulp
+      GULP: {
+        presets: [['@babel/preset-env', { modules: false, targets: nodeTarget }]],
+        plugins: [transformImportMetaDirname],
+        sourceMaps: false,
+      },
     },
   }
 }
+
+module.exports = babel

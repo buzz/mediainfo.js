@@ -1,21 +1,9 @@
-import gulp from 'gulp'
-
-import mediainfolib from './compile/mediainfolib'
-import wasm from './compile/wasm'
-import zenlib from './compile/zenlib'
-import declaration from './declaration'
-import download from './download'
-import generateTypes from './generate-types/generate'
-import babel from './transpile/babel'
-import rollup from './transpile/rollup'
-
-const task = gulp.series([
-  download,
-  gulp.series([zenlib, mediainfolib, wasm]),
-  gulp.parallel([babel, declaration, rollup]),
-])
-task.displayName = 'default'
-task.description = 'Build project'
-
-export { babel, declaration, download, generateTypes, mediainfolib, rollup, wasm, zenlib }
-export default task
+export { default as mediainfolib } from './compile/mediainfolib.ts'
+export { default as wasm } from './compile/wasm.ts'
+export { default as zenlib } from './compile/zenlib.ts'
+export { default as declaration } from './declaration.ts'
+export { default } from './default.ts'
+export { default as download } from './download.ts'
+export { default as generateTypes } from './generate-types/generate.ts'
+export { default as babel } from './transpile/babel.ts'
+export { default as rollup } from './transpile/rollup.ts'

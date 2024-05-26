@@ -1,10 +1,10 @@
-import https from 'https'
+import https from 'node:https'
 
 import { DOMParser } from '@xmldom/xmldom'
 import ts from 'typescript'
 import xpath from 'xpath'
 
-import { createProperty } from './factories'
+import { createProperty } from './factories.ts'
 
 const URL = 'https://raw.githubusercontent.com/MediaArea/MediaAreaXml/master/mediainfo.xsd'
 const namespace = 'http://www.w3.org/2001/XMLSchema'
@@ -14,7 +14,7 @@ async function downloadSchema() {
     https
       .get(URL, (resp) => {
         let data = ''
-        resp.on('data', (chunk) => {
+        resp.on('data', (chunk: string) => {
           data += chunk
         })
         resp.on('end', () => {
@@ -31,17 +31,22 @@ async function parseXsd() {
   const xmlDoc = parser.parseFromString(xmlDocData, 'text/xml')
   const select = xpath.useNamespaces({ xmlns: namespace })
 
-  const attrs = select('//xmlns:complexType[@name="trackType"]/xmlns:all/*', xmlDoc)
+  const elements = select('//xmlns:complexType[@name="trackType"]/xmlns:all/*', xmlDoc)
 
-  if (!xpath.isArrayOfNodes(attrs)) {
+  if (!xpath.isArrayOfNodes(elements)) {
     throw new Error('No elements found!')
   }
 
   // Collect int/float types
   const intFields: string[] = []
   const floatFields: string[] = []
+  const properties: ts.PropertySignature[] = []
 
-  const nodes = attrs.filter(xpath.isElement).map((element) => {
+  for (const element of elements) {
+    if (!xpath.isElement(element)) {
+      continue
+    }
+
     const name = element.attributes.getNamedItem('name')?.value
     const minOccurs = element.attributes.getNamedItem('minOccurs')?.value
     const maxOccurs = element.attributes.getNamedItem('maxOccurs')?.value
@@ -63,41 +68,54 @@ async function parseXsd() {
 
     // extract type
     let type: string
-    if (xsdType === 'extraType') {
-      type = 'ExtraType'
-    } else if (xsdType === 'xsd:string') {
-      type = 'string'
-    } else if (xsdType === 'xsd:integer') {
-      type = 'number'
-      intFields.push(name)
-    } else if (xsdType === 'xsd:float') {
-      type = 'number'
-      floatFields.push(name)
-    } else {
-      throw new Error(`Unknown type: ${xsdType}`)
+    switch (xsdType) {
+      case 'extraType': {
+        type = 'ExtraType'
+        break
+      }
+      case 'xsd:string': {
+        type = 'string'
+        break
+      }
+      case 'xsd:integer': {
+        type = 'number'
+        intFields.push(name)
+        break
+      }
+      case 'xsd:float': {
+        type = 'number'
+        floatFields.push(name)
+        break
+      }
+      default: {
+        throw new Error(`Unknown type: ${xsdType}`)
+      }
     }
+
+    // create property
+    const quotedName = name.includes('-') ? `'${name}'` : name
+    let property = createProperty(quotedName, type, { required: false })
 
     // extract docstring
     let docString: string | undefined
     const docEl = select('./xmlns:annotation/xmlns:documentation/text()', element)
     if (xpath.isArrayOfNodes(docEl) && xpath.isTextNode(docEl[0])) {
       docString = docEl[0].nodeValue?.trim()
+      if (!docString) {
+        throw new Error('Empty documentation element found.')
+      }
+      property = ts.addSyntheticLeadingComment(
+        property,
+        ts.SyntaxKind.MultiLineCommentTrivia,
+        `* ${docString} `,
+        true
+      )
     }
 
-    // create property
-    const quotedName = name.includes('-') ? `'${name}'` : name
-    const prop = createProperty(quotedName, type, { required: false })
-    return docString
-      ? ts.addSyntheticLeadingComment(
-          prop,
-          ts.SyntaxKind.MultiLineCommentTrivia,
-          `* ${docString} `,
-          true
-        )
-      : prop
-  })
+    properties.push(property)
+  }
 
-  return { nodes, intFields, floatFields }
+  return { properties, intFields, floatFields }
 }
 
 export default parseXsd

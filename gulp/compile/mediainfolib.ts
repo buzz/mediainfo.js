@@ -1,9 +1,9 @@
-import { join } from 'path'
+import path from 'node:path'
 
-import { CFLAGS, CPU_CORES, CXXFLAGS, MediaInfoLib_CXXFLAGS, VENDOR_DIR } from '../constants'
-import { spawn } from '../utils'
+import { CFLAGS, CPU_CORES, CXXFLAGS, MediaInfoLib_CXXFLAGS, VENDOR_DIR } from '../constants.ts'
+import { spawn } from '../utils.ts'
 
-const mediainfolibDir = join(VENDOR_DIR, 'MediaInfoLib', 'Project', 'GNU', 'Library')
+const mediainfolibDir = path.join(VENDOR_DIR, 'MediaInfoLib', 'Project', 'GNU', 'Library')
 
 async function task() {
   await spawn('./autogen.sh', [], mediainfolibDir)
