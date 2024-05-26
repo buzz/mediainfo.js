@@ -137,6 +137,7 @@
     "decompress": "^4.2.1",
     "eslint": "^9.3.0",
     "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jest": "^28.5.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-simple-import-sort": "^12.1.0",
     "eslint-plugin-unicorn": "^53.0.0",
