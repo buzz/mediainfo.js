@@ -1,12 +1,13 @@
 import path from 'node:path'
 
-import { CFLAGS, CPU_CORES, CXXFLAGS, MediaInfoLib_CXXFLAGS, VENDOR_DIR } from '../constants.ts'
+import { CPU_CORES, CXXFLAGS, MediaInfoLib_CXXFLAGS, VENDOR_DIR } from '../constants.ts'
 import { spawn } from '../utils.ts'
 
 const mediainfolibDir = path.join(VENDOR_DIR, 'MediaInfoLib', 'Project', 'GNU', 'Library')
 
 async function task() {
   await spawn('./autogen.sh', [], mediainfolibDir)
+  await spawn('sed', ['-i', 's/-O2/-Oz/', 'configure'], mediainfolibDir)
   await spawn(
     'emconfigure',
     [
@@ -15,7 +16,6 @@ async function task() {
       '--enable-static',
       '--disable-shared',
       '--disable-dll',
-      `CFLAGS=${CFLAGS}`,
       `CXXFLAGS=${CXXFLAGS} ${MediaInfoLib_CXXFLAGS}`,
     ],
     mediainfolibDir

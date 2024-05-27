@@ -33,7 +33,7 @@ use a JavaScript bundler like webpack.
 #### WASM file loading
 
 Be aware that mediainfo.js needs to load the `MediaInfoModule.wasm` file (around
-**3.5 MiB**). The WASM module is loaded and instantiated automatically. By
+**2 MiB**). The WASM module is loaded and instantiated automatically. By
 default its load path is determined from the script location. This works
 out-of-the-box for the UMD and Node.js version.
 
@@ -81,6 +81,9 @@ $ ./emsdk install latest
 $ ./emsdk activate latest
 $ source ./emsdk_env.sh
 ```
+
+You also need to have [Binaryen](https://github.com/WebAssembly/binaryen) and
+[wabt](https://github.com/WebAssembly/wabt) available on your system.
 
 In the project root of mediainfo.js run the following to build.
 

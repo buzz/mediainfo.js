@@ -40,26 +40,35 @@ async function format(filepath: string, destFilepath: string) {
   await writeFile(destFilepath, await prettier.format(text, { ...options, filepath }))
 }
 
-function spawn(cmd: string, args: string[], cwd: string) {
-  return new Promise<void>((resolve, reject) => {
+function spawn(cmd: string, args: string[], cwd: string, captureStdout = false) {
+  return new Promise<string>((resolve, reject) => {
     const proc = spawnChild(cmd, args, { cwd })
+    let output = ''
+
     proc.stdout.on('data', (data) => {
       if (Buffer.isBuffer(data)) {
-        process.stdout.write(data.toString())
+        if (captureStdout) {
+          output += data.toString()
+        } else {
+          process.stdout.write(data.toString())
+        }
       }
     })
+
     proc.stderr.on('data', (data) => {
       if (Buffer.isBuffer(data)) {
         process.stderr.write(data.toString())
       }
     })
+
     proc.on('close', (code) => {
       if (code === 0) {
-        resolve()
+        resolve(output)
       } else {
         reject(new Error(`Program exited with status code ${code ?? 'null'}`))
       }
     })
+
     proc.stderr.on('error', (err) => {
       reject(err)
     })

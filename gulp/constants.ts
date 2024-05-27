@@ -6,6 +6,7 @@ const SRC_DIR = path.join(PROJECT_DIR, 'src')
 const DIST_DIR = path.join(PROJECT_DIR, 'dist')
 const BUILD_DIR = path.join(PROJECT_DIR, 'build')
 const VENDOR_DIR = path.join(BUILD_DIR, 'vendor')
+const WASM_FILE = 'MediaInfoModule.wasm'
 
 const WASM_INITIAL_MEMORY = 2 ** 25 // 32 MiB
 
@@ -15,11 +16,11 @@ const UMD_NAME = 'MediaInfo'
 const LIBMEDIAINFO_VERSION = '24.04'
 const LIBZEN_VERSION = '0.4.41'
 
-const CFLAGS = '-Oz'
-const CXXFLAGS = '-Oz -DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 -fno-rtti -fno-exceptions'
+const CXXFLAGS = '-DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 -fno-rtti -fno-exceptions'
 
 // switch off features to save some bytes
 const MediaInfoLib_CXXFLAGS = `-I ../../../Source -I ../../../../ZenLib/Source -s USE_ZLIB=1 \
+  -DMEDIAINFO_ADVANCED_YES \
   -DMEDIAINFO_MINIMAL_YES \
   -DMEDIAINFO_EXPORT_YES \
   -DMEDIAINFO_SEEK_YES \
@@ -65,7 +66,6 @@ const CPU_CORES = cpus().length
 
 export {
   BUILD_DIR,
-  CFLAGS,
   CPU_CORES,
   CXXFLAGS,
   DIST_DIR,
@@ -76,5 +76,6 @@ export {
   SRC_DIR,
   UMD_NAME,
   VENDOR_DIR,
+  WASM_FILE,
   WASM_INITIAL_MEMORY,
 }

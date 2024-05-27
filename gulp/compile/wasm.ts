@@ -1,26 +1,14 @@
 // https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
 
-import { copyFile, mkdir } from 'node:fs/promises'
 import path from 'node:path'
 
 import gulp from 'gulp'
 
-import {
-  BUILD_DIR,
-  CXXFLAGS,
-  DIST_DIR,
-  MediaInfoLib_CXXFLAGS,
-  WASM_INITIAL_MEMORY,
-} from '../constants.ts'
+import { BUILD_DIR, CXXFLAGS, MediaInfoLib_CXXFLAGS, WASM_INITIAL_MEMORY } from '../constants.ts'
 import { format, spawn } from '../utils.ts'
+import optimizeWasm from './optimizeWasm.ts'
 
 const moduleFilepath = path.join(BUILD_DIR, 'MediaInfoModule.js')
-
-// TODO: test
-//   MALLOC=emmalloc
-//   INITIAL_HEAP = 16777216
-//   EMBIND_STD_STRING_IS_UTF8
-//   INCOMING_MODULE_JS_API
 
 function makeArgs(environment: 'web' | 'node', es6: boolean, es6ImportMeta: boolean) {
   return [
@@ -98,23 +86,12 @@ async function buildBrowser() {
 buildBrowser.displayName = 'compile:browser'
 buildBrowser.description = 'Build WASM (Browser)'
 
-async function copyWasm() {
-  await mkdir(DIST_DIR, { recursive: true })
-  await copyFile(
-    path.join(BUILD_DIR, 'MediaInfoModule.wasm'),
-    path.join(DIST_DIR, 'MediaInfoModule.wasm')
-  )
-}
-
-copyWasm.displayName = 'compile:copy-wasm'
-copyWasm.description = 'Copy WASM'
-
 const wasmTask = gulp.series([
   compileMediaInfoModule,
   buildNodeCjs,
   buildNodeEsm,
   buildBrowser,
-  copyWasm,
+  optimizeWasm,
 ])
 
 wasmTask.displayName = 'compile:wasm'

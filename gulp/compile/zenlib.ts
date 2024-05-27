@@ -1,12 +1,13 @@
 import path from 'node:path'
 
-import { CFLAGS, CPU_CORES, CXXFLAGS, VENDOR_DIR } from '../constants.ts'
+import { CPU_CORES, CXXFLAGS, VENDOR_DIR } from '../constants.ts'
 import { spawn } from '../utils.ts'
 
 const zenlibDir = path.join(VENDOR_DIR, 'ZenLib', 'Project', 'GNU', 'Library')
 
 async function task() {
   await spawn('./autogen.sh', [], zenlibDir)
+  await spawn('sed', ['-i', 's/-O2/-Oz/', 'configure'], zenlibDir)
   await spawn(
     'emconfigure',
     [
@@ -15,7 +16,6 @@ async function task() {
       '--disable-unicode',
       '--enable-static',
       '--disable-shared',
-      `CFLAGS=${CFLAGS}`,
       `CXXFLAGS=${CXXFLAGS}`,
     ],
     zenlibDir

@@ -86,6 +86,11 @@ export default tsEslint.config(
       '@typescript-eslint/no-invalid-void-type': ['error', { allowAsThisParameter: true }],
       // Allow number type in template literal strings
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+      // Allow `while(true)`, etc.
+      '@typescript-eslint/no-unnecessary-condition': [
+        'error',
+        { allowConstantLoopConditions: true },
+      ],
 
       'unicorn/filename-case': 'off',
       'unicorn/no-null': 'off',
