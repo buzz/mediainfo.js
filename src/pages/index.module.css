@@ -1,0 +1,45 @@
+.heroTitle,
+.heroSubtitle {
+  text-shadow: 3px 3px 0 rgb(0 0 0 / 15%);
+}
+
+.heroBanner {
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroLogo {
+  width: 200px;
+  height: 200px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--ifm-spacing-horizontal);
+}
+
+@media (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+
+  .heroLogoCol {
+    text-align: center;
+  }
+
+  .heroHeadingCol {
+    text-align: center;
+  }
+
+  .heroLogo {
+    width: 140px;
+    height: 140px;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+}

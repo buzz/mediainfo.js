@@ -1,7 +1,9 @@
-*~
-.DS_Store
-ThumbsDB
-\#*#
-.#*
-/node_modules
-/dist
+/static/MediaInfoModule.wasm
+node_modules
+
+# Production
+/build
+
+# Generated files
+.docusaurus
+.cache-loader

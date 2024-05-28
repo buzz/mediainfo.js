@@ -1,0 +1,18 @@
+.summary {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filename {
+  font-family: var(--ifm-font-family-monospace);
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 0.75em;
+}
+
+.resultTable {
+  display: table;
+  width: 100%;
+  margin-bottom: 0;
+}

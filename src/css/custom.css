@@ -1,0 +1,44 @@
+:root {
+  --ifm-color-primary: #99564d;
+  --ifm-color-primary-dark: #915149;
+  --ifm-color-primary-darker: #8b5149;
+  --ifm-color-primary-darkest: #824941;
+  --ifm-color-primary-light: #9e5a51;
+  --ifm-color-primary-lighter: #a76156;
+  --ifm-color-primary-lightest: #ad685d;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --bg-color: #484043;
+  --hero-gradient: linear-gradient(to right, var(--bg-color), #3d3639);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #ad655c;
+  --ifm-color-primary-dark: #a85e54;
+  --ifm-color-primary-darker: #a15d54;
+  --ifm-color-primary-darkest: #94534a;
+  --ifm-color-primary-light: #b06d64;
+  --ifm-color-primary-lighter: #b5776e;
+  --ifm-color-primary-lightest: #ba8077;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --bg-color: #4e4649;
+  --hero-gradient: linear-gradient(to right, #594e51, var(--bg-color));
+}
+
+.flip-x {
+  display: inline-block;
+  transform: scale(-1, 1);
+}
+
+.hero--primary {
+  background-color: var(--bg-color);
+  background-image: var(--hero-gradient);
+}
+
+[data-theme='dark'] .hero--primary {
+  --ifm-hero-text-color: inherit;
+}
+
+.footer--dark {
+  background-color: var(--bg-color);
+}

@@ -1,0 +1,27 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.featureImage {
+  height: 200px;
+  width: 200px;
+}
+
+[data-theme="light"] .featureImage [fill="#1c1e21"] {
+  fill: var(--ifm-color-content);
+}
+
+[data-theme="dark"] .featureImage [fill="#1c1e21"] {
+  fill: black;
+}
+
+[data-theme="light"] .featureImage [stroke="#1c1e21"] {
+  stroke: var(--ifm-color-content);
+}
+
+[data-theme="dark"] .featureImage [stroke="#1c1e21"] {
+  stroke: black;
+}
