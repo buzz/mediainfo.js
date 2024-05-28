@@ -1,9 +1,9 @@
 export type {
   FormatType,
-  GetSizeFunc,
   default as MediaInfo,
   ReadChunkFunc,
   ResultMap,
+  SizeArg,
 } from './MediaInfo.js'
 export type { MediaInfoFactoryOptions } from './mediaInfoFactory.js'
 export { default, default as mediaInfoFactory } from './mediaInfoFactory.js'

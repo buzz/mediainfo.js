@@ -16,7 +16,7 @@ type MediaInfoOptions<TFormat extends FormatType> = Required<
   Omit<MediaInfoFactoryOptions<TFormat>, 'locateFile'>
 >
 
-type GetSizeFunc = () => Promise<number> | number
+type SizeArg = (() => Promise<number> | number) | number
 
 type ReadChunkFunc = (size: number, offset: number) => Promise<Uint8Array> | Uint8Array
 
@@ -72,26 +72,22 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   /**
    * Convenience method for analyzing a buffer chunk by chunk.
    *
-   * @param getSize Return total buffer size in bytes.
+   * @param size Return total buffer size in bytes.
    * @param readChunk Read chunk of data and return an {@link Uint8Array}.
    */
-  analyzeData(getSize: GetSizeFunc, readChunk: ReadChunkFunc): Promise<ResultMap[TFormat]>
+  analyzeData(size: SizeArg, readChunk: ReadChunkFunc): Promise<ResultMap[TFormat]>
 
   /**
    * Convenience method for analyzing a buffer chunk by chunk.
    *
-   * @param getSize Return total buffer size in bytes.
+   * @param size Return total buffer size in bytes.
    * @param readChunk Read chunk of data and return an {@link Uint8Array}.
    * @param callback Function that is called once the processing is done
    */
-  analyzeData(
-    getSize: GetSizeFunc,
-    readChunk: ReadChunkFunc,
-    callback: ResultCallback<TFormat>
-  ): void
+  analyzeData(size: SizeArg, readChunk: ReadChunkFunc, callback: ResultCallback<TFormat>): void
 
   analyzeData(
-    getSize: GetSizeFunc,
+    size: SizeArg,
     readChunk: ReadChunkFunc,
     callback?: ResultCallback<TFormat>
   ): Promise<ResultMap[TFormat] | null> | undefined {
@@ -105,7 +101,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
             resolve(result)
           }
         }
-        this.analyzeData(getSize, readChunk, resultCb)
+        this.analyzeData(size, readChunk, resultCb)
       })
     }
 
@@ -166,7 +162,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
       getChunk()
     }
 
-    const fileSizeValue = getSize()
+    const fileSizeValue = size instanceof Function ? size() : size
+
     if (fileSizeValue instanceof Promise) {
       fileSizeValue.then(runReadDataLoop).catch((error: unknown) => {
         callback(null, unknownToError(error))
@@ -300,6 +297,6 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   }
 }
 
-export type { FormatType, GetSizeFunc, ReadChunkFunc, ResultMap }
+export type { FormatType, ReadChunkFunc, ResultMap, SizeArg }
 export { DEFAULT_OPTIONS, FORMAT_CHOICES }
 export default MediaInfo
