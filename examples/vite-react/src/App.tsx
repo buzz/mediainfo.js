@@ -1,5 +1,5 @@
 import { type ChangeEvent, useState, useEffect, useRef } from 'react'
-import MediaInfoFactory, { ReadChunkFunc, type MediaInfo } from 'mediainfo.js'
+import mediaInfoFactory, { ReadChunkFunc, type MediaInfo } from 'mediainfo.js'
 
 function getMetadata(mi: MediaInfo<'text'>, file: File) {
   const getSize = () => file.size
@@ -23,7 +23,7 @@ function App() {
   const [result, setResult] = useState('')
 
   useEffect(() => {
-    MediaInfoFactory({ format: 'text' }).then((mi) => {
+    mediaInfoFactory({ format: 'text' }).then((mi) => {
       miRef.current = mi
     })
 

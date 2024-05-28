@@ -1,4 +1,4 @@
-import MediaInfoFactory, { type MediaInfo } from '..'
+import mediaInfoFactory, { type MediaInfo } from '..'
 import { expectToBeError } from './utils.ts'
 
 const getSize = () => 99
@@ -10,7 +10,7 @@ describe('Error in readChunk', () => {
   let mi: MediaInfo
 
   beforeEach(async () => {
-    mi = await MediaInfoFactory()
+    mi = await mediaInfoFactory()
   })
 
   afterEach(() => {

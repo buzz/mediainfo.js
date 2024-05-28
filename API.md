@@ -3,7 +3,7 @@
 The main package export is a factory function that will handle instantiation and
 loading of the WASM module for you. It works asynchronous.
 
-## `MediaInfoFactory(opts, successCallback, errorCallback)`
+## `mediaInfoFactory(opts, successCallback, errorCallback)`
 
 > Asynchronously create an instance of MediaInfo.
 
@@ -19,7 +19,7 @@ Defaults: `opts = { chunkSize: 256*1024, coverData: false, format: 'object', ful
 ### Example
 
 ```js
-const mediainfo = await MediaInfoFactory({ format: 'text' })
+const mediainfo = await mediaInfoFactory({ format: 'text' })
 ```
 
 ## `MediaInfo`

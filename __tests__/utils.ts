@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import MediaInfoFactory from '..'
+import mediaInfoFactory from '..'
 import type { FormatType, MediaInfo, MediaInfoFactoryOptions, ReadChunkFunc, ResultMap } from '..'
 
 function fixturePath(name: string) {
@@ -16,7 +16,7 @@ async function analyzeFile<TFormat extends FormatType = 'object'>(
   let result: ResultMap[TFormat]
 
   try {
-    mi = await MediaInfoFactory(opts)
+    mi = await mediaInfoFactory(opts)
     let fileHandle: fs.FileHandle | undefined
 
     const getSize = async () => {

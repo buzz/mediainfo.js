@@ -54,32 +54,32 @@ function defaultLocateFile(path: string, prefix: string) {
  * @param options User options
  * @returns MediaInfo object
  */
-function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
+function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options?: MediaInfoFactoryOptions<TFormat>
 ): Promise<MediaInfo<TFormat>>
 
 /**
- * Factory function for {@link MediaInfoFactory}.
+ * Factory function for {@link mediaInfoFactory}.
  *
  * @param options User options
  * @param callback Function that is called once the module is created
  * @param callback Error callback
  */
-function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
+function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options: MediaInfoFactoryOptions<TFormat>,
   callback: FactoryCallback<TFormat>,
   errCallback?: ErrorCallback
 ): void
 
 // TODO pass through all emscripten module options
-function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
+function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options: MediaInfoFactoryOptions<TFormat> = {},
   callback?: FactoryCallback<TFormat>,
   errCallback?: ErrorCallback
 ): Promise<MediaInfo<TFormat>> | undefined {
   if (callback === undefined) {
     return new Promise((resolve, reject) => {
-      MediaInfoFactory(options, resolve, reject)
+      mediaInfoFactory(options, resolve, reject)
     })
   }
 
@@ -115,4 +115,4 @@ function MediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
 }
 
 export type { MediaInfoFactoryOptions }
-export default MediaInfoFactory
+export default mediaInfoFactory

@@ -12,9 +12,9 @@ Try mediainfo.js in your browser: [https://mediainfo.js.org](https://mediainfo.j
 ## Usage
 
 ```js
-import MediaInfoFactory from 'mediainfo.js'
+import mediaInfoFactory from 'mediainfo.js'
 
-MediaInfoFactory().then((mediainfo) => {
+mediaInfoFactory().then((mediainfo) => {
   mediainfo.analyzeFile(...)
 })
 ```
@@ -42,7 +42,7 @@ file by configuring your bundler/web server accordingly** ([examples](#examples)
 
 Note that you can override the WASM file location by specifying a custom
 [`locateFile`](https://emscripten.org/docs/api_reference/module.html#Module.locateFile)
-function to `MediaInfoFactory`.
+function to `mediaInfoFactory`.
 
 ### Node.js
 

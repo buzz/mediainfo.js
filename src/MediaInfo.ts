@@ -1,6 +1,6 @@
 import { unknownToError } from './error.js'
 import { FLOAT_FIELDS, INT_FIELDS, type MediaInfoType, type TrackType } from './MediaInfoType.js'
-import type { MediaInfoFactoryOptions } from './MediaInfoFactory.js'
+import type { MediaInfoFactoryOptions } from './mediaInfoFactory.js'
 import type {
   MediaInfoModule,
   MediaInfoWasmInterface,
@@ -52,7 +52,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
 
   /**
    * Create an instance of MediaInfo. The constructor should not be called directly.
-   * Instead use {@link MediaInfoFactory}.
+   * Instead use {@link mediaInfoFactory}.
    *
    * @param mediainfoModule WASM module
    * @param options User options

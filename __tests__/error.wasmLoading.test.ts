@@ -1,4 +1,4 @@
-import MediaInfoFactory from '..'
+import mediaInfoFactory from '..'
 import { expectToBeError } from './utils'
 
 beforeEach(() => {
@@ -16,7 +16,7 @@ afterEach(() => {
 
 describe('Error on WASM loading', () => {
   it('should return error via callback', (done) => {
-    MediaInfoFactory(
+    mediaInfoFactory(
       { locateFile: () => 'file_does_not_exist.wasm' },
       () => {
         throw new Error('Callback should not fire')
@@ -30,7 +30,7 @@ describe('Error on WASM loading', () => {
   })
 
   it('should return error via Promise', () =>
-    expect(MediaInfoFactory({ locateFile: () => 'file_does_not_exist.wasm' })).rejects.toThrow(
+    expect(mediaInfoFactory({ locateFile: () => 'file_does_not_exist.wasm' })).rejects.toThrow(
       /no such file/
     ))
 })

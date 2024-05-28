@@ -7,7 +7,7 @@ import yargs from 'yargs/yargs'
 
 import { unknownToError } from './error.js'
 import { FORMAT_CHOICES } from './MediaInfo.js'
-import MediaInfoFactory from './MediaInfoFactory.js'
+import mediaInfoFactory from './mediaInfoFactory.js'
 import type { ReadChunkFunc } from './MediaInfo.js'
 import type MediaInfo from './MediaInfo.js'
 
@@ -38,7 +38,7 @@ const analyze = async ({ coverData, file, format, full }: ReturnType<typeof pars
     const fileStat = await fileHandle.stat()
     fileSize = fileStat.size
     try {
-      mediainfo = await MediaInfoFactory({ format, coverData, full })
+      mediainfo = await mediaInfoFactory({ format, coverData, full })
     } catch (error: unknown) {
       throw unknownToError(error)
     }

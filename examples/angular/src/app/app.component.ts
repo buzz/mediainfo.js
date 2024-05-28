@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import MediaInfoFactory from 'mediainfo.js'
+import mediaInfoFactory from 'mediainfo.js'
 import type { MediaInfo, ReadChunkFunc } from 'mediainfo.js'
 
 @Component({
@@ -41,7 +41,7 @@ export class AppComponent {
   }
 
   onChangeFile(input: HTMLInputElement) {
-    MediaInfoFactory({ format: 'text' })
+    mediaInfoFactory({ format: 'text' })
       .then((mi) => {
         this.getMetadata(mi, input)
           .then((info) => {

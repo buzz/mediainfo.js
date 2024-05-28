@@ -5,8 +5,8 @@ export type {
   ReadChunkFunc,
   ResultMap,
 } from './MediaInfo.js'
-export type { MediaInfoFactoryOptions } from './MediaInfoFactory.js'
-export { default } from './MediaInfoFactory.js'
+export type { MediaInfoFactoryOptions } from './mediaInfoFactory.js'
+export { default, default as mediaInfoFactory } from './mediaInfoFactory.js'
 export type {
   CreationType,
   ExtraType,

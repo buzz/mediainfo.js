@@ -1,4 +1,4 @@
-import MediaInfoFactory, { type MediaInfo } from '..'
+import mediaInfoFactory, { type MediaInfo } from '..'
 
 const methodNames = [
   'analyzeData',
@@ -18,7 +18,7 @@ const expectMediainfoObj = (mi: MediaInfo) => {
 }
 
 it('should instantiate via callback', (done) => {
-  MediaInfoFactory({}, (mi) => {
+  mediaInfoFactory({}, (mi) => {
     try {
       expectMediainfoObj(mi)
     } finally {
@@ -32,7 +32,7 @@ it('should instantiate via Promise', async () => {
   expect.assertions(8)
   let mi: MediaInfo | undefined
   try {
-    mi = await MediaInfoFactory()
+    mi = await mediaInfoFactory()
     expectMediainfoObj(mi)
   } finally {
     if (mi) {

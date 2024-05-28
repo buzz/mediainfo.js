@@ -1,7 +1,7 @@
 import { DOMParser } from '@xmldom/xmldom'
 import xpath from 'xpath'
 
-import MediaInfoFactory from '..'
+import mediaInfoFactory from '..'
 import { expectToBeDefined } from './utils'
 import type { FormatType, MediaInfo, ResultMap } from '..'
 
@@ -17,7 +17,7 @@ it('should use default options', async () => {
   let mi: MediaInfo | undefined
 
   try {
-    mi = await MediaInfoFactory()
+    mi = await mediaInfoFactory()
     expect(mi.options.coverData).toBe(false)
     expect(mi.options.chunkSize).toBe(256 * 1024)
     expect(mi.options.full).toBe(false)
@@ -34,7 +34,7 @@ it('should accepts options', async () => {
   let mi: MediaInfo | undefined
 
   try {
-    mi = await MediaInfoFactory({
+    mi = await mediaInfoFactory({
       chunkSize: 16 * 1024,
       coverData: true,
       format: 'object',
@@ -57,7 +57,7 @@ it('should return JSON string', async () => {
   let mi: MediaInfo<'JSON'> | undefined
 
   try {
-    mi = await MediaInfoFactory({ format: 'JSON' })
+    mi = await mediaInfoFactory({ format: 'JSON' })
     const result = await analyzeFakeData(mi)
     expect(result).toEqual(expect.any(String))
     let fileSize: string | undefined
@@ -79,7 +79,7 @@ it('should return HTML string', async () => {
   let mi: MediaInfo<'HTML'> | undefined
 
   try {
-    mi = await MediaInfoFactory({ format: 'HTML' })
+    mi = await mediaInfoFactory({ format: 'HTML' })
     const result = await analyzeFakeData(mi)
     expect(result).toEqual(expect.any(String))
     expect(result).toMatch('<html>')
@@ -97,7 +97,7 @@ it('should return formatted text string', async () => {
   let mi: MediaInfo<'text'> | undefined
 
   try {
-    mi = await MediaInfoFactory({ format: 'text' })
+    mi = await mediaInfoFactory({ format: 'text' })
     const result = await analyzeFakeData(mi)
     expect(result).toEqual(expect.any(String))
     expect(result).toMatch('File size')
@@ -114,7 +114,7 @@ it('should return XML string', async () => {
   let mi: MediaInfo<'XML'> | undefined
 
   try {
-    mi = await MediaInfoFactory({ format: 'XML' })
+    mi = await mediaInfoFactory({ format: 'XML' })
     const result = await analyzeFakeData(mi)
     expect(result).toEqual(expect.any(String))
 
