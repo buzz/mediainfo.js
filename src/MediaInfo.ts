@@ -1,16 +1,12 @@
 import { unknownToError } from './error.js'
 import { FLOAT_FIELDS, INT_FIELDS, type MediaInfoType, type TrackType } from './MediaInfoType.js'
 import type { MediaInfoFactoryOptions } from './mediaInfoFactory.js'
-import type {
-  MediaInfoModule,
-  MediaInfoWasmInterface,
-  WasmConstructableFormatType,
-} from './MediaInfoModule.js'
+import type { MediaInfoModule, MediaInfoWasmInterface } from './MediaInfoModule.js'
 
 const MAX_UINT32_PLUS_ONE = 2 ** 32
 
 /** Format of the result type */
-type FormatType = 'object' | WasmConstructableFormatType
+type FormatType = 'object' | 'JSON' | 'XML' | 'HTML' | 'text'
 
 type MediaInfoOptions<TFormat extends FormatType> = Required<
   Omit<MediaInfoFactoryOptions<TFormat>, 'locateFile'>

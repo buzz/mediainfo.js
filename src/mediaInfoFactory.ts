@@ -59,7 +59,7 @@ function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
 ): Promise<MediaInfo<TFormat>>
 
 /**
- * Factory function for {@link mediaInfoFactory}.
+ * Factory function for {@link MediaInfo}.
  *
  * @param options User options
  * @param callback Function that is called once the module is created

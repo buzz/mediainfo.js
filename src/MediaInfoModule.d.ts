@@ -24,10 +24,5 @@ interface MediaInfoModule extends EmscriptenModule {
 
 declare const mediaInfoModuleFactory: EmscriptenModuleFactory<MediaInfoModule>
 
-export type {
-  MediaInfoModule,
-  MediaInfoWasmConstructable,
-  MediaInfoWasmInterface,
-  WasmConstructableFormatType,
-}
+export type { MediaInfoModule, MediaInfoWasmConstructable, MediaInfoWasmInterface }
 export default mediaInfoModuleFactory
