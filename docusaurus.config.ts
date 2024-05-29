@@ -3,7 +3,8 @@ import path from 'node:path'
 import { themes as prismThemes } from 'prism-react-renderer'
 import type { Config, ThemeConfig } from '@docusaurus/types'
 
-import mediainfoPlugin from './plugins/mediainfoWasm'
+import copyWasmPlugin from './plugins/copyWasm'
+import extractVersionsPlugin from './plugins/extractVersions'
 
 const PROJECT_NAME = 'mediainfo.js'
 const ORGANIZATION_NAME = 'buzz'
@@ -43,7 +44,7 @@ const config: Config = {
     navbar: {
       title: PROJECT_NAME,
       logo: {
-        alt: 'My Site Logo',
+        alt: `${PROJECT_NAME} logo`,
         src: 'img/logo.svg',
       },
       items: [
@@ -64,8 +65,7 @@ const config: Config = {
           position: 'left',
         },
         {
-          href: GITHUB_LINK,
-          label: 'GitHub',
+          type: 'custom-gitHubNavbarItem',
           position: 'right',
         },
       ],
@@ -125,7 +125,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyleft <span class="flip-x">©</span> <a href="https://github.com/${ORGANIZATION_NAME}">${ORGANIZATION_NAME}</a> ${new Date().getFullYear()}`,
+      copyright: `<span class="flip-x">©</span> <a href="https://github.com/${ORGANIZATION_NAME}">${ORGANIZATION_NAME}</a> ${new Date().getFullYear()}`,
     },
     prism: {
       theme: prismThemes.github,
@@ -154,10 +154,11 @@ const config: Config = {
         projectRoot: path.resolve(__dirname, '..', 'mediainfo.js'),
         packages: ['.'],
         changelogs: true,
-        readmes: true,
+        readmes: false,
       },
     ],
-    mediainfoPlugin,
+    copyWasmPlugin,
+    extractVersionsPlugin,
     process.env.NODE_ENV !== 'production' && '@docusaurus/plugin-debug',
     '@docusaurus/plugin-sitemap',
   ].filter(Boolean),

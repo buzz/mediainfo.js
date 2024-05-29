@@ -5,8 +5,8 @@ import type { PluginModule } from '@docusaurus/types'
 
 const projectDir = path.resolve(__dirname, '..')
 
-const mediainfoWasmCopy: PluginModule = (context, options) => ({
-  name: 'mediainfo-wasm-copy',
+const copyWasm: PluginModule = () => ({
+  name: 'copy-wasm',
   async loadContent() {
     await fs.copyFile(
       path.join(projectDir, 'node_modules', 'mediainfo.js', 'dist', 'MediaInfoModule.wasm'),
@@ -15,4 +15,4 @@ const mediainfoWasmCopy: PluginModule = (context, options) => ({
   },
 })
 
-export default mediainfoWasmCopy
+export default copyWasm

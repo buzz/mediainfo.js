@@ -3,6 +3,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import clsx from 'clsx'
 
 import HomepageFeatures from '@site/src/components/HomepageFeatures'
+import useVersionInfo from '@site/src/hooks/useVersionInfo'
 import LogoSvg from '@site/static/img/logo.svg'
 import Heading from '@theme/Heading'
 import Layout from '@theme/Layout'
@@ -11,6 +12,8 @@ import styles from './index.module.css'
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext()
+  const versionInfo = useVersionInfo()
+
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
@@ -33,6 +36,11 @@ function HomepageHeader() {
               <Link className="button button--primary button--lg" to="/demo">
                 🚀 Demo
               </Link>
+              <div>
+                mediainfo.js {`v${versionInfo.mediainfoJs}`}
+                <br />
+                MediaInfoLib {`v${versionInfo.MediaInfoLib}`}
+              </div>
             </div>
           </div>
         </div>
@@ -43,10 +51,11 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext()
+
   return (
     <Layout description={siteConfig.tagline}>
-      <HomepageHeader />
       <main>
+        <HomepageHeader />
         <HomepageFeatures />
       </main>
     </Layout>

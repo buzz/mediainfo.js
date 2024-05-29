@@ -2,6 +2,8 @@
 title: License
 ---
 
+# License
+
 **mediainfo.js is freeware under BSD-2-Clause license conditions: MediaInfo(Lib) License**
 
 **This product uses [MediaInfo](https://mediaarea.net/MediaInfo) library, Copyright (c) 2002-2024

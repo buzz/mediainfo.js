@@ -1,5 +1,6 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import clsx from 'clsx'
 
 import Details from '@theme/Details'
 
@@ -10,7 +11,7 @@ import type { Result } from './Result'
 function ResultSection({ id, index, result, onRemove }: ResultSectionProps) {
   const summary = (
     <summary className={styles.summary}>
-      <span className={styles.filename}>{result.name}</span>
+      <span className={clsx(styles.filename, 'text--truncate')}>{result.name}</span>
       <button
         className="button button--danger button--sm"
         onClick={(event) => {

@@ -5,9 +5,6 @@
 
 .filename {
   font-family: var(--ifm-font-family-monospace);
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   padding-right: 0.75em;
 }
 

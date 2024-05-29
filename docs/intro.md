@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Introduction
 
-mediainfo.js is a web-compatible version of the [MediaInfoLib](https://mediaarea.net/MediaInfo), originally written in
+mediainfo.js is a web-compatible version of the [libmediainfo](https://mediaarea.net/MediaInfo), originally written in
 C++. Compiled from C++ to [WebAssembly](https://webassembly.org/), mediainfo.js enables browser compatibility while also
 supporting Node.js execution.
 

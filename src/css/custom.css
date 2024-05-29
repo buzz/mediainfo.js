@@ -13,16 +13,16 @@
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #ad655c;
-  --ifm-color-primary-dark: #a85e54;
-  --ifm-color-primary-darker: #a15d54;
-  --ifm-color-primary-darkest: #94534a;
-  --ifm-color-primary-light: #b06d64;
-  --ifm-color-primary-lighter: #b5776e;
-  --ifm-color-primary-lightest: #ba8077;
+  --ifm-color-primary: #c08a82;
+  --ifm-color-primary-dark: #bc827a;
+  --ifm-color-primary-darker: #b98179;
+  --ifm-color-primary-darkest: #b5756d;
+  --ifm-color-primary-light: #c28f88;
+  --ifm-color-primary-lighter: #c69790;
+  --ifm-color-primary-lightest: #ca9d97;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --bg-color: #4e4649;
-  --hero-gradient: linear-gradient(to right, #594e51, var(--bg-color));
+  --bg-color: #322f2f;
+  --hero-gradient: linear-gradient(to right, #3b3537, var(--bg-color));
 }
 
 .flip-x {
@@ -39,6 +39,14 @@
   --ifm-hero-text-color: inherit;
 }
 
-.footer--dark {
+[data-theme='light'] .footer--dark {
+  background-color: #363636;
+}
+
+.footer--dark a {
+  color: var(--ifm-color-secondary);
+}
+
+[data-theme='dark'] .footer--dark {
   background-color: var(--bg-color);
 }
