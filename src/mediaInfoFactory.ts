@@ -8,7 +8,7 @@ interface MediaInfoFactoryOptions<TFormat extends FormatType> {
   /** Chunk size used by `analyzeData` (in bytes) */
   chunkSize?: number
 
-  /** Result format */
+  /** Result format (`object`, `JSON`, `XML`, `HTML` or `text`) */
   format?: TFormat
 
   /** Full information display (all internal tags) */

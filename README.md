@@ -1,106 +1,22 @@
 # mediainfo.js
 
-This is a JavaScript port of the excellent
-[MediaInfoLib](https://mediaarea.net/en/MediaInfo) and can run directly in a
-browser or in Node.js. It is transpiled from C++ source code using
-[Emscripten](http://emscripten.org/).
+<img src="https://mediainfo.js.org/img/logo.svg" alt="mediainfo.js Logo" width="120" height="120" style="float: right; margin-left: 1.5em;" />
 
-## Demo
+*Extract media file metadata in the browser using WebAssembly.*
 
-Try mediainfo.js in your browser: [https://mediainfo.js.org](https://mediainfo.js.org)
+mediainfo.js is a web-compatible version of the [MediaInfoLib](https://mediaarea.net/en/MediaInfo), originally written in C++. Compiled
+from C++ to WebAssembly, mediainfo.js enables browser compatibility while also supporting Node.js
+execution.
 
-## Usage
+<div style="clear: right;"></div>
 
-```js
-import mediaInfoFactory from 'mediainfo.js'
+## Live Demo
 
-mediaInfoFactory().then((mediainfo) => {
-  mediainfo.analyzeFile(...)
-})
-```
+[Try mediainfo.js in your browser.](https://mediainfo.js.org/demo)
 
-See the [API docs](API.md) for detailed instructions.
+## Documentation
 
-### Browser
-
-You can either use a CDN to include the script file directly in your page or
-use a JavaScript bundler like webpack.
-
-- **CDN**:  
-  `<script type="text/javascript" src="https://unpkg.com/mediainfo.js"></script>`
-- **Bundler**: `npm install mediainfo.js`
-
-#### WASM file loading
-
-Be aware that mediainfo.js needs to load the `MediaInfoModule.wasm` file (around
-**2 MiB**). The WASM module is loaded and instantiated automatically. By
-default its load path is determined from the script location. This works
-out-of-the-box for the UMD and Node.js version.
-
-❗️ **If using a bundler, you need to ensure the module loader can fetch the WASM
-file by configuring your bundler/web server accordingly** ([examples](#examples)).
-
-Note that you can override the WASM file location by specifying a custom
-[`locateFile`](https://emscripten.org/docs/api_reference/module.html#Module.locateFile)
-function to `mediaInfoFactory`.
-
-### Node.js
-
-Install [mediainfo.js from NPM](https://www.npmjs.com/package/mediainfo.js).
-
-```sh
-$ npm install -g mediainfo.js
-```
-
-It can be used as a CLI from the **shell**.
-
-```sh
-$ mediainfo.js /path/to/media.avi
-```
-
-Or use it as a [library](API.md).
-
-## Examples
-
-- [Browser UMD via CDN](https://github.com/buzz/mediainfo.js/tree/main/examples/browser-umd)
-- [CDN (CodePen)](https://codepen.io/buzzone/pen/eYNjJrx)
-- [Vite/React](https://github.com/buzz/mediainfo.js/tree/main/examples/vite-react)
-- [Webpack/React](https://github.com/buzz/mediainfo.js/tree/main/examples/webpack-react)
-- [Angular](https://github.com/buzz/mediainfo.js/tree/main/examples/angular)
-- [Node.js](https://github.com/buzz/mediainfo.js/blob/main/src/cli.ts)
-
-## Build
-
-Install Emscripten preferably using
-[Emscripten SDK](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions).
-
-```bash
-$ git clone https://github.com/emscripten-core/emsdk.git
-$ cd emsdk
-$ ./emsdk install latest
-$ ./emsdk activate latest
-$ source ./emsdk_env.sh
-```
-
-You also need to have [Binaryen](https://github.com/WebAssembly/binaryen) and
-[wabt](https://github.com/WebAssembly/wabt) available on your system.
-
-In the project root of mediainfo.js run the following to build.
-
-```sh
-$ pnpm install
-$ pnpm build
-```
-
-Find the resulting files in the `dist` directory.
-
-## Tests
-
-You can run a test suite against the dist build.
-
-```sh
-$ pnpm test
-```
+See the [documentation](https://mediainfo.js.org/docs) for detailed instructions.
 
 ## License
 
