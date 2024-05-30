@@ -6,22 +6,11 @@ const onChangeFile = (mediainfo) => {
   if (file) {
     output.value = 'Working…'
 
-    const getSize = () => file.size
-
-    const readChunk = (chunkSize, offset) =>
-      new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onload = (event) => {
-          if (event.target.error) {
-            reject(event.target.error)
-          }
-          resolve(new Uint8Array(event.target.result))
-        }
-        reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize))
-      })
+    const readChunk = async (chunkSize, offset) =>
+      new Uint8Array(await file.slice(offset, offset + chunkSize).arrayBuffer())
 
     mediainfo
-      .analyzeData(getSize, readChunk)
+      .analyzeData(file.size, readChunk)
       .then((result) => {
         output.value = result
       })
