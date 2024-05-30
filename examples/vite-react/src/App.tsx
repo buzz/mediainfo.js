@@ -1,43 +1,42 @@
 import { type ChangeEvent, useState, useEffect, useRef } from 'react'
-import mediaInfoFactory, { ReadChunkFunc, type MediaInfo } from 'mediainfo.js'
 
-function getMetadata(mi: MediaInfo<'text'>, file: File) {
-  const getSize = () => file.size
-  const readChunk: ReadChunkFunc = (chunkSize, offset) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = (event: ProgressEvent<FileReader>) => {
-        if (event.target?.error) {
-          reject(event.target.error)
-        }
-        resolve(new Uint8Array(event.target?.result as ArrayBuffer))
-      }
-      reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize))
-    })
+import mediaInfoFactory from 'mediainfo.js'
+import type { MediaInfo, ReadChunkFunc } from 'mediainfo.js'
 
-  return mi.analyzeData(getSize, readChunk)
+function makeReadChunk(file: File): ReadChunkFunc {
+  return async (chunkSize: number, offset: number) =>
+    new Uint8Array(await file.slice(offset, offset + chunkSize).arrayBuffer())
 }
 
 function App() {
-  const miRef = useRef<MediaInfo<'text'>>()
+  const mediaInfoRef = useRef<MediaInfo<'text'>>()
   const [result, setResult] = useState('')
 
   useEffect(() => {
-    mediaInfoFactory({ format: 'text' }).then((mi) => {
-      miRef.current = mi
-    })
+    mediaInfoFactory({ format: 'text' })
+      .then((mi) => {
+        mediaInfoRef.current = mi
+      })
+      .catch((error: unknown) => {
+        console.error(error)
+      })
 
     return () => {
-      if (miRef.current) {
-        miRef.current.close()
+      if (mediaInfoRef.current) {
+        mediaInfoRef.current.close()
       }
     }
   }, [])
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
     const file = ev.target.files?.[0]
-    if (file && miRef.current) {
-      getMetadata(miRef.current, file).then(setResult)
+    if (file && mediaInfoRef.current) {
+      mediaInfoRef.current
+        .analyzeData(file.size, makeReadChunk(file))
+        .then(setResult)
+        .catch((error: unknown) => {
+          console.error(error)
+        })
     }
   }
 

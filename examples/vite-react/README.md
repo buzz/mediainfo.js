@@ -2,7 +2,7 @@
 
 ## WASM module
 
-Make sure the WASM file can be loaded, e.g. by using `vite-plugin-static-copy`.
+The `MediaInfoModule.wasm` file is copied during build using `vite-plugin-static-copy`.
 
 ```javascript
   viteStaticCopy({
