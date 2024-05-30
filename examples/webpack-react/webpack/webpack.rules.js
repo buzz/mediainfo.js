@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     // Typescript loader
     test: /\.tsx?$/,

@@ -1,14 +1,15 @@
-module.exports = {
+import plugins from './webpack.plugins.js'
+import rules from './webpack.rules.js'
+
+export default {
   mode: 'development',
   entry: ['./src/main.tsx'],
-  module: {
-    rules: require('./webpack.rules'),
-  },
+  module: { rules },
   output: {
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
   },
-  plugins: require('./webpack.plugins'),
+  plugins,
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx'],
   },

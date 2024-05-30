@@ -2,11 +2,11 @@
 
 ## WASM module
 
-Make sure the WASM file can be loaded, e.g. by using `copy-webpack-plugin`.
+The `MediaInfoModule.wasm` file is copied during build using `copy-webpack-plugin`.
 
 ```javascript
 const wasmFile = path.resolve(
-  __dirname,
+  import.meta.dirname,
   '..',
   'node_modules',
   'mediainfo.js',

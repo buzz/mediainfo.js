@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "jsx": "react",
     "allowJs": true,
-    "target": "ES6",
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "sourceMap": true,
     "baseUrl": ".",
-    "outDir": "dist",
+    "esModuleInterop": true,
+    "jsx": "react",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES6"
   },
-  "include": ["src/**/*", "tools/**/*"]
+  "include": ["src", "webpack"]
 }
