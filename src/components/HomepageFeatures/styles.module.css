@@ -10,18 +10,18 @@
   width: 200px;
 }
 
-[data-theme="light"] .featureImage [fill="#1c1e21"] {
-  fill: var(--ifm-color-content);
+[data-theme='light'] .featureImage [fill='#1c1e21'] {
+  fill: var(--color-bg-secondary);
 }
 
-[data-theme="dark"] .featureImage [fill="#1c1e21"] {
+[data-theme='dark'] .featureImage [fill='#1c1e21'] {
   fill: black;
 }
 
-[data-theme="light"] .featureImage [stroke="#1c1e21"] {
-  stroke: var(--ifm-color-content);
+[data-theme='light'] .featureImage [stroke='#1c1e21'] {
+  stroke: var(--color-bg-secondary);
 }
 
-[data-theme="dark"] .featureImage [stroke="#1c1e21"] {
+[data-theme='dark'] .featureImage [stroke='#1c1e21'] {
   stroke: black;
 }

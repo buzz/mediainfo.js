@@ -1,5 +1,6 @@
 /static/MediaInfoModule.wasm
 node_modules
+/TODO.txt
 
 # Production
 /build

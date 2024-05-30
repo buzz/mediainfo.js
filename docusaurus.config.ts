@@ -5,6 +5,7 @@ import type { Config, ThemeConfig } from '@docusaurus/types'
 
 import copyWasmPlugin from './plugins/copyWasm'
 import extractVersionsPlugin from './plugins/extractVersions'
+import postcss from './plugins/postcss'
 
 const PROJECT_NAME = 'mediainfo.js'
 const ORGANIZATION_NAME = 'buzz'
@@ -91,7 +92,7 @@ const config: Config = {
           ],
         },
         {
-          title: 'Misc',
+          title: 'Resources',
           items: [
             {
               label: 'Demo',
@@ -159,6 +160,7 @@ const config: Config = {
     ],
     copyWasmPlugin,
     extractVersionsPlugin,
+    postcss,
     process.env.NODE_ENV !== 'production' && '@docusaurus/plugin-debug',
     '@docusaurus/plugin-sitemap',
   ].filter(Boolean),

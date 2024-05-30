@@ -1,28 +1,93 @@
 :root {
-  --ifm-color-primary: #99564d;
-  --ifm-color-primary-dark: #915149;
-  --ifm-color-primary-darker: #8b5149;
-  --ifm-color-primary-darkest: #824941;
-  --ifm-color-primary-light: #9e5a51;
-  --ifm-color-primary-lighter: #a76156;
-  --ifm-color-primary-lightest: #ad685d;
+  --ifm-dark-value: 10%;
+  --ifm-darker-value: 15%;
+  --ifm-darkest-value: 30%;
+  --ifm-light-value: 15%;
+  --ifm-lighter-value: 30%;
+  --ifm-lightest-value: 50%;
+
+  --ifm-contrast-background-value: 90%;
+  --ifm-contrast-foreground-value: 70%;
+  --ifm-contrast-background-dark-value: 70%;
+  --ifm-contrast-foreground-dark-value: 90%;
+
+  --ifm-color-primary: #0078ad;
+  --ifm-color-secondary: #ebedf0;
+  --ifm-color-success: #68af4c;
+  --ifm-color-info: #54c7ec;
+  --ifm-color-warning: #ffba00;
+  --ifm-color-danger: #d23638;
+
+  --ifm-color-emphasis-50: color-mod(#1c1e21 blend(black 50%));
+
+  @each $color in (primary, secondary, success, info, warning, danger) {
+    --ifm-color-$(color)-dark: color-mod(var(--ifm-color-$(color)) shade(var(--ifm-dark-value)));
+    --ifm-color-$(color)-darker: color-mod(
+      var(--ifm-color-$(color)) shade(var(--ifm-darker-value))
+    );
+    --ifm-color-$(color)-darkest: color-mod(
+      var(--ifm-color-$(color)) shade(var(--ifm-darkest-value))
+    );
+    --ifm-color-$(color)-light: color-mod(var(--ifm-color-$(color)) tint(var(--ifm-light-value)));
+    --ifm-color-$(color)-lighter: color-mod(
+      var(--ifm-color-$(color)) tint(var(--ifm-lighter-value))
+    );
+    --ifm-color-$(color)-lightest: color-mod(
+      var(--ifm-color-$(color)) tint(var(--ifm-lightest-value))
+    );
+    --ifm-color-$(color)-contrast-background: color-mod(
+      var(--ifm-color-$(color)) tint(var(--ifm-contrast-background-value))
+    );
+    --ifm-color-$(color)-contrast-foreground: color-mod(
+      var(--ifm-color-$(color)) shade(var(--ifm-contrast-foreground-value))
+    );
+  }
+
+  --color-bg: #484043;
+  --color-bg-secondary: #363032;
+
+  --ifm-color-content: var(--color-bg);
+  --ifm-color-content-secondary: var(--color-bg-secondary);
+
+  --ifm-menu-color-active: var(--ifm-color-primary-dark);
+  --ifm-breadcrumb-color-active: var(--ifm-color-primary-dark);
+  --ifm-navbar-link-hover-color: black;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --bg-color: #484043;
-  --hero-gradient: linear-gradient(to right, var(--bg-color), #3d3639);
+  --hero-gradient: linear-gradient(
+    to right,
+    var(--color-bg),
+    color-mod(var(--color-bg) shade(var(--ifm-dark-value)))
+  );
 }
 
-[data-theme='dark'] {
-  --ifm-color-primary: #c08a82;
-  --ifm-color-primary-dark: #bc827a;
-  --ifm-color-primary-darker: #b98179;
-  --ifm-color-primary-darkest: #b5756d;
-  --ifm-color-primary-light: #c28f88;
-  --ifm-color-primary-lighter: #c69790;
-  --ifm-color-primary-lightest: #ca9d97;
+html[data-theme='dark'] {
+  --ifm-link-color: var(--ifm-color-primary-lighter);
+  --ifm-color-content-inverse: --ifm-color-emphasis-50;
+  --ifm-menu-color-active: var(--ifm-color-primary-lighter);
+  --ifm-breadcrumb-color-active: var(--ifm-color-primary-lighter);
+  --ifm-navbar-link-hover-color: white;
+
+  @each $color in (primary, secondary, success, info, warning, danger) {
+    --ifm-color-$(color)-contrast-background: color-mod(
+      var(--ifm-color-$(color)) shade(var(--ifm-contrast-background-dark-value))
+    );
+    --ifm-color-$(color)-contrast-foreground: color-mod(
+      var(--ifm-color-$(color)) tint(var(--ifm-contrast-foreground-dark-value))
+    );
+  }
+
+  --ifm-color-content: #c9cfcd;
+  --ifm-color-content-secondary: #b7bfbc;
+
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --bg-color: #322f2f;
-  --hero-gradient: linear-gradient(to right, #3b3537, var(--bg-color));
+}
+
+[data-theme='dark'] .table-of-contents__link:hover,
+[data-theme='dark'] .table-of-contents__link:hover code,
+[data-theme='dark'] .table-of-contents__link--active,
+[data-theme='dark'] .table-of-contents__link--active code {
+  color: var(--ifm-color-primary-lighter);
 }
 
 .flip-x {
@@ -31,7 +96,6 @@
 }
 
 .hero--primary {
-  background-color: var(--bg-color);
   background-image: var(--hero-gradient);
 }
 
@@ -39,14 +103,10 @@
   --ifm-hero-text-color: inherit;
 }
 
-[data-theme='light'] .footer--dark {
-  background-color: #363636;
-}
-
-.footer--dark a {
-  color: var(--ifm-color-secondary);
-}
-
-[data-theme='dark'] .footer--dark {
-  background-color: var(--bg-color);
+.footer--dark {
+  --ifm-footer-background-color: var(--color-bg-secondary);
+  --ifm-link-color: var(--ifm-color-content-inverse);
+  --ifm-link-hover-color: white;
+  --ifm-footerlink-color: var(--ifm-color-content-inverse);
+  --ifm-footer-link-hover-color: white;
 }
