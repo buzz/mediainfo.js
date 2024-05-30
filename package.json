@@ -39,6 +39,7 @@
     "@docusaurus/tsconfig": "3.3.2",
     "@docusaurus/types": "3.3.2",
     "@eslint/js": "^9.3.0",
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.3",
     "docusaurus-plugin-typedoc-api": "^4.2.0",

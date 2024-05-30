@@ -1,5 +1,5 @@
-.githubStarButton {
-  border: none;
-  margin-left: 24px;
-  overflow: hidden;
+.github {
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
 }
