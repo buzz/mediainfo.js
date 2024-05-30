@@ -4,11 +4,11 @@ sidebar_position: 1
 
 # Introduction
 
-mediainfo.js is a web-compatible version of the [libmediainfo](https://mediaarea.net/MediaInfo), originally written in
+mediainfo.js is a web-compatible version of the [MediaInfoLib](https://mediaarea.net/MediaInfo), originally written in
 C++. Compiled from C++ to [WebAssembly](https://webassembly.org/), mediainfo.js enables browser compatibility while also
 supporting Node.js execution.
 
-## What can mediainfo.js do for you?
+## What can mediainfo.js do?
 
 mediainfo.js analyzes various media files and provides detailed information about them. While the
 original MediaInfo program runs on computers or servers, mediainfo.js is designed for browser use.
@@ -82,8 +82,8 @@ Check out the [example page](/docs/category/examples).
 ### JavaScript library
 
 Typically, you would use mediainfo.js as a library for your web project. Depending on your needs,
-you can integrate it with a web bundler or load it as a stand-alone file from a CDN or your web
-server.
+you can integrate it with a [web bundler](/docs/getting-started/installation#bundler) or load it as
+a stand-alone file from a [CDN](/docs/getting-started/installation#cdn) or your web server.
 
 ### Command-Line interace
 
