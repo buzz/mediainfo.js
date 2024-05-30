@@ -2,8 +2,7 @@
 
 ## WASM module
 
-Add `MediaInfoModule.wasm` to the `assets` section in the options of the build
-target in your `angular.json`.
+The `MediaInfoModule.wasm` file is copied during build using `assets` configuration.
 
 ```json
 "assets": [
@@ -12,10 +11,5 @@ target in your `angular.json`.
     "glob": "MediaInfoModule.wasm",
     "output": ""
   }
-]
+],
 ```
-
-## Credits
-
-Based on a [Stack Overflow answer](https://stackoverflow.com/a/63049567) by
-[David](https://stackoverflow.com/users/1160794/david).

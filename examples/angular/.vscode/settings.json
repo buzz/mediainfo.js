@@ -1,0 +1,9 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.experimental.useFlatConfig": true,
+  "search.exclude": {
+    "**/dist": true,
+    "**/node_modules": true
+  },
+  "editor.rulers": [100]
+}
