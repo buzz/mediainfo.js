@@ -12,13 +12,15 @@ const PROJECT_NAME = 'mediainfo.js'
 const ORGANIZATION_NAME = 'buzz'
 const GITHUB_LINK = `https://github.com/${ORGANIZATION_NAME}/${PROJECT_NAME}`
 const SHORT_DESCRIPTION = 'Extract media file metadata in the browser using WebAssembly.'
+const URL = 'https://mediainfo.js.org/'
 
 const config: Config = {
   title: PROJECT_NAME,
   tagline: SHORT_DESCRIPTION,
   favicon: 'img/favicon.ico',
-  url: 'https://mediainfo.js.org/',
+  url: URL,
   baseUrl: '/',
+  trailingSlash: true,
 
   // GitHub pages deployment config.
   organizationName: ORGANIZATION_NAME,
@@ -42,7 +44,22 @@ const config: Config = {
       },
     },
     image: 'img/mediainfo-social-card.jpg',
-    metadata: [{ name: 'twitter:card', content: SHORT_DESCRIPTION }],
+    metadata: [
+      { name: 'twitter:card', content: SHORT_DESCRIPTION },
+      {
+        name: 'keywords',
+        content: 'javascript, mediainfo, wasm, emscripten, video, audio, metadata',
+      },
+    ],
+    headTags: [
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preconnect',
+          href: URL,
+        },
+      },
+    ],
     navbar: {
       title: PROJECT_NAME,
       logo: {
