@@ -2,7 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
-**Changes preceding version 0.2.0 are not included in the changelog.**
+:::note
+Changes preceding version 0.2.0 are not included in the changelog.
+:::
+
+## [0.3.0](https://github.com/buzz/mediainfo.js/compare/v0.2.2...v0.3.0) (2024-05-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Consumers of the library need to update their types.
+
+### Features
+
+* add interfaces and detailed descriptions for all track types ([69482a7](https://github.com/buzz/mediainfo.js/commit/69482a766f96e7ccade965d027c32e67bccf353e))
+* also accept number as size argument ([4405da4](https://github.com/buzz/mediainfo.js/commit/4405da4a5347e1b3fec10af7bc52b65f81613f94))
+* **build:** optimize WASM file size ([fa05a1a](https://github.com/buzz/mediainfo.js/commit/fa05a1ab684897d38b76d26211aa5fe488bd481c))
+* **types:** move common track fields to `BaseTrack` ([e2b4c1a](https://github.com/buzz/mediainfo.js/commit/e2b4c1af84a09756ecb01887b3ac3e5c0719fb17))
+
+
+### Upgrades
+
+* **deps:** upgrade libmediainfo to v24.04 ([98531dd](https://github.com/buzz/mediainfo.js/commit/98531dd37def908d23e653ca9e7f3c603e08f836))
+* **deps:** upgrade libmediainfo to v24.05 ([ee4ad2b](https://github.com/buzz/mediainfo.js/commit/ee4ad2b8974942402087bbac0be2aa3b96e0a126))
 
 ## [0.2.2](https://github.com/buzz/mediainfo.js/compare/v0.2.1...v0.2.2) (2024-02-28)
 
