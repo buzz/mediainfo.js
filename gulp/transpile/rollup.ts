@@ -55,7 +55,8 @@ function makeBuildTask({ format, minify }: Bundle) {
       name: format === 'umd' ? UMD_NAME : undefined,
       plugins: minify ? [terser()] : undefined,
       sourcemap: true,
-    }
+      exports: 'named',
+    } satisfies OutputOptions
 
     await bundle.write(outputOptions)
   }

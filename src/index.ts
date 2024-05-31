@@ -8,9 +8,17 @@ export type {
 export type { MediaInfoFactoryOptions } from './mediaInfoFactory.js'
 export { default, default as mediaInfoFactory } from './mediaInfoFactory.js'
 export type {
-  CreationType,
-  ExtraType,
-  MediaInfoType,
-  MediaType,
-  TrackType,
-} from './MediaInfoType.js'
+  AudioTrack,
+  CreationInfo,
+  Extra,
+  GeneralTrack,
+  ImageTrack,
+  Media,
+  MediaInfoResult,
+  MenuTrack,
+  OtherTrack,
+  TextTrack,
+  Track,
+  VideoTrack,
+} from './MediaInfoResult.js'
+export { isTrackType } from './typeGuard.js'

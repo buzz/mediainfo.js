@@ -8,6 +8,8 @@ const BUILD_DIR = path.join(PROJECT_DIR, 'build')
 const VENDOR_DIR = path.join(BUILD_DIR, 'vendor')
 const WASM_FILE = 'MediaInfoModule.wasm'
 
+const TRACK_TYPES = ['General', 'Video', 'Audio', 'Text', 'Image', 'Menu', 'Other']
+
 const WASM_INITIAL_MEMORY = 2 ** 25 // 32 MiB
 
 // Global variable name for UMD build
@@ -74,6 +76,7 @@ export {
   MediaInfoLib_CXXFLAGS,
   PROJECT_DIR,
   SRC_DIR,
+  TRACK_TYPES,
   UMD_NAME,
   VENDOR_DIR,
   WASM_FILE,

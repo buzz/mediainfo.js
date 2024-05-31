@@ -14,8 +14,13 @@ interface MediaInfoFactoryOptions<TFormat extends FormatType> {
   /** Full information display (all internal tags) */
   full?: boolean
 
-  /** Customize loading path for files */
-  locateFile?: EmscriptenModule['locateFile']
+  /**
+   * This method will be called before loading the WASM file. It should return the actual URL to
+   * `MediaInfoModule.wasm`.
+   *
+   * @see https://emscripten.org/docs/api_reference/module.html#Module.locateFile
+   */
+  locateFile?: (path: string, prefix: string) => string
 }
 
 const noopPrint = () => {
@@ -25,17 +30,6 @@ const noopPrint = () => {
 type FactoryCallback<TFormat extends FormatType> = (mediainfo: MediaInfo<TFormat>) => void
 type ErrorCallback = (error: unknown) => void
 
-/**
- * This method will be called to look up the path for the `MediaInfoModule.wasm`
- * file. It handles the special case of loading from a CDN that serves
- * mediainfo.js from the root (e.g. `https://unpkg.com/mediainfo.js`).
- *
- * @see https://emscripten.org/docs/api_reference/module.html#Module.locateFile
- *
- * @param path File name
- * @param prefix Filepath prefix
- * @returns Full path to file
- */
 function defaultLocateFile(path: string, prefix: string) {
   try {
     const url = new URL(prefix)
@@ -48,22 +42,26 @@ function defaultLocateFile(path: string, prefix: string) {
   return `${prefix}../${path}`
 }
 
+// TODO pass through more emscripten module options?
+
 /**
- * Factory function for {@link MediaInfo}.
+ * Creates a {@link MediaInfo} instance with the specified options.
  *
- * @param options User options
- * @returns MediaInfo object
+ * @typeParam TFormat - The format type, defaults to `object`.
+ * @param options - Configuration options for creating the {@link MediaInfo} instance.
+ * @returns A promise that resolves to a {@link MediaInfo} instance when no callback is provided.
  */
 function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options?: MediaInfoFactoryOptions<TFormat>
 ): Promise<MediaInfo<TFormat>>
 
 /**
- * Factory function for {@link MediaInfo}.
+ * Creates a {@link MediaInfo} instance with the specified options and executes the callback.
  *
- * @param options User options
- * @param callback Function that is called once the module is created
- * @param callback Error callback
+ * @typeParam TFormat - The format type, defaults to `object`.
+ * @param options - Configuration options for creating the {@link MediaInfo} instance.
+ * @param callback - Function to call with the {@link MediaInfo} instance.
+ * @param errCallback - Optional function to call on error.
  */
 function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options: MediaInfoFactoryOptions<TFormat>,
@@ -71,7 +69,6 @@ function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
   errCallback?: ErrorCallback
 ): void
 
-// TODO pass through all emscripten module options
 function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format>(
   options: MediaInfoFactoryOptions<TFormat> = {},
   callback?: FactoryCallback<TFormat>,

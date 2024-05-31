@@ -1,8 +1,15 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import mediaInfoFactory from '..'
-import type { FormatType, MediaInfo, MediaInfoFactoryOptions, ReadChunkFunc, ResultMap } from '..'
+import mediaInfoFactory, { isTrackType } from '..'
+import type {
+  FormatType,
+  MediaInfo,
+  MediaInfoFactoryOptions,
+  ReadChunkFunc,
+  ResultMap,
+  Track,
+} from '..'
 
 function fixturePath(name: string) {
   return path.resolve(import.meta.dirname, 'fixtures', name)
@@ -56,6 +63,13 @@ function expectToBeDefined<T>(arg: T): asserts arg is Exclude<T, undefined> {
   expect(arg).toBeDefined()
 }
 
+function expectTrackType<T extends Track['@type']>(
+  thing: unknown,
+  type: T
+): asserts thing is Extract<Track, { '@type': T }> {
+  expect(isTrackType(thing, type)).toBeTruthy()
+}
+
 function expectToBeError(error: unknown): asserts error is Error {
   expect(
     error !== null &&
@@ -63,4 +77,5 @@ function expectToBeError(error: unknown): asserts error is Error {
       Object.prototype.hasOwnProperty.call(error, 'message')
   ).toBeTruthy()
 }
-export { analyzeFile, expectToBeDefined, expectToBeError, fixturePath }
+
+export { analyzeFile, expectToBeDefined, expectToBeError, expectTrackType, fixturePath }

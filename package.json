@@ -133,6 +133,7 @@
     "babel-jest": "^29.7.0",
     "babel-plugin-add-import-extension": "^1.6.0",
     "commit-and-tag-version": "^12.4.1",
+    "csv-parse": "^5.5.6",
     "decompress": "^4.2.1",
     "eslint": "^9.3.0",
     "eslint-plugin-import": "^2.29.1",

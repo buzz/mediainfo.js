@@ -5,7 +5,7 @@ import decompress from 'decompress'
 import gulp from 'gulp'
 
 import { LIBMEDIAINFO_VERSION, LIBZEN_VERSION, VENDOR_DIR } from './constants.ts'
-import { downloadFile } from './utils.ts'
+import { downloadFileToDir } from './utils.ts'
 
 const urls = { libmediainfo: LIBMEDIAINFO_VERSION, libzen: LIBZEN_VERSION }
 
@@ -26,7 +26,7 @@ const task = gulp.parallel(
       try {
         await access(filepath)
       } catch {
-        await downloadFile(dlUrl, filepath)
+        await downloadFileToDir(dlUrl, filepath)
       }
 
       await decompress(filepath, VENDOR_DIR)

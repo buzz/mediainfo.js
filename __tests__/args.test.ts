@@ -1,5 +1,5 @@
 import mediaInfoFactory from '..'
-import { expectToBeDefined } from './utils'
+import { expectToBeDefined, expectTrackType } from './utils'
 import type { MediaInfo, SizeArg } from '..'
 
 it.each([
@@ -15,7 +15,9 @@ it.each([
     expectToBeDefined(result.media)
     const { track } = result.media
     expect(track).toHaveLength(1)
-    expect(track[0].FileSize).toBe('20')
+    const [track0] = track
+    expectTrackType(track0, 'General')
+    expect(track0.FileSize).toBe('20')
   } finally {
     if (mi) {
       mi.close()

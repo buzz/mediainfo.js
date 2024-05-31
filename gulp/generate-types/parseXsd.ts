@@ -1,32 +1,13 @@
-import https from 'node:https'
-
 import { DOMParser } from '@xmldom/xmldom'
-import ts from 'typescript'
 import xpath from 'xpath'
 
-import { createProperty } from './factories.ts'
+import { downloadFile } from '../utils.ts'
 
 const URL = 'https://raw.githubusercontent.com/MediaArea/MediaAreaXml/master/mediainfo.xsd'
 const namespace = 'http://www.w3.org/2001/XMLSchema'
 
-async function downloadSchema() {
-  return new Promise<string>((resolve, reject) => {
-    https
-      .get(URL, (resp) => {
-        let data = ''
-        resp.on('data', (chunk: string) => {
-          data += chunk
-        })
-        resp.on('end', () => {
-          resolve(data)
-        })
-      })
-      .on('error', reject)
-  })
-}
-
 async function parseXsd() {
-  const xmlDocData = await downloadSchema()
+  const xmlDocData = await downloadFile(URL)
   const parser = new DOMParser()
   const xmlDoc = parser.parseFromString(xmlDocData, 'text/xml')
   const select = xpath.useNamespaces({ xmlns: namespace })
@@ -40,17 +21,22 @@ async function parseXsd() {
   // Collect int/float types
   const intFields: string[] = []
   const floatFields: string[] = []
-  const properties: ts.PropertySignature[] = []
+  const properties: Record<string, XsdProperty> = {}
 
   for (const element of elements) {
     if (!xpath.isElement(element)) {
       continue
     }
 
-    const name = element.attributes.getNamedItem('name')?.value
+    let name = element.attributes.getNamedItem('name')?.value
     const minOccurs = element.attributes.getNamedItem('minOccurs')?.value
     const maxOccurs = element.attributes.getNamedItem('maxOccurs')?.value
     const xsdType = element.attributes.getNamedItem('type')?.value
+
+    // fix typo is XSD
+    if (name === 'Choregrapher') {
+      name = 'Choreographer'
+    }
 
     if (
       name === undefined ||
@@ -70,7 +56,7 @@ async function parseXsd() {
     let type: string
     switch (xsdType) {
       case 'extraType': {
-        type = 'ExtraType'
+        type = 'Extra'
         break
       }
       case 'xsd:string': {
@@ -92,30 +78,38 @@ async function parseXsd() {
       }
     }
 
-    // create property
-    const quotedName = name.includes('-') ? `'${name}'` : name
-    let property = createProperty(quotedName, type, { required: false })
+    const property: XsdProperty = { type: type as PropertyType }
 
-    // extract docstring
-    let docString: string | undefined
+    // extract annotation if available
+    let annotation: string | undefined
     const docEl = select('./xmlns:annotation/xmlns:documentation/text()', element)
     if (xpath.isArrayOfNodes(docEl) && xpath.isTextNode(docEl[0])) {
-      docString = docEl[0].nodeValue?.trim()
-      if (!docString) {
+      annotation = docEl[0].nodeValue?.trim()
+      if (!annotation) {
         throw new Error('Empty documentation element found.')
       }
-      property = ts.addSyntheticLeadingComment(
-        property,
-        ts.SyntaxKind.MultiLineCommentTrivia,
-        `* ${docString} `,
-        true
-      )
+      property.annotation = annotation
     }
 
-    properties.push(property)
+    properties[name] = property
   }
+
+  // Add fields missing from XSD
+  properties.ISAN = { type: 'string' }
+  properties.Active_Width_String = { type: 'string' }
+  properties.Active_Height_String = { type: 'string' }
+  properties.Active_DisplayAspectRatio_String = { type: 'string' }
+  properties.HDR_Format_Compression = { type: 'string' }
 
   return { properties, intFields, floatFields }
 }
 
+type PropertyType = 'string' | 'number' | 'Extra'
+
+interface XsdProperty {
+  type: PropertyType
+  annotation?: string
+}
+
+export type { XsdProperty }
 export default parseXsd

@@ -2,7 +2,7 @@ import { DOMParser } from '@xmldom/xmldom'
 import xpath from 'xpath'
 
 import mediaInfoFactory from '..'
-import { expectToBeDefined } from './utils'
+import { expectToBeDefined, expectTrackType } from './utils'
 import type { FormatType, MediaInfo, ResultMap } from '..'
 
 function analyzeFakeData<TFormat extends FormatType>(mi: MediaInfo<TFormat>) {
@@ -30,7 +30,7 @@ it('should use default options', async () => {
 })
 
 it('should accepts options', async () => {
-  expect.assertions(4)
+  expect.assertions(6)
   let mi: MediaInfo | undefined
 
   try {
@@ -44,7 +44,10 @@ it('should accepts options', async () => {
     expect(mi.options.coverData).toBe(true)
     expect(mi.options.full).toBe(true)
     const result = await analyzeFakeData(mi)
-    expect(result.media?.track[0].FileSize).toBe('20')
+    expectToBeDefined(result.media)
+    const [track0] = result.media.track
+    expectTrackType(track0, 'General')
+    expect(track0.FileSize).toBe('20')
   } finally {
     if (mi) {
       mi.close()
@@ -53,7 +56,7 @@ it('should accepts options', async () => {
 })
 
 it('should return JSON string', async () => {
-  expect.assertions(4)
+  expect.assertions(5)
   let mi: MediaInfo<'JSON'> | undefined
 
   try {
@@ -64,7 +67,9 @@ it('should return JSON string', async () => {
     expect(() => {
       const resultObj = JSON.parse(result) as ResultMap['object']
       expectToBeDefined(resultObj.media)
-      fileSize = resultObj.media.track[0].FileSize
+      const [track0] = resultObj.media.track
+      expectTrackType(track0, 'General')
+      fileSize = track0.FileSize
     }).not.toThrow()
     expect(fileSize).toBe('20')
   } finally {

@@ -1,4 +1,4 @@
-import { analyzeFile, expectToBeDefined, fixturePath } from './utils'
+import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from './utils'
 
 describe('file_example_MP4_480_1_5MG.mp4', () => {
   it('should parse file', async () => {
@@ -9,7 +9,7 @@ describe('file_example_MP4_480_1_5MG.mp4', () => {
     expect(track).toHaveLength(3)
     const [track0, track1, track2] = track
 
-    expect(track0['@type']).toBe('General')
+    expectTrackType(track0, 'General')
     expect(track0.Format).toBe('MPEG-4')
     expect(track0.Format_Profile).toBe('Base Media')
     expect(track0.CodecID).toBe('isom')
@@ -25,7 +25,7 @@ describe('file_example_MP4_480_1_5MG.mp4', () => {
     expect(track0.FooterSize).toBe(46_461)
     expect(track0.IsStreamable).toBe('No')
 
-    expect(track1['@type']).toBe('Video')
+    expectTrackType(track1, 'Video')
     expect(track1.StreamOrder).toBe('0')
     expect(track1.ID).toBe('1')
     expect(track1.Format).toBe('AVC')
@@ -63,7 +63,7 @@ describe('file_example_MP4_480_1_5MG.mp4', () => {
     }
     expect(track1.extra.CodecConfigurationBox).toBe('avcC')
 
-    expect(track2['@type']).toBe('Audio')
+    expectTrackType(track2, 'Audio')
     expect(track2.StreamOrder).toBe('1')
     expect(track2.ID).toBe('2')
     expect(track2.Format).toBe('AAC')

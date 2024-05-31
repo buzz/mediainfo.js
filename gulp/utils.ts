@@ -5,11 +5,34 @@ import https from 'node:https'
 
 import prettier from 'prettier'
 
-function downloadFile(dlUrl: string, destDir: string) {
+function downloadFile(url: string) {
+  return new Promise<string>((resolve, reject) => {
+    https.get(url, (response) => {
+      if (response.statusCode === 200) {
+        let data = ''
+        response.on('data', (chunk: string) => {
+          data += chunk
+        })
+        response
+          .on('end', () => {
+            resolve(data)
+          })
+          .on('error', reject)
+      } else {
+        const msg =
+          `Failed to download ${url}` +
+          (response.statusCode === undefined ? '' : `, status=${response.statusCode}`)
+        reject(new Error(msg))
+      }
+    })
+  })
+}
+
+function downloadFileToDir(url: string, destDir: string) {
   return new Promise<void>((resolve, reject) => {
     const file = createWriteStream(destDir)
 
-    https.get(dlUrl, function (response) {
+    https.get(url, function (response) {
       if (response.statusCode === 200) {
         response.pipe(file)
         file.on('finish', () => {
@@ -23,7 +46,7 @@ function downloadFile(dlUrl: string, destDir: string) {
       } else {
         file.close()
         const msg =
-          `Failed to download ${dlUrl}` +
+          `Failed to download ${url}` +
           (response.statusCode === undefined ? '' : `, status=${response.statusCode}`)
         reject(new Error(msg))
       }
@@ -75,4 +98,4 @@ function spawn(cmd: string, args: string[], cwd: string, captureStdout = false) 
   })
 }
 
-export { downloadFile, format, spawn }
+export { downloadFile, downloadFileToDir, format, spawn }

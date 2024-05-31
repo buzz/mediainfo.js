@@ -20,12 +20,23 @@ export function createProperty(
   )
 }
 
-export function createInterface(name: string, members: readonly ts.TypeElement[]) {
+export function createInterface(
+  name: string,
+  members: readonly ts.TypeElement[],
+  extendsInterface?: ts.InterfaceDeclaration,
+  modifiers: readonly ts.ModifierLike[] = [exportModifier]
+) {
   return ts.factory.createInterfaceDeclaration(
-    [exportModifier],
+    modifiers,
     name,
     undefined,
-    undefined,
+    extendsInterface
+      ? [
+          ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
+            ts.factory.createExpressionWithTypeArguments(extendsInterface.name, []),
+          ]),
+        ]
+      : undefined,
     members
   )
 }
