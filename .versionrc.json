@@ -1,3 +1,3 @@
 {
-  "header": "# Changelog\n\nAll notable changes to this project will be documented in this file. Please ensure that all commits follow the standard [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format.\n\n**Changes prior to version 0.2.0 are not documented in the changelog.**\n"
+  "header": "# Changelog\n\nAll notable changes to this project will be documented in this file.\n\n:::note\nChanges preceding version 0.2.0 are not included in the changelog.\n:::\n"
 }
