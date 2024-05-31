@@ -28,7 +28,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
-    "mediainfo.js": "^0.2.2",
+    "mediainfo.js": "link:../mediainfo.js",
     "postcss-color-mod-function": "^3.0.3",
     "postcss-each": "^0.10.0",
     "prism-react-renderer": "^2.3.0",
