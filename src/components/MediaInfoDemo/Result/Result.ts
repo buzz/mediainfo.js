@@ -1,4 +1,4 @@
-import type { MediaInfoType } from 'mediainfo.js'
+import type { MediaInfoResult } from 'mediainfo.js'
 
 import { isObject } from '@site/src/utils'
 
@@ -10,7 +10,7 @@ function isResults(thing: unknown): thing is Results {
   return isObject(thing) && Object.values(thing).every((result) => isResult(result))
 }
 
-interface Result extends MediaInfoType {
+interface Result extends MediaInfoResult {
   name?: string
   error?: string
 }

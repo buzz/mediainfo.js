@@ -3,6 +3,7 @@ import path from 'node:path'
 import { themes as prismThemes } from 'prism-react-renderer'
 import type { Config, ThemeConfig } from '@docusaurus/types'
 
+import mediainfoJsPackageJson from '../mediainfo.js/package.json' assert { type: 'json' }
 import copyWasmPlugin from './plugins/copyWasm'
 import extractVersionsPlugin from './plugins/extractVersions'
 import postcss from './plugins/postcss'
@@ -106,6 +107,10 @@ const config: Config = {
               label: 'Credits',
               to: '/credits',
             },
+            {
+              label: 'Changelog',
+              to: '/api/changelog',
+            },
           ],
         },
         {
@@ -156,6 +161,10 @@ const config: Config = {
         packages: ['.'],
         changelogs: true,
         readmes: false,
+        typedocOptions: {
+          excludeInternal: false,
+          gitRevision: `v${mediainfoJsPackageJson.version}`,
+        },
       },
     ],
     copyWasmPlugin,

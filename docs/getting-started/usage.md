@@ -137,11 +137,12 @@ Choose the result output format by using the `format` option on the
 
 Possible values: `object` (default), `JSON`, `XML`, `HTML`, `text`.
 
-Media files may contain multiple [tracks][TrackType] of types such as `General`, `Video`, `Audio`,
-`Text`, `Image`, `Chapters`, `Menu`, or `Other`.
+Media files may contain multiple [tracks][Track] of types such as [`General`][GeneralTrack],
+[`Video`][VideoTrack], [`Audio`][AudioTrack], [`Text`][TextTrack], [`Image`][ImageTrack],
+[`Menu`][MenuTrack], or [`Other`][OtherTrack].
 
 :::tip
-For a comprehensive list of possible fields, consult the [API documentation][TrackType].
+For a comprehensive list of possible fields, consult the [API documentation](/api).
 :::
 
 ### Output as JavaScript object
@@ -150,7 +151,7 @@ The default output format `object` returns the result as a JavaScript object. Th
 most useful option.
 
 :::note
-The library including the [result object][MediaInfoType] is fully typed to enhance the developer
+The library including the [result object][MediaInfoResult] is fully typed to enhance the developer
 experience in supported editors.
 :::
 
@@ -549,10 +550,18 @@ The remaining output options return the result as a string.
 </details>
 
   [MediaInfo]: /api/class/MediaInfo
+  [MediaInfoResult]: /api/interface/MediaInfoResult
   [mediaInfoFactory]: /api/function/mediaInfoFactory
   [close]: /api/class/MediaInfo#close
   [MediaInfoFactoryOptions]: /api/interface/MediaInfoFactoryOptions
   [analyzeData]: /api/class/MediaInfo#analyzeData
-  [MediaInfoType]: /api/interface/MediaInfoType
-  [TrackType]: /api/interface/TrackType
+  [MediaInfo]: /api/interface/MediaInfo
+  [Track]: /api#Track
+  [GeneralTrack]: /api/interface/GeneralTrack
+  [VideoTrack]: /api/interface/VideoTrack
+  [AudioTrack]: /api/interface/AudioTrack
+  [TextTrack]: /api/interface/TextTrack
+  [ImageTrack]: /api/interface/ImageTrack
+  [MenuTrack]: /api/interface/MenuTrack
+  [OtherTrack]: /api/interface/OtherTrack
   [Uint8Array]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array

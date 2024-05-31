@@ -1,7 +1,7 @@
 import { faFile, faFileAlt, faFileAudio, faFileVideo } from '@fortawesome/free-regular-svg-icons'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { TrackType } from 'mediainfo.js'
+import type { Track } from 'mediainfo.js'
 
 import { isObject } from '@site/src/utils'
 
@@ -36,7 +36,7 @@ function PropertyRow({ name, value }: PropertyRowProps) {
     )
   }
 
-  // ExtraType
+  // Extra
   if (isObject(value)) {
     return Object.entries(value).map(([extraName, extraValue], idx) =>
       isValue(extraValue) ? (
@@ -53,7 +53,7 @@ function PropertyRow({ name, value }: PropertyRowProps) {
 
 interface PropertyRowProps {
   name: string
-  value: TrackType[keyof TrackType]
+  value: Track[keyof Track]
 }
 
 function Track({ track }: TrackProps) {
@@ -76,14 +76,16 @@ function Track({ track }: TrackProps) {
 }
 
 interface TrackProps {
-  track: TrackType
+  track: Track
 }
 
 function ResultTable({ result }: ResultTableProps) {
+  const track = result.media?.track ?? []
+
   return (
     <table className={styles.resultTable}>
       <tbody>
-        {result.media?.track.map((track, idx) => {
+        {track.map((track, idx) => {
           const key = track.UniqueID ?? track.ID ?? `${track['@type']}${idx}`
           return <Track track={track} key={key} />
         })}

@@ -70,7 +70,7 @@ export default tsEslint.config(
       // Import order setup
       'import/first': 'error',
       'import/no-duplicates': 'error',
-      'import/extensions': ['error', 'never', { svg: 'always' }],
+      'import/extensions': ['error', 'never', { svg: 'always', json: 'always' }],
 
       'prettier/prettier': 'error',
 
