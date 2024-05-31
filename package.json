@@ -16,33 +16,33 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "3.3.2",
-    "@docusaurus/plugin-content-docs": "^3.3.2",
-    "@docusaurus/plugin-content-pages": "^3.3.2",
-    "@docusaurus/plugin-debug": "^3.3.2",
-    "@docusaurus/plugin-sitemap": "^3.3.2",
-    "@docusaurus/theme-classic": "^3.3.2",
+    "@docusaurus/core": "3.4.0",
+    "@docusaurus/plugin-content-docs": "^3.4.0",
+    "@docusaurus/plugin-content-pages": "^3.4.0",
+    "@docusaurus/plugin-debug": "^3.4.0",
+    "@docusaurus/plugin-sitemap": "^3.4.0",
+    "@docusaurus/theme-classic": "^3.4.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@mdx-js/react": "^3.0.0",
-    "clsx": "^2.0.0",
+    "@mdx-js/react": "^3.0.1",
+    "clsx": "^2.1.1",
     "mediainfo.js": "link:../mediainfo.js",
     "postcss-color-mod-function": "^3.0.3",
-    "postcss-each": "^0.10.0",
-    "prism-react-renderer": "^2.3.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "postcss-each": "0.10.0",
+    "prism-react-renderer": "^2.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.3.2",
-    "@docusaurus/tsconfig": "3.3.2",
-    "@docusaurus/types": "3.3.2",
-    "@eslint/js": "^9.3.0",
+    "@docusaurus/module-type-aliases": "3.4.0",
+    "@docusaurus/tsconfig": "3.4.0",
+    "@docusaurus/types": "3.4.0",
+    "@eslint/js": "^9.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.13.0",
     "@types/react": "^18.3.3",
     "docusaurus-plugin-typedoc-api": "^4.2.0",
     "eslint-plugin-import": "^2.29.1",
@@ -53,7 +53,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.0",
     "eslint-plugin-unicorn": "^53.0.0",
     "globals": "^15.3.0",
-    "typescript": "~5.2.2",
+    "typescript": "~5.4.5",
     "typescript-eslint": "^7.11.0"
   },
   "browserslist": {
@@ -70,5 +70,10 @@
   },
   "engines": {
     "node": ">=20.13.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss-each": "0.10.0"
+    }
   }
 }
