@@ -10,6 +10,7 @@
   "bugs": "https://github.com/buzz/mediainfo.js/issues",
   "homepage": "https://github.com/buzz/mediainfo.js",
   "license": "BSD-2-Clause",
+  "sideEffects": false,
   "keywords": [
     "mediainfo",
     "emscripten",
