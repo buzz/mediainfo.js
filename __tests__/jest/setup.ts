@@ -21,6 +21,10 @@ const TEST_FILES = {
     url: undefined,
     md5: '0e002574aad79365477ab8f904fef616',
   },
+  'sample.mkv': {
+    url: 'https://github.com/sbraz/pymediainfo/raw/master/tests/data/sample.mkv',
+    md5: '130830537d5b0b79e78d68be16dde0fd',
+  },
 }
 
 function downloadFile(url: string, filePath: string) {

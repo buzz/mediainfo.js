@@ -6,25 +6,33 @@ const readChunk = () => {
   throw new Error('Foo error')
 }
 
-describe('Error in readChunk', () => {
-  let mi: MediaInfo
+it('should return error via callback', async () => {
+  expect.assertions(2)
+  let mi: MediaInfo | undefined
 
-  beforeEach(async () => {
+  try {
     mi = await mediaInfoFactory()
-  })
-
-  afterEach(() => {
-    mi.close()
-  })
-
-  it('should return error via callback', (done) => {
     mi.analyzeData(getSize, readChunk, (result, error) => {
       expectToBeError(error)
       expect(error.message).toBe('Foo error')
-      done()
     })
-  })
+  } finally {
+    if (mi) {
+      mi.close()
+    }
+  }
+})
 
-  it('should return error via Promise', () =>
-    expect(mi.analyzeData(getSize, readChunk)).rejects.toThrow('Foo error'))
+it('should return error via Promise', async () => {
+  expect.assertions(1)
+  let mi: MediaInfo | undefined
+
+  try {
+    mi = await mediaInfoFactory()
+    await expect(mi.analyzeData(getSize, readChunk)).rejects.toThrow('Foo error')
+  } finally {
+    if (mi) {
+      mi.close()
+    }
+  }
 })
