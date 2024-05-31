@@ -2,6 +2,7 @@ import clsx from 'clsx'
 
 import AnalyzeSvg from '@site/static/img/feature-analyze.svg'
 import FeatureSvg from '@site/static/img/feature-metadata.svg'
+import TsSvg from '@site/static/img/feature-ts.svg'
 import WasmSvg from '@site/static/img/feature-wasm.svg'
 import Heading from '@theme/Heading'
 
@@ -30,6 +31,11 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    title: 'Written in TypeScript',
+    Image: TsSvg,
+    description: <>Fully typed TypeScript codebase for exceptional developer experience</>,
+  },
+  {
     title: 'Powered by WebAssembly',
     Image: WasmSvg,
     description: (
@@ -47,7 +53,7 @@ function Feature({ title, Image, description }: FeatureItem) {
     )
 
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--3')}>
       <div className="text--center">{img}</div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
