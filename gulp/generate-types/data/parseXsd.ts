@@ -1,7 +1,7 @@
 import { DOMParser } from '@xmldom/xmldom'
 import xpath from 'xpath'
 
-import { downloadFile } from '../utils.ts'
+import { downloadFile } from '../../utils.ts'
 
 const URL = 'https://raw.githubusercontent.com/MediaArea/MediaAreaXml/master/mediainfo.xsd'
 const namespace = 'http://www.w3.org/2001/XMLSchema'

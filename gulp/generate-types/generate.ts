@@ -5,6 +5,7 @@ import ts from 'typescript'
 
 import { BUILD_DIR, SRC_DIR, TRACK_TYPES } from '../constants.ts'
 import { format } from '../utils.ts'
+import getFields, { type TrackFields } from './data/getFields.ts'
 import {
   createArrayAsConst,
   createInterface,
@@ -12,8 +13,6 @@ import {
   exportModifier,
   readonlyModifier,
 } from './factories.ts'
-import parseCsv, { type CsvDescriptions } from './parseCsv.ts'
-import parseXsd, { type XsdProperty } from './parseXsd.ts'
 
 const TOP_COMMENT = '// DO NOT EDIT! File generated using `generate-types` script.'
 const FILENAME = 'MediaInfoResult.ts'
@@ -38,10 +37,18 @@ const extra = ts.factory.createTypeAliasDeclaration(
   ])
 )
 
-const trackBase = createInterface(
-  'BaseTrack',
-  [
-    ts.addSyntheticLeadingComment(
+function wrapWithComment(node: ts.PropertySignature, comment: string) {
+  return ts.addSyntheticLeadingComment(
+    node,
+    ts.SyntaxKind.MultiLineCommentTrivia,
+    `* ${comment} `,
+    true
+  )
+}
+
+function makeBaseTrack(fields: TrackFields) {
+  return createInterface('BaseTrack', [
+    wrapWithComment(
       ts.factory.createPropertySignature(
         [readonlyModifier],
         "'@type'",
@@ -52,21 +59,21 @@ const trackBase = createInterface(
           )
         )
       ),
-      ts.SyntaxKind.MultiLineCommentTrivia,
-      '* Documents the type of encoded media with the track, ie: General, Video, Audio, Text, Image, etc. ',
-      true
+      'Documents the type of encoded media with the track, ie: ' +
+        'General, Video, Audio, Text, Image, etc.'
     ),
-    ts.addSyntheticLeadingComment(
+    wrapWithComment(
       createProperty("'@typeorder'", 'string'),
-      ts.SyntaxKind.MultiLineCommentTrivia,
-      '* If there is more than one track of the same type (i.e. four audio tracks) this attribute will number them according to storage order within the bitstream. ',
-      true
+      'If there is more than one track of the same type (i.e. four audio tracks) this ' +
+        'attribute will number them according to storage order within the bitstream.'
     ),
-    createProperty('extra', 'Extra'),
-  ],
-  undefined,
-  []
-)
+    wrapWithComment(
+      createProperty('extra', 'Extra'),
+      'Holds (untyped) extra information if available'
+    ),
+    ...makeTrackMembers(fields),
+  ])
+}
 
 const track = ts.factory.createTypeAliasDeclaration(
   [exportModifier],
@@ -88,89 +95,57 @@ const mediaInfoResult = createInterface('MediaInfoResult', [
   createProperty('media', 'Media'),
 ])
 
-function normalizeName(name: string) {
-  let normalizedName = name.replace('*', '_')
-  for (const char of ['(', ')']) {
-    normalizedName = normalizedName.replace(char, '')
+function makeTrackMembers(fields: TrackFields) {
+  const members: ts.TypeElement[] = []
+
+  for (const [propertyName, field] of Object.entries(fields)) {
+    const tsPropertyName = propertyName.includes('-') ? `'${propertyName}'` : propertyName
+    const property = createProperty(tsPropertyName, field.type)
+
+    // Add `@internal` tag
+    if (field.description?.includes('This is mostly for internal use')) {
+      field.description = field.description.replace('This is mostly for internal use', '@internal')
+    }
+
+    // Add `@group` tag
+    if (field.group) {
+      field.description = `${field.description} @group ${field.group}`
+    }
+
+    members.push(field.description ? wrapWithComment(property, field.description) : property)
   }
-  return normalizedName
+
+  return members
 }
 
-function makeTrackInterfaces(
-  descriptions: CsvDescriptions,
-  properties: Record<string, XsdProperty>
-) {
-  return Object.entries(descriptions).map(([type, descriptions]) => {
-    const members: ts.TypeElement[] = []
-
-    for (const [propertyName, record] of Object.entries(descriptions)) {
-      const normalizedName = normalizeName(propertyName)
-      let docComment: string | undefined
-
-      if (!Object.keys(properties).includes(normalizedName)) {
-        throw new Error(`Property '${normalizedName}' not found XSD (type '${type}')`)
-      }
-      const xsdProperty = properties[normalizedName]
-
-      // from type CSV?
-      if (record.description) {
-        docComment = record.description
-      }
-      // from XSD?
-      else if (xsdProperty.annotation) {
-        docComment = xsdProperty.annotation
-      }
-
-      const tsPropertyName = normalizedName.includes('-') ? `'${normalizedName}'` : normalizedName
-      let property = createProperty(tsPropertyName, xsdProperty.type)
-
-      if (docComment) {
-        // Skip deprecated
-        if (docComment.toLowerCase().includes('deprecated')) {
-          continue
-        }
-
-        property = ts.addSyntheticLeadingComment(
-          property,
-          ts.SyntaxKind.MultiLineCommentTrivia,
-          `* ${docComment} `,
-          true
-        )
-      }
-
-      members.push(property)
-    }
+function makeTrackInterfaces(trackTypes: Record<string, TrackFields>) {
+  return Object.entries(trackTypes).map(([trackType, fields]) => {
+    const members = makeTrackMembers(fields)
 
     const typeProperty = ts.factory.createPropertySignature(
       [readonlyModifier],
       "'@type'",
       undefined,
-      ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(type))
+      ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(trackType))
     )
 
-    return createInterface(`${type}Track`, [typeProperty, ...members], trackBase)
+    return createInterface(`${trackType}Track`, [typeProperty, ...members], 'BaseTrack')
   })
 }
 
 async function generate() {
-  // Parse XSD
-  const { properties, intFields, floatFields } = await parseXsd()
+  const [trackTypes, intFields, floatFields] = await getFields()
 
-  // Parse CSV
-  const descriptions = await parseCsv()
-
-  // Field types
-  const intFieldsArr = createArrayAsConst('INT_FIELDS', intFields)
-  const floatFieldsArr = createArrayAsConst('FLOAT_FIELDS', floatFields)
+  const { Base: baseTrackFields, ...otherTrackTypes } = trackTypes
 
   // Generate source code
   const allNodes = [
-    intFieldsArr,
-    floatFieldsArr,
+    createArrayAsConst('INT_FIELDS', intFields),
+    createArrayAsConst('FLOAT_FIELDS', floatFields),
     creationInfo,
     extra,
-    trackBase,
-    ...makeTrackInterfaces(descriptions, properties),
+    makeBaseTrack(baseTrackFields),
+    ...makeTrackInterfaces(otherTrackTypes),
     track,
     media,
     mediaInfoResult,

@@ -1,6 +1,6 @@
 import { parse } from 'csv-parse/sync'
 
-import { downloadFile } from '../utils'
+import { downloadFile } from '../../utils'
 
 const url = (type: CsvType) =>
   `https://raw.githubusercontent.com/MediaArea/MediaInfoLib/master/Source/Resource/Text/Stream/${type}.csv`
@@ -17,7 +17,7 @@ async function parseCsv(type: CsvType) {
   const csvData = await downloadFile(url(type))
 
   const records = parse(csvData, {
-    columns: ['name', '', '', '', '', '', 'description', '', 'type'],
+    columns: ['name', '', '', '', '', '', 'description', '', 'group'],
     delimiter: ';',
     escape: false,
     quote: false,
@@ -29,7 +29,7 @@ async function parseCsv(type: CsvType) {
     throw new TypeError('Expected array')
   }
 
-  const descriptions: Descriptions = {}
+  const descriptions: CsvRecords = {}
 
   for (const record of records) {
     if (!isCsvRecord(record)) {
@@ -42,7 +42,7 @@ async function parseCsv(type: CsvType) {
 }
 
 async function parseCsvFiles() {
-  const typeDescriptions: CsvDescriptions = {
+  const typeDescriptions: CsvData = {
     Audio: {},
     General: {},
     Image: {},
@@ -64,12 +64,12 @@ type CsvType = (typeof types)[number]
 interface CsvRecord {
   name: string
   description?: string
-  type?: string
+  group?: string
 }
 
-type Descriptions = Record<string, CsvRecord>
+type CsvRecords = Record<string, CsvRecord>
 
-type CsvDescriptions = Record<CsvType, Descriptions>
+type CsvData = Record<CsvType, CsvRecords>
 
-export type { CsvDescriptions }
+export type { CsvData, CsvRecords, CsvType }
 export default parseCsvFiles

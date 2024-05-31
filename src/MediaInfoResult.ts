@@ -132,25 +132,22 @@ export interface CreationInfo {
 
 export type Extra = Record<string, unknown>
 
-interface BaseTrack {
+export interface BaseTrack {
   /** Documents the type of encoded media with the track, ie: General, Video, Audio, Text, Image, etc. */
   readonly '@type': 'General' | 'Video' | 'Audio' | 'Text' | 'Image' | 'Menu' | 'Other'
   /** If there is more than one track of the same type (i.e. four audio tracks) this attribute will number them according to storage order within the bitstream. */
   readonly '@typeorder'?: string
+  /** Holds (untyped) extra information if available */
   readonly extra?: Extra
-}
-
-export interface AudioTrack extends BaseTrack {
-  readonly '@type': 'Audio'
-  /** Count of objects available in this stream created by MediaInfo when analyzing file. This is mostly for internal use */
+  /** Count of objects available in this stream created by MediaInfo when analyzing file. @internal */
   readonly Count?: number
-  /** Status of bit field when parsing. Options are: 0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished. This is mostly for internal use */
+  /** Status of bit field when parsing. Options are: 0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished. @internal */
   readonly Status?: number
   /** Total number of streams available for this StreamKind. Counting starts at 1 */
   readonly StreamCount?: number
-  /** Name of stream type. Options are: General, Video, Audio, Text, Image, Menu, or Other */
+  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
   readonly StreamKind?: string
-  /** Name of stream type. Options are: General, Video, Audio, Text, Image, Menu, or Other */
+  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
   readonly StreamKind_String?: string
   /** Identification number for stream, assigned in order of parsing. Counting starts at 0 */
   readonly StreamKindID?: number
@@ -160,15 +157,15 @@ export interface AudioTrack extends BaseTrack {
   readonly StreamOrder?: string
   /** Order of the first fully decodable packet parsed in the file for stream type. Counting starts at 0 */
   readonly FirstPacketOrder?: number
-  /** Last **Inform** call. This is mostly for internal use */
+  /** Last **Inform** call. @internal */
   readonly Inform?: string
   /** The identification number for this stream in this file */
   readonly ID?: string
   /** The identification number for this stream in this file (String format) */
   readonly ID_String?: string
-  /** Identification for this stream in the original medium of the material */
+  /** Identification for this stream in the original medium of the material, taken from Tag metadata */
   readonly OriginalSourceMedium_ID?: string
-  /** Identification for this stream in the original medium of the material (String format) */
+  /** Identification for this stream in the original medium of the material, taken from Tag metadata (String format) */
   readonly OriginalSourceMedium_ID_String?: string
   /** The unique ID for this stream, should be copied with stream copy */
   readonly UniqueID?: string
@@ -180,7 +177,7 @@ export interface AudioTrack extends BaseTrack {
   readonly MenuID_String?: string
   /** Format used */
   readonly Format?: string
-  /** Format used and any additional features or settings */
+  /** Format used + additional features */
   readonly Format_String?: string
   /** More details about the identified Format */
   readonly Format_Info?: string
@@ -188,18 +185,36 @@ export interface AudioTrack extends BaseTrack {
   readonly Format_Url?: string
   /** Commercial name used by vendor for these settings or Format field if there is no difference */
   readonly Format_Commercial?: string
-  /** Commercial name used by vendor for these settings, if available */
+  /** Commercial name used by vendor for these settings if there is one */
   readonly Format_Commercial_IfAny?: string
   /** Version for the identified format */
   readonly Format_Version?: string
   /** Profile of the Format */
   readonly Format_Profile?: string
-  /** Level of the Format */
-  readonly Format_Level?: string
   /** Compression method used */
   readonly Format_Compression?: string
   /** Settings used and required by decoder */
   readonly Format_Settings?: string
+  /** Features required to fully support the file content */
+  readonly Format_AdditionalFeatures?: string
+  /** Codec ID, if defined by the container */
+  readonly CodecID?: string
+  /** Codec ID, if defined by the container (String format) */
+  readonly CodecID_String?: string
+  /** More information about this codec */
+  readonly CodecID_Info?: string
+  /** Common alternative names for this codec */
+  readonly CodecID_Hint?: string
+  /** A link to more details about this codec */
+  readonly CodecID_Url?: string
+  /** Codec description, as defined by the container */
+  readonly CodecID_Description?: string
+}
+
+export interface AudioTrack extends BaseTrack {
+  readonly '@type': 'Audio'
+  /** Level of the Format */
+  readonly Format_Level?: string
   /** Whether Spectral band replication settings used in encoding. Options are Yes (NBC)/No (Explicit). Note: NBC stands for "Not Backwards Compatable" */
   readonly Format_Settings_SBR?: string
   /** Whether Spectral band replication settings used in encoding. Options are Yes (NBC)/No (Explicit). Note: NBC stands for "Not Backwards Compatable" */
@@ -228,8 +243,6 @@ export interface AudioTrack extends BaseTrack {
   readonly Format_Settings_ITU?: string
   /** Wrapping mode set for format (e.g. Frame, Clip) */
   readonly Format_Settings_Wrapping?: string
-  /** Features from the format that are required to fully support the file content */
-  readonly Format_AdditionalFeatures?: string
   /** Matrix format used in encoding (e.g. DTS Neural Audio) */
   readonly Matrix_Format?: string
   /** Internet Media Type (aka MIME Type, Content-Type) */
@@ -238,18 +251,6 @@ export interface AudioTrack extends BaseTrack {
   readonly MuxingMode?: string
   /** More information about MuxingMode */
   readonly MuxingMode_MoreInfo?: string
-  /** Codec identifier as indicated by the container */
-  readonly CodecID?: string
-  /** Codec identifier, as indicated by the container */
-  readonly CodecID_String?: string
-  /** More information about this codec identifier */
-  readonly CodecID_Info?: string
-  /** Common alternative names for this codec identifier */
-  readonly CodecID_Hint?: string
-  /** A link to more details about this codec identifier */
-  readonly CodecID_Url?: string
-  /** Codec description indicated by the container */
-  readonly CodecID_Description?: string
   /** Play time of the stream, in s (ms for text output) */
   readonly Duration?: number
   /** Play time in format XXx YYy, with YYy value omitted if zero (e.g. 1 h 40 min) */
@@ -594,33 +595,33 @@ export interface AudioTrack extends BaseTrack {
   readonly Interleave_Preload_String?: string
   /** Title of track */
   readonly Title?: string
-  /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) */
+  /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) @group Technical */
   readonly Encoded_Application?: string
-  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Application_String?: string
-  /** Name of the company of the encoding application */
+  /** Name of the company of the encoding application @group Technical */
   readonly Encoded_Application_CompanyName?: string
-  /** Name of the encoding product */
+  /** Name of the encoding product @group Technical */
   readonly Encoded_Application_Name?: string
-  /** Version of the encoding product */
+  /** Version of the encoding product @group Technical */
   readonly Encoded_Application_Version?: string
-  /** URL associated with the encoding software */
+  /** URL associated with the encoding software @group Technical */
   readonly Encoded_Application_Url?: string
-  /** Software used to create the file */
+  /** Software used to create the file @group Technical */
   readonly Encoded_Library?: string
-  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Library_String?: string
-  /** Name of the encoding software company */
+  /** Name of the encoding software company @group Technical */
   readonly Encoded_Library_CompanyName?: string
-  /** Name of the encoding software */
+  /** Name of the encoding software @group Technical */
   readonly Encoded_Library_Name?: string
-  /** Version of the encoding software */
+  /** Version of the encoding software @group Technical */
   readonly Encoded_Library_Version?: string
-  /** Release date of the encoding software, in UTC */
+  /** Release date of the encoding software, in UTC @group Technical */
   readonly Encoded_Library_Date?: string
-  /** Parameters used by the encoding software */
+  /** Parameters used by the encoding software @group Technical */
   readonly Encoded_Library_Settings?: string
-  /** Operating System of the encoding software */
+  /** Operating System of the encoding software @group Technical */
   readonly Encoded_OperatingSystem?: string
   /** Language, formatted as 2-letter ISO 639-1 if exists, else 3-letter ISO 639-2, and with optional ISO 3166-1 country separated by a dash if available (e.g. en, en-US, en-CN) */
   readonly Language?: string
@@ -656,9 +657,9 @@ export interface AudioTrack extends BaseTrack {
   readonly AlternateGroup?: string
   /** Number of a group in order to provide versions of the same track */
   readonly AlternateGroup_String?: string
-  /** Time that the encoding of this item was completed, in UTC */
+  /** Time that the encoding of this item was completed, in UTC @group Temporal */
   readonly Encoded_Date?: string
-  /** Time that the tags were added to this item, in UTC */
+  /** Time that the tags were added to this item, in UTC @group Temporal */
   readonly Tagged_Date?: string
   /** Whether this stream is encrypted and, if available, how it is encrypted */
   readonly Encryption?: string
@@ -666,42 +667,6 @@ export interface AudioTrack extends BaseTrack {
 
 export interface GeneralTrack extends BaseTrack {
   readonly '@type': 'General'
-  /** Count of objects available in this stream created by MediaInfo when analyzing file. This is mostly for internal use */
-  readonly Count?: number
-  /** Status of bit field when parsing. Options are: 0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished. This is mostly for internal use */
-  readonly Status?: number
-  /** Total number of streams available for this StreamKind. Counting starts at 1 */
-  readonly StreamCount?: number
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind?: string
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind_String?: string
-  /** Identification number for stream, assigned in order of parsing. Counting starts at 0 */
-  readonly StreamKindID?: number
-  /** Identification number for stream when multiple, assigned in order of parsing. Counting starts at 1 */
-  readonly StreamKindPos?: number
-  /** Stream order in the file for type of stream. Counting starts at 0 */
-  readonly StreamOrder?: string
-  /** Order of the first fully decodable packet parsed in the file for stream type. Counting starts at 0 */
-  readonly FirstPacketOrder?: number
-  /** Last **Inform** call. This is mostly for internal use */
-  readonly Inform?: string
-  /** The identification number for this stream in this file */
-  readonly ID?: string
-  /** The identification number for this stream in this file (String format) */
-  readonly ID_String?: string
-  /** Identification for this stream in the original medium of the material, taken from Tag metadata */
-  readonly OriginalSourceMedium_ID?: string
-  /** Identification for this stream in the original medium of the material, taken from Tag metadata (String format) */
-  readonly OriginalSourceMedium_ID_String?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID_String?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID_String?: string
   /** Total number of General streams in this file */
   readonly GeneralCount?: number
   /** Total number of Video streams in this file */
@@ -774,46 +739,12 @@ export interface GeneralTrack extends BaseTrack {
   readonly FileName_Last?: string
   /** File extension only of the last file (in the case of a sequence of files) */
   readonly FileExtension_Last?: string
-  /** Format used */
-  readonly Format?: string
-  /** Format used + additional features */
-  readonly Format_String?: string
-  /** More details about the identified Format */
-  readonly Format_Info?: string
-  /** Link to a description of this format */
-  readonly Format_Url?: string
   /** Known extensions for the identified format */
   readonly Format_Extensions?: string
-  /** Commercial name used by vendor for these settings or Format field if there is no difference */
-  readonly Format_Commercial?: string
-  /** Commercial name used by vendor for these settings if there is one */
-  readonly Format_Commercial_IfAny?: string
-  /** Version for the identified format */
-  readonly Format_Version?: string
-  /** Profile of the Format */
-  readonly Format_Profile?: string
   /** Level of the Format */
   readonly Format_Level?: string
-  /** Compression method used */
-  readonly Format_Compression?: string
-  /** Settings used and required by decoder */
-  readonly Format_Settings?: string
-  /** Features required to fully support the file content */
-  readonly Format_AdditionalFeatures?: string
   /** Internet Media Type (aka MIME Type, Content-Type) */
   readonly InternetMediaType?: string
-  /** Codec ID, if defined by the container */
-  readonly CodecID?: string
-  /** Codec ID, if defined by the container (String format) */
-  readonly CodecID_String?: string
-  /** More information about this codec */
-  readonly CodecID_Info?: string
-  /** Common alternative names for this codec */
-  readonly CodecID_Hint?: string
-  /** A link to more details about this codec */
-  readonly CodecID_Url?: string
-  /** Codec description, as defined by the container */
-  readonly CodecID_Description?: string
   /** Version of the CodecID */
   readonly CodecID_Version?: string
   /** List of codecs that are compatible with the identified container */
@@ -978,349 +909,349 @@ export interface GeneralTrack extends BaseTrack {
   readonly UniversalAdID_Registry?: string
   /** Universal Ad-ID value */
   readonly UniversalAdID_Value?: string
-  /** Title of file */
+  /** Title of file @group Title */
   readonly Title?: string
-  /** More title information */
+  /** More title information @group Title */
   readonly Title_More?: string
-  /** URL */
+  /** URL @group Title */
   readonly Title_Url?: string
-  /** Universe that the file's contents belong to (e.g. Star Wars, Stargate, Buffy, Dragonball) */
+  /** Universe that the file's contents belong to (e.g. Star Wars, Stargate, Buffy, Dragonball) @group Title */
   readonly Domain?: string
-  /** Name of the series (e.g. Star Wars movies, Stargate SG-1, Angel) */
+  /** Name of the series (e.g. Star Wars movies, Stargate SG-1, Angel) @group Title */
   readonly Collection?: string
-  /** Name of the season (e.g. first Star Wars Trilogy, Season 1) */
+  /** Name of the season (e.g. first Star Wars Trilogy, Season 1) @group Title */
   readonly Season?: string
-  /** Number of the Season */
+  /** Number of the Season @group Title */
   readonly Season_Position?: number
-  /** Total number of seasons */
+  /** Total number of seasons @group Title */
   readonly Season_Position_Total?: number
-  /** Name of the movie (e.g. Star Wars: A New Hope) */
+  /** Name of the movie (e.g. Star Wars: A New Hope) @group Title */
   readonly Movie?: string
-  /** More information about the Movie */
+  /** More information about the Movie @group Title */
   readonly Movie_More?: string
-  /** Country where the movie was produced */
+  /** Country where the movie was produced @group Title */
   readonly Movie_Country?: string
-  /** Homepage for the movie */
+  /** Homepage for the movie @group Title */
   readonly Movie_Url?: string
-  /** Name of the album (e.g. The Joshua Tree) */
+  /** Name of the album (e.g. The Joshua Tree) @group Title */
   readonly Album?: string
-  /** More information about the Album */
+  /** More information about the Album @group Title */
   readonly Album_More?: string
-  /** Alternate name of the album, optimized for sorting purposes (e.g. Joshua Tree, The) */
+  /** Alternate name of the album, optimized for sorting purposes (e.g. Joshua Tree, The) @group Title */
   readonly Album_Sort?: string
-  /** Album performer/artist of this file */
+  /** Album performer/artist of this file @group Entity */
   readonly Album_Performer?: string
-  /** Alternate name for the performer, optimized for sorting purposes (e.g. Beatles, The) */
+  /** Alternate name for the performer, optimized for sorting purposes (e.g. Beatles, The) @group Entity */
   readonly Album_Performer_Sort?: string
-  /** Homepage of the album performer/artist */
+  /** Homepage of the album performer/artist @group Entity */
   readonly Album_Performer_Url?: string
-  /** Name of the comic book series */
+  /** Name of the comic book series @group Title */
   readonly Comic?: string
-  /** More information about the comic book series */
+  /** More information about the comic book series @group Title */
   readonly Comic_More?: string
-  /** Total number of comics */
+  /** Total number of comics @group Title */
   readonly Comic_Position_Total?: number
-  /** Name of the part (e.g. CD1, CD2) */
+  /** Name of the part (e.g. CD1, CD2) @group Title */
   readonly Part?: string
-  /** Number of the part */
+  /** Number of the part @group Title */
   readonly Part_Position?: number
-  /** Total number of parts */
+  /** Total number of parts @group Title */
   readonly Part_Position_Total?: number
-  /** Name of the reel */
+  /** Name of the reel @group Title */
   readonly Reel?: string
-  /** Number of the reel */
+  /** Number of the reel @group Title */
   readonly Reel_Position?: number
-  /** Total number of reel */
+  /** Total number of reel @group Title */
   readonly Reel_Position_Total?: number
-  /** Name of the track (e.g. track 1, track 2) */
+  /** Name of the track (e.g. track 1, track 2) @group Title */
   readonly Track?: string
-  /** More information about the Track */
+  /** More information about the Track @group Title */
   readonly Track_More?: string
-  /** Link to a site about this Track */
+  /** Link to a site about this Track @group Title */
   readonly Track_Url?: string
-  /** Alternate name for the track, optimized for sorting purposes */
+  /** Alternate name for the track, optimized for sorting purposes @group Title */
   readonly Track_Sort?: string
-  /** Number of this Track */
+  /** Number of this Track @group Title */
   readonly Track_Position?: number
-  /** Total number of tracks */
+  /** Total number of tracks @group Title */
   readonly Track_Position_Total?: number
   /** MXF package name */
   readonly PackageName?: string
-  /** iTunes grouping */
+  /** iTunes grouping @group Title */
   readonly Grouping?: string
-  /** Name of the Chapter */
+  /** Name of the Chapter @group Title */
   readonly Chapter?: string
-  /** Name of the Subtrack */
+  /** Name of the Subtrack @group Title */
   readonly SubTrack?: string
-  /** Original name of the Album */
+  /** Original name of the Album @group Title */
   readonly Original_Album?: string
-  /** Original name of the Movie */
+  /** Original name of the Movie @group Title */
   readonly Original_Movie?: string
-  /** Original name of the Part */
+  /** Original name of the Part @group Title */
   readonly Original_Part?: string
-  /** Original name of the Track */
+  /** Original name of the Track @group Title */
   readonly Original_Track?: string
-  /** iTunes compilation */
+  /** iTunes compilation @group Title */
   readonly Compilation?: string
-  /** iTunes compilation */
+  /** iTunes compilation @group Title */
   readonly Compilation_String?: string
-  /** Main performer(s)/artist(s) */
+  /** Main performer(s)/artist(s) @group Entity */
   readonly Performer?: string
-  /** Alternate name for the performer, optimized for sorting purposes (e.g. Beatles, The) */
+  /** Alternate name for the performer, optimized for sorting purposes (e.g. Beatles, The) @group Entity */
   readonly Performer_Sort?: string
-  /** Homepage of the performer/artist */
+  /** Homepage of the performer/artist @group Entity */
   readonly Performer_Url?: string
-  /** Original artist(s)/performer(s) */
+  /** Original artist(s)/performer(s) @group Entity */
   readonly Original_Performer?: string
-  /** Band/orchestra/accompaniment/musician */
+  /** Band/orchestra/accompaniment/musician @group Entity */
   readonly Accompaniment?: string
-  /** Name of the original composer */
+  /** Name of the original composer @group Entity */
   readonly Composer?: string
-  /** Nationality of the primary composer of the piece */
+  /** Nationality of the primary composer of the piece @group Entity */
   readonly Composer_Nationality?: string
-  /** Nationality of the primary composer of the piece (e.g. Mozart, Wolfgang Amadeus) */
+  /** Nationality of the primary composer of the piece (e.g. Mozart, Wolfgang Amadeus) @group Entity */
   readonly Composer_Sort?: string
-  /** The person who arranged the piece (e.g. Ravel) */
+  /** The person who arranged the piece (e.g. Ravel) @group Entity */
   readonly Arranger?: string
-  /** The person who wrote the lyrics for the piece */
+  /** The person who wrote the lyrics for the piece @group Entity */
   readonly Lyricist?: string
-  /** Original lyricist(s)/text writer(s) */
+  /** Original lyricist(s)/text writer(s) @group Entity */
   readonly Original_Lyricist?: string
-  /** The artist(s) who performed the work. In classical music this would be the conductor, orchestra, soloists, etc */
+  /** The artist(s) who performed the work. In classical music this would be the conductor, orchestra, soloists, etc @group Entity */
   readonly Conductor?: string
-  /** Name of the director */
+  /** Name of the director @group Entity */
   readonly Director?: string
-  /** Name of the codirector */
+  /** Name of the codirector @group Entity */
   readonly CoDirector?: string
-  /** Name of the assistant director */
+  /** Name of the assistant director @group Entity */
   readonly AssistantDirector?: string
-  /** Name of the director of photography, also known as cinematographer */
+  /** Name of the director of photography, also known as cinematographer @group Entity */
   readonly DirectorOfPhotography?: string
-  /** Name of the sound engineer or sound recordist */
+  /** Name of the sound engineer or sound recordist @group Entity */
   readonly SoundEngineer?: string
-  /** Name of the person who oversees the artists and craftspeople who build the sets */
+  /** Name of the person who oversees the artists and craftspeople who build the sets @group Entity */
   readonly ArtDirector?: string
-  /** Name of the person responsible for designing the overall visual appearance of a movie */
+  /** Name of the person responsible for designing the overall visual appearance of a movie @group Entity */
   readonly ProductionDesigner?: string
-  /** Name of the choreographer */
+  /** Name of the choreographer @group Entity */
   readonly Choreographer?: string
-  /** Name of the costume designer */
+  /** Name of the costume designer @group Entity */
   readonly CostumeDesigner?: string
-  /** Real name of an actor/actress playing a role in the movie */
+  /** Real name of an actor/actress playing a role in the movie @group Entity */
   readonly Actor?: string
-  /** Name of the character an actor or actress plays in this movie */
+  /** Name of the character an actor or actress plays in this movie @group Entity */
   readonly Actor_Character?: string
-  /** Author of the story or script */
+  /** Author of the story or script @group Entity */
   readonly WrittenBy?: string
-  /** Author of the screenplay or scenario (used for movies and TV shows) */
+  /** Author of the screenplay or scenario (used for movies and TV shows) @group Entity */
   readonly ScreenplayBy?: string
-  /** Editors name */
+  /** Editors name @group Entity */
   readonly EditedBy?: string
-  /** Name of the person or organization that commissioned the subject of the file */
+  /** Name of the person or organization that commissioned the subject of the file @group Entity */
   readonly CommissionedBy?: string
-  /** Name of the producer of the media */
+  /** Name of the producer of the media @group Entity */
   readonly Producer?: string
-  /** Name of a co-producer of the media */
+  /** Name of a co-producer of the media @group Entity */
   readonly CoProducer?: string
-  /** Name of an executive producer of the media */
+  /** Name of an executive producer of the media @group Entity */
   readonly ExecutiveProducer?: string
-  /** Main musical artist for the media */
+  /** Main musical artist for the media @group Entity */
   readonly MusicBy?: string
-  /** Company responsible for distribution of the content */
+  /** Company responsible for distribution of the content @group Entity */
   readonly DistributedBy?: string
-  /** Name of the person or organization who supplied the original subject */
+  /** Name of the person or organization who supplied the original subject @group Entity */
   readonly OriginalSourceForm_DistributedBy?: string
-  /** The engineer who mastered the content for a physical medium or for digital distribution */
+  /** The engineer who mastered the content for a physical medium or for digital distribution @group Entity */
   readonly MasteredBy?: string
-  /** Name of the person/organisation that encoded/ripped the audio file */
+  /** Name of the person/organisation that encoded/ripped the audio file @group Entity */
   readonly EncodedBy?: string
-  /** Name of the artist(s) that interpreted, remixed, or otherwise modified the content */
+  /** Name of the artist(s) that interpreted, remixed, or otherwise modified the content @group Entity */
   readonly RemixedBy?: string
-  /** Main production studio of the media */
+  /** Main production studio of the media @group Entity */
   readonly ProductionStudio?: string
-  /** A very general metadata tag for everyone else that wants to be listed */
+  /** A very general metadata tag for everyone else that wants to be listed @group Entity */
   readonly ThanksTo?: string
-  /** Name of the organization publishing the media (i.e. the record label) */
+  /** Name of the organization publishing the media (i.e. the record label) @group Entity */
   readonly Publisher?: string
-  /** Publisher's official webpage */
+  /** Publisher's official webpage @group Entity */
   readonly Publisher_URL?: string
-  /** Brand or trademark associated with the marketing of music recordings and music videos */
+  /** Brand or trademark associated with the marketing of music recordings and music videos @group Entity */
   readonly Label?: string
-  /** Main genre of the media (e.g. classical, ambient-house, synthpop, sci-fi, drama, etc.) */
+  /** Main genre of the media (e.g. classical, ambient-house, synthpop, sci-fi, drama, etc.) @group Classification */
   readonly Genre?: string
-  /** Podcast category */
+  /** Podcast category @group Classification */
   readonly PodcastCategory?: string
-  /** Intended to reflect the mood of the item with a few keywords (e.g. Romantic, Sad, Uplifting, etc.) */
+  /** Intended to reflect the mood of the item with a few keywords (e.g. Romantic, Sad, Uplifting, etc.) @group Classification */
   readonly Mood?: string
-  /** The type or genre of the content (e.g. Documentary, Feature Film, Cartoon, Music Video, Music, Sound FX, etc.) */
+  /** The type or genre of the content (e.g. Documentary, Feature Film, Cartoon, Music Video, Music, Sound FX, etc.) @group Classification */
   readonly ContentType?: string
-  /** Describes the topic of the file (e.g. "Aerial view of Seattle.") */
+  /** Describes the topic of the file (e.g. "Aerial view of Seattle.") @group Classification */
   readonly Subject?: string
-  /** A short description of the contents (e.g. "Two birds flying.") */
+  /** A short description of the contents (e.g. "Two birds flying.") @group Classification */
   readonly Description?: string
-  /** Keywords for the content separated by a comma, used for searching */
+  /** Keywords for the content separated by a comma, used for searching @group Classification */
   readonly Keywords?: string
-  /** Plot outline or a summary of the story */
+  /** Plot outline or a summary of the story @group Classification */
   readonly Summary?: string
-  /** Description of the story line of the item */
+  /** Description of the story line of the item @group Classification */
   readonly Synopsis?: string
-  /** Describes the period that the piece is from or about (e.g. Renaissance) */
+  /** Describes the period that the piece is from or about (e.g. Renaissance) @group Classification */
   readonly Period?: string
-  /** Legal rating of a movie. Format depends on country of origin (e.g. PG, 16) */
+  /** Legal rating of a movie. Format depends on country of origin (e.g. PG, 16) @group Classification */
   readonly LawRating?: string
-  /** Reason for the law rating */
+  /** Reason for the law rating @group Classification */
   readonly LawRating_Reason?: string
-  /** The ICRA rating (previously RSACi) */
+  /** The ICRA rating (previously RSACi) @group Classification */
   readonly ICRA?: string
-  /** Date/year that the content was released */
+  /** Date/year that the content was released @group Temporal */
   readonly Released_Date?: string
-  /** Date/year that the content was originally released */
+  /** Date/year that the content was originally released @group Temporal */
   readonly Original_Released_Date?: string
-  /** Time/date/year that the recording began */
+  /** Time/date/year that the recording began @group Temporal */
   readonly Recorded_Date?: string
-  /** Time/date/year that the encoding of this content was completed */
+  /** Time/date/year that the encoding of this content was completed @group Temporal */
   readonly Encoded_Date?: string
-  /** Time/date/year that the tags were added to this content */
+  /** Time/date/year that the tags were added to this content @group Temporal */
   readonly Tagged_Date?: string
-  /** Time/date/year that the composition of the music/script began */
+  /** Time/date/year that the composition of the music/script began @group Temporal */
   readonly Written_Date?: string
-  /** Time/date/year that the content was digitally mastered */
+  /** Time/date/year that the content was digitally mastered @group Temporal */
   readonly Mastered_Date?: string
-  /** Time that the file was created on the file system */
+  /** Time that the file was created on the file system @group Temporal */
   readonly File_Created_Date?: string
-  /** Local time that the file was created on the file system (not to be used in an international database) */
+  /** Local time that the file was created on the file system (not to be used in an international database) @group Temporal */
   readonly File_Created_Date_Local?: string
-  /** Time that the file was last modified on the file system */
+  /** Time that the file was last modified on the file system @group Temporal */
   readonly File_Modified_Date?: string
-  /** Local time that the file was last modified on the file system (not to be used in an international database) */
+  /** Local time that the file was last modified on the file system (not to be used in an international database) @group Temporal */
   readonly File_Modified_Date_Local?: string
-  /** Location where track was recorded, as Longitude+Latitude */
+  /** Location where track was recorded, as Longitude+Latitude @group Spatial */
   readonly Recorded_Location?: string
-  /** Location that the item was originally designed/written */
+  /** Location that the item was originally designed/written @group Spatial */
   readonly Written_Location?: string
-  /** Location where an item is archived (e.g. Louvre, Paris, France) */
+  /** Location where an item is archived (e.g. Louvre, Paris, France) @group Spatial */
   readonly Archival_Location?: string
-  /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) */
+  /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) @group Technical */
   readonly Encoded_Application?: string
-  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Application_String?: string
-  /** Name of the company of the encoding application */
+  /** Name of the company of the encoding application @group Technical */
   readonly Encoded_Application_CompanyName?: string
-  /** Name of the encoding product */
+  /** Name of the encoding product @group Technical */
   readonly Encoded_Application_Name?: string
-  /** Version of the encoding product */
+  /** Version of the encoding product @group Technical */
   readonly Encoded_Application_Version?: string
-  /** URL associated with the encoding software */
+  /** URL associated with the encoding software @group Technical */
   readonly Encoded_Application_Url?: string
-  /** Software used to create the file */
+  /** Software used to create the file @group Technical */
   readonly Encoded_Library?: string
-  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Library_String?: string
-  /** Name of the encoding software company */
+  /** Name of the encoding software company @group Technical */
   readonly Encoded_Library_CompanyName?: string
-  /** Name of the encoding software */
+  /** Name of the encoding software @group Technical */
   readonly Encoded_Library_Name?: string
-  /** Version of the encoding software */
+  /** Version of the encoding software @group Technical */
   readonly Encoded_Library_Version?: string
-  /** Release date of the encoding software, in UTC */
+  /** Release date of the encoding software, in UTC @group Technical */
   readonly Encoded_Library_Date?: string
-  /** Parameters used by the encoding software */
+  /** Parameters used by the encoding software @group Technical */
   readonly Encoded_Library_Settings?: string
-  /** Operating System of the encoding software */
+  /** Operating System of the encoding software @group Technical */
   readonly Encoded_OperatingSystem?: string
-  /** Describes whether an image has been cropped and, if so, how it was cropped */
+  /** Describes whether an image has been cropped and, if so, how it was cropped @group Technical */
   readonly Cropped?: string
-  /** Specifies the size of the original subject of the file (e.g. 8.5 in h, 11 in w) */
+  /** Specifies the size of the original subject of the file (e.g. 8.5 in h, 11 in w) @group Technical */
   readonly Dimensions?: string
-  /** Stores dots per inch setting of the digitization mechanism used to produce the file */
+  /** Stores dots per inch setting of the digitization mechanism used to produce the file @group Technical */
   readonly DotsPerInch?: string
-  /** Describes the changes in lightness settings on the digitization mechanism made during the production of the file */
+  /** Describes the changes in lightness settings on the digitization mechanism made during the production of the file @group Technical */
   readonly Lightness?: string
-  /** Original medium of the material (e.g. vinyl, Audio-CD, Super8 or BetaMax) */
+  /** Original medium of the material (e.g. vinyl, Audio-CD, Super8 or BetaMax) @group Technical */
   readonly OriginalSourceMedium?: string
-  /** Original form of the material (e.g. slide, paper, map) */
+  /** Original form of the material (e.g. slide, paper, map) @group Technical */
   readonly OriginalSourceForm?: string
-  /** Number of colors requested when digitizing (e.g. 256 for images or 32 bit RGB for video) */
+  /** Number of colors requested when digitizing (e.g. 256 for images or 32 bit RGB for video) @group Technical */
   readonly OriginalSourceForm_NumColors?: string
-  /** Name of the product the file was originally intended for */
+  /** Name of the product the file was originally intended for @group Technical */
   readonly OriginalSourceForm_Name?: string
-  /** Describes whether the original image has been cropped and, if so, how it was cropped (e.g. 16:9 to 4:3, top and bottom) */
+  /** Describes whether the original image has been cropped and, if so, how it was cropped (e.g. 16:9 to 4:3, top and bottom) @group Technical */
   readonly OriginalSourceForm_Cropped?: string
-  /** Identifies changes in sharpness the digitization mechanism made during the production of the file */
+  /** Identifies changes in sharpness the digitization mechanism made during the production of the file @group Technical */
   readonly OriginalSourceForm_Sharpness?: string
-  /** Software used to tag the file */
+  /** Software used to tag the file @group Technical */
   readonly Tagged_Application?: string
-  /** Average number of beats per minute */
+  /** Average number of beats per minute @group Technical */
   readonly BPM?: string
-  /** International Standard Recording Code, excluding the ISRC prefix and including hyphens */
+  /** International Standard Recording Code, excluding the ISRC prefix and including hyphens @group Identifier */
   readonly ISRC?: string
-  /** International Standard Book Number */
+  /** International Standard Book Number @group Identifier */
   readonly ISBN?: string
-  /** International Standard Audiovisual Number */
+  /** International Standard Audiovisual Number @group Identifier */
   readonly ISAN?: string
-  /** EAN-13 (13-digit European Article Numbering) or UPC-A (12-digit Universal Product Code) bar code identifier */
+  /** EAN-13 (13-digit European Article Numbering) or UPC-A (12-digit Universal Product Code) bar code identifier @group Identifier */
   readonly BarCode?: string
-  /** Library of Congress Control Number */
+  /** Library of Congress Control Number @group Identifier */
   readonly LCCN?: string
   /** Universal Media Identifier */
   readonly UMID?: string
-  /** A label-specific catalogue number used to identify the release (e.g. TIC 01) */
+  /** A label-specific catalogue number used to identify the release (e.g. TIC 01) @group Identifier */
   readonly CatalogNumber?: string
-  /** Label code (e.g. 12345, meaning LC-12345) */
+  /** Label code (e.g. 12345, meaning LC-12345) @group Identifier */
   readonly LabelCode?: string
-  /** Owner of the file */
+  /** Owner of the file @group Legal */
   readonly Owner?: string
-  /** Copyright attribution */
+  /** Copyright attribution @group Legal */
   readonly Copyright?: string
-  /** Link to a site with copyright/legal information */
+  /** Link to a site with copyright/legal information @group Legal */
   readonly Copyright_Url?: string
-  /** Copyright information as per the production copyright holder */
+  /** Copyright information as per the production copyright holder @group Legal */
   readonly Producer_Copyright?: string
-  /** License information (e.g. All Rights Reserved, Any Use Permitted) */
+  /** License information (e.g. All Rights Reserved, Any Use Permitted) @group Legal */
   readonly TermsOfUse?: string
-  /** Name of assisted service */
+  /** Name of assisted service @group Legal */
   readonly ServiceName?: string
-  /** Channel of assisted service */
+  /** Channel of assisted service @group Legal */
   readonly ServiceChannel?: string
-  /** URL of of assisted service */
+  /** URL of of assisted service @group Legal */
   readonly Service_Url?: string
-  /** Provider of assisted service */
+  /** Provider of assisted service @group Legal */
   readonly ServiceProvider?: string
-  /** URL of provider of assisted service */
+  /** URL of provider of assisted service @group Legal */
   readonly ServiceProvider_Url?: string
-  /** Type of assisted service */
+  /** Type of assisted service @group Legal */
   readonly ServiceType?: string
-  /** Television network name */
+  /** Television network name @group Legal */
   readonly NetworkName?: string
-  /** Television network name of original broadcast */
+  /** Television network name of original broadcast @group Legal */
   readonly OriginalNetworkName?: string
-  /** Country information of the content */
+  /** Country information of the content @group Legal */
   readonly Country?: string
-  /** Time zone information of the content */
+  /** Time zone information of the content @group Legal */
   readonly TimeZone?: string
-  /** Is there a cover? Result will be "Yes" if present, empty if not */
+  /** Is there a cover? Result will be "Yes" if present, empty if not @group Info */
   readonly Cover?: string
-  /** Short description of cover image file (e.g. Earth in space) */
+  /** Short description of cover image file (e.g. Earth in space) @group Info */
   readonly Cover_Description?: string
-  /** Cover type (e.g. "Cover (front)") */
+  /** Cover type (e.g. "Cover (front)") @group Info */
   readonly Cover_Type?: string
-  /** MIME type of cover file (e.g. image/png) */
+  /** MIME type of cover file (e.g. image/png) @group Info */
   readonly Cover_Mime?: string
-  /** Cover, in binary format, encoded as Base64 */
+  /** Cover, in binary format, encoded as Base64 @group Info */
   readonly Cover_Data?: string
-  /** Text of a song */
+  /** Text of a song @group Info */
   readonly Lyrics?: string
-  /** Any comment related to the content */
+  /** Any comment related to the content @group Personal */
   readonly Comment?: string
-  /** A numeric value defining how much a person likes the song/movie, 1 to 5 (e.g. 2, 5.0) */
+  /** A numeric value defining how much a person likes the song/movie, 1 to 5 (e.g. 2, 5.0) @group Personal */
   readonly Rating?: string
-  /** Date/year the item was added to the owners collection */
+  /** Date/year the item was added to the owners collection @group Personal */
   readonly Added_Date?: string
-  /** Date the owner first played an item */
+  /** Date the owner first played an item @group Personal */
   readonly Played_First_Date?: string
-  /** Date the owner last played an item */
+  /** Date the owner last played an item @group Personal */
   readonly Played_Last_Date?: string
-  /** Number of times an item was played */
+  /** Number of times an item was played @group Personal */
   readonly Played_Count?: number
   /** Beginning position for Electronic Program Guide */
   readonly EPG_Positions_Begin?: number
@@ -1330,64 +1261,8 @@ export interface GeneralTrack extends BaseTrack {
 
 export interface ImageTrack extends BaseTrack {
   readonly '@type': 'Image'
-  /** Count of objects available in this stream created by MediaInfo when analyzing file. This is mostly for internal use */
-  readonly Count?: number
-  /** Status of bit field when parsing. Options are: 0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished. This is mostly for internal use */
-  readonly Status?: number
-  /** Total number of streams available for this StreamKind. Counting starts at 1 */
-  readonly StreamCount?: number
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind?: string
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind_String?: string
-  /** Identification number for stream, assigned in order of parsing. Counting starts at 0 */
-  readonly StreamKindID?: number
-  /** Identification number for stream when multiple, assigned in order of parsing. Counting starts at 1 */
-  readonly StreamKindPos?: number
-  /** Stream order in the file for type of stream. Counting starts at 0 */
-  readonly StreamOrder?: string
-  /** Order of the first fully decodable packet parsed in the file for stream type. Counting starts at 0 */
-  readonly FirstPacketOrder?: number
-  /** Last **Inform** call. This is mostly for internal use */
-  readonly Inform?: string
-  /** The identification number for this stream in this file */
-  readonly ID?: string
-  /** The identification number for this stream in this file (String format) */
-  readonly ID_String?: string
-  /** Identification for this stream in the original medium of the material */
-  readonly OriginalSourceMedium_ID?: string
-  /** Identification for this stream in the original medium of the material (String format) */
-  readonly OriginalSourceMedium_ID_String?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID_String?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID_String?: string
   /** Title of track */
   readonly Title?: string
-  /** Format used */
-  readonly Format?: string
-  /** Format used and any additional features or settings */
-  readonly Format_String?: string
-  /** More details about the identified Format */
-  readonly Format_Info?: string
-  /** Link to a description of this format */
-  readonly Format_Url?: string
-  /** Commercial name used by vendor for these settings or Format field if there is no difference */
-  readonly Format_Commercial?: string
-  /** Commercial name used by vendor for these settings, if available */
-  readonly Format_Commercial_IfAny?: string
-  /** Version for the identified format */
-  readonly Format_Version?: string
-  /** Profile of the Format */
-  readonly Format_Profile?: string
-  /** Compression method used */
-  readonly Format_Compression?: string
-  /** Format features needed for fully supporting the content */
-  readonly Format_AdditionalFeatures?: string
   /** High Dynamic Range Format used */
   readonly HDR_Format?: string
   /** HDR Format used, along with version, profile, level, layers, settings, and compatibility information */
@@ -1404,8 +1279,6 @@ export interface ImageTrack extends BaseTrack {
   readonly HDR_Format_Settings?: string
   /** HDR Format compatibility with commercial products (e.g. HDR10) */
   readonly HDR_Format_Compatibility?: string
-  /** Settings used and required by decoder */
-  readonly Format_Settings?: string
   /** Order of bytes required for decoding. Options are Big/Little */
   readonly Format_Settings_Endianness?: string
   /** Data packing method used in DPX frames (e.g. Packed, Filled A, Filled B) */
@@ -1414,18 +1287,6 @@ export interface ImageTrack extends BaseTrack {
   readonly Format_Settings_Wrapping?: string
   /** Internet Media Type (aka MIME Type, Content-Type) */
   readonly InternetMediaType?: string
-  /** Codec identifier as indicated by the container */
-  readonly CodecID?: string
-  /** Codec identifier, as indicated by the container */
-  readonly CodecID_String?: string
-  /** More information about this codec identifier */
-  readonly CodecID_Info?: string
-  /** Common alternative names for this codec identifier */
-  readonly CodecID_Hint?: string
-  /** A link to more details about this codec identifier */
-  readonly CodecID_Url?: string
-  /** Codec description, as defined by the container */
-  readonly CodecID_Description?: string
   /** Width of frame (trimmed to "clean aperture" size if present) in pixels, as integer (e.g. 1920) */
   readonly Width?: number
   /** Width of frame (trimmed to "clean aperture" size if present) in pixels, presented in SI unit digit spacing style, with measurement (e.g. 1 920 pixels) */
@@ -1522,17 +1383,17 @@ export interface ImageTrack extends BaseTrack {
   readonly StreamSize_Demuxed_String4?: string
   /** Size of this stream after demuxing, with measurement (measured in powers of 1024) and percentage value (e.g. 10.5 MiB (98%)) */
   readonly StreamSize_Demuxed_String5?: string
-  /** Software used to create the file */
+  /** Software used to create the file @group Technical */
   readonly Encoded_Library?: string
-  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Library_String?: string
-  /** Name of the encoding software */
+  /** Name of the encoding software @group Technical */
   readonly Encoded_Library_Name?: string
-  /** Version of the encoding software */
+  /** Version of the encoding software @group Technical */
   readonly Encoded_Library_Version?: string
-  /** Release date of the encoding software, in UTC */
+  /** Release date of the encoding software, in UTC @group Technical */
   readonly Encoded_Library_Date?: string
-  /** Parameters used by the encoding software */
+  /** Parameters used by the encoding software @group Technical */
   readonly Encoded_Library_Settings?: string
   /** Language, formatted as 2-letter ISO 639-1 if exists, else 3-letter ISO 639-2, and with optional ISO 3166-1 country separated by a dash if available (e.g. en, en-US, en-CN) */
   readonly Language?: string
@@ -1570,9 +1431,9 @@ export interface ImageTrack extends BaseTrack {
   readonly AlternateGroup_String?: string
   /** Plot outline or a summary of the story */
   readonly Summary?: string
-  /** Time that the encoding of this item was completed, in UTC */
+  /** Time that the encoding of this item was completed, in UTC @group Temporal */
   readonly Encoded_Date?: string
-  /** Time that the tags were added to this item, in UTC */
+  /** Time that the tags were added to this item, in UTC @group Temporal */
   readonly Tagged_Date?: string
   /** Whether this stream is encrypted and, if available, how it is encrypted */
   readonly Encryption?: string
@@ -1652,76 +1513,6 @@ export interface ImageTrack extends BaseTrack {
 
 export interface MenuTrack extends BaseTrack {
   readonly '@type': 'Menu'
-  /** Count of objects available in this stream created by MediaInfo when analyzing file. This is mostly for internal use */
-  readonly Count?: number
-  /** Status of bit field when parsing. Options are: 0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished. This is mostly for internal use */
-  readonly Status?: number
-  /** Total number of streams available for this StreamKind. Counting starts at 1 */
-  readonly StreamCount?: number
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind?: string
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind_String?: string
-  /** Identification number for stream, assigned in order of parsing. Counting starts at 0 */
-  readonly StreamKindID?: number
-  /** Identification number for stream when multiple, assigned in order of parsing. Counting starts at 1 */
-  readonly StreamKindPos?: number
-  /** Stream order in the file for type of stream. Counting starts at 0 */
-  readonly StreamOrder?: string
-  /** Order of the first fully decodable packet parsed in the file for stream type. Counting starts at 0 */
-  readonly FirstPacketOrder?: number
-  /** Last **Inform** call. This is mostly for internal use */
-  readonly Inform?: string
-  /** The identification number for this stream in this file */
-  readonly ID?: string
-  /** The identification number for this stream in this file (String format) */
-  readonly ID_String?: string
-  /** Identification for this stream in the original medium of the material */
-  readonly OriginalSourceMedium_ID?: string
-  /** Identification for this stream in the original medium of the material (String format) */
-  readonly OriginalSourceMedium_ID_String?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID_String?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID_String?: string
-  /** Format used */
-  readonly Format?: string
-  /** Format used and any additional features or settings */
-  readonly Format_String?: string
-  /** More details about the identified Format */
-  readonly Format_Info?: string
-  /** Link to a description of this format */
-  readonly Format_Url?: string
-  /** Commercial name used by vendor for these settings or Format field if there is no difference */
-  readonly Format_Commercial?: string
-  /** Commercial name used by vendor for these settings, if available */
-  readonly Format_Commercial_IfAny?: string
-  /** Version for the identified format */
-  readonly Format_Version?: string
-  /** Profile of the Format */
-  readonly Format_Profile?: string
-  /** Compression method used */
-  readonly Format_Compression?: string
-  /** Settings used and required by decoder */
-  readonly Format_Settings?: string
-  /** Features from the format that are required to fully support the file content */
-  readonly Format_AdditionalFeatures?: string
-  /** Codec identifier as indicated by the container */
-  readonly CodecID?: string
-  /** Codec identifier, as indicated by the container */
-  readonly CodecID_String?: string
-  /** More information about this codec identifier */
-  readonly CodecID_Info?: string
-  /** Common alternative names for this codec identifier */
-  readonly CodecID_Hint?: string
-  /** A link to more details about this codec identifier */
-  readonly CodecID_Url?: string
-  /** Codec description, as defined by the container */
-  readonly CodecID_Description?: string
   /** Play time of the stream, in s (ms for text output) */
   readonly Duration?: number
   /** Play time in format XXx YYy, with YYy value omitted if zero (e.g. 1 h 40 min) */
@@ -1802,29 +1593,29 @@ export interface MenuTrack extends BaseTrack {
   readonly ServiceKind?: string
   /** Type of assisted service (e.g. visually impaired, commentary, voice over) */
   readonly ServiceKind_String?: string
-  /** Name of assisted service */
+  /** Name of assisted service @group Legal */
   readonly ServiceName?: string
-  /** Channel of assisted service */
+  /** Channel of assisted service @group Legal */
   readonly ServiceChannel?: string
-  /** URL of assisted service */
+  /** URL of assisted service @group Legal */
   readonly Service_Url?: string
-  /** Provider of assisted service */
+  /** Provider of assisted service @group Legal */
   readonly ServiceProvider?: string
-  /** URL of provider of assisted service */
+  /** URL of provider of assisted service @group Legal */
   readonly ServiceProvider_Url?: string
-  /** Type of assisted service */
+  /** Type of assisted service @group Legal */
   readonly ServiceType?: string
-  /** Television network name */
+  /** Television network name @group Legal */
   readonly NetworkName?: string
-  /** Television network name of original broadcast */
+  /** Television network name of original broadcast @group Legal */
   readonly Original_NetworkName?: string
-  /** Country information of the content */
+  /** Country information of the content @group Legal */
   readonly Countries?: string
-  /** TimeZone information of the content */
+  /** TimeZone information of the content @group Legal */
   readonly TimeZones?: string
-  /** Legal rating of a movie. Format depends on country of origin (e.g. PG, 16) */
+  /** Legal rating of a movie. Format depends on country of origin (e.g. PG, 16) @group Classification */
   readonly LawRating?: string
-  /** Reason of the law rating */
+  /** Reason of the law rating @group Classification */
   readonly LawRating_Reason?: string
   /** Set if this stream should not be used (Yes, No) */
   readonly Disabled?: string
@@ -1850,80 +1641,10 @@ export interface MenuTrack extends BaseTrack {
 
 export interface OtherTrack extends BaseTrack {
   readonly '@type': 'Other'
-  /** Count of objects available in this stream */
-  readonly Count?: number
-  /** bit field (0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished) */
-  readonly Status?: number
-  /** Count of streams of that kind available */
-  readonly StreamCount?: number
-  /** Stream type name */
-  readonly StreamKind?: string
-  /** Stream type name */
-  readonly StreamKind_String?: string
-  /** Number of the stream (base=0) */
-  readonly StreamKindID?: number
-  /** When multiple streams, number of the stream (base=1) */
-  readonly StreamKindPos?: number
-  /** Stream order in the file, whatever is the kind of stream (base=0) */
-  readonly StreamOrder?: string
-  /** Order of the first fully decodable packet met in the file, whatever is the kind of stream (base=0) */
-  readonly FirstPacketOrder?: number
-  /** Last **Inform** call */
-  readonly Inform?: string
-  /** The ID for this stream in this file */
-  readonly ID?: string
-  /** The ID for this stream in this file */
-  readonly ID_String?: string
-  /** The ID for this stream in the original medium of the material */
-  readonly OriginalSourceMedium_ID?: string
-  /** The ID for this stream in the original medium of the material */
-  readonly OriginalSourceMedium_ID_String?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID_String?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID_String?: string
   /** Type */
   readonly Type?: string
-  /** Format used */
-  readonly Format?: string
-  /** Format used + additional features */
-  readonly Format_String?: string
-  /** Info about Format */
-  readonly Format_Info?: string
-  /** Link */
-  readonly Format_Url?: string
-  /** Commercial name used by vendor for theses setings or Format field if there is no difference */
-  readonly Format_Commercial?: string
-  /** Commercial name used by vendor for theses setings if there is one */
-  readonly Format_Commercial_IfAny?: string
-  /** Version of this format */
-  readonly Format_Version?: string
-  /** Profile of the Format */
-  readonly Format_Profile?: string
-  /** Compression method used */
-  readonly Format_Compression?: string
-  /** Settings needed for decoder used */
-  readonly Format_Settings?: string
-  /** Format features needed for fully supporting the content */
-  readonly Format_AdditionalFeatures?: string
   /** How this file is muxed in the container */
   readonly MuxingMode?: string
-  /** Codec ID (found in some containers) */
-  readonly CodecID?: string
-  /** Codec ID (found in some containers) */
-  readonly CodecID_String?: string
-  /** Info about this codec */
-  readonly CodecID_Info?: string
-  /** A hint/popular name for this codec */
-  readonly CodecID_Hint?: string
-  /** A link to more details about this codec ID */
-  readonly CodecID_Url?: string
-  /** Manual description given by the container */
-  readonly CodecID_Description?: string
   /** Play time of the stream in ms */
   readonly Duration?: number
   /** Play time in format : XXx YYy only, YYy omited if zero */
@@ -2194,84 +1915,14 @@ export interface OtherTrack extends BaseTrack {
 
 export interface TextTrack extends BaseTrack {
   readonly '@type': 'Text'
-  /** Count of objects available in this stream created by MediaInfo when analyzing file. This is mostly for internal use */
-  readonly Count?: number
-  /** Status of bit field when parsing. Options are: 0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished. This is mostly for internal use */
-  readonly Status?: number
-  /** Total number of streams available for this StreamKind. Counting starts at 1 */
-  readonly StreamCount?: number
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind?: string
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind_String?: string
-  /** Identification number for stream, assigned in order of parsing. Counting starts at 0 */
-  readonly StreamKindID?: number
-  /** Identification number for stream when multiple, assigned in order of parsing. Counting starts at 1 */
-  readonly StreamKindPos?: number
-  /** Stream order in the file for type of stream. Counting starts at 0 */
-  readonly StreamOrder?: string
-  /** Order of the first fully decodable packet parsed in the file for stream type. Counting starts at 0 */
-  readonly FirstPacketOrder?: number
-  /** Last **Inform** call. This is mostly for internal use */
-  readonly Inform?: string
-  /** The identification number for this stream in this file */
-  readonly ID?: string
-  /** The identification number for this stream in this file (String format) */
-  readonly ID_String?: string
-  /** Identification for this stream in the original medium of the material */
-  readonly OriginalSourceMedium_ID?: string
-  /** Identification for this stream in the original medium of the material (String format) */
-  readonly OriginalSourceMedium_ID_String?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID_String?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID_String?: string
-  /** Format used */
-  readonly Format?: string
-  /** Format used and any additional features or settings */
-  readonly Format_String?: string
-  /** More details about the identified Format */
-  readonly Format_Info?: string
-  /** Link to a description of this format */
-  readonly Format_Url?: string
-  /** Commercial name used by vendor for these settings or Format field if there is no difference */
-  readonly Format_Commercial?: string
-  /** Commercial name used by vendor for these settings, if available */
-  readonly Format_Commercial_IfAny?: string
-  /** Version for the identified format */
-  readonly Format_Version?: string
-  /** Profile of the Format */
-  readonly Format_Profile?: string
-  /** Compression method used */
-  readonly Format_Compression?: string
-  /** Settings used and required by decoder */
-  readonly Format_Settings?: string
   /** Wrapping mode set for format (e.g. Frame, Clip) */
   readonly Format_Settings_Wrapping?: string
-  /** Features from the format that are required to fully support the file content */
-  readonly Format_AdditionalFeatures?: string
   /** Internet Media Type (aka MIME Type, Content-Type) */
   readonly InternetMediaType?: string
   /** How this file is muxed in the container (e.g. Muxed in Video #1) */
   readonly MuxingMode?: string
   /** More information about MuxingMode */
   readonly MuxingMode_MoreInfo?: string
-  /** Codec identifier as indicated by the container */
-  readonly CodecID?: string
-  /** Codec identifier, as indicated by the container */
-  readonly CodecID_String?: string
-  /** More information about this codec identifier */
-  readonly CodecID_Info?: string
-  /** Common alternative names for this codec identifier */
-  readonly CodecID_Hint?: string
-  /** A link to more details about this codec identifier */
-  readonly CodecID_Url?: string
-  /** Codec description, as defined by the container */
-  readonly CodecID_Description?: string
   /** Play time of the stream, in ms */
   readonly Duration?: number
   /** Play time of the stream in format XXx YYy, with YYy value omitted if zero (e.g. 1 h 40 min) */
@@ -2674,33 +2325,33 @@ export interface TextTrack extends BaseTrack {
   readonly Source_StreamSize_Encoded_Proportion?: string
   /** Title of file */
   readonly Title?: string
-  /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) */
+  /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) @group Technical */
   readonly Encoded_Application?: string
-  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Application_String?: string
-  /** Name of the company of the encoding application */
+  /** Name of the company of the encoding application @group Technical */
   readonly Encoded_Application_CompanyName?: string
-  /** Name of the encoding product */
+  /** Name of the encoding product @group Technical */
   readonly Encoded_Application_Name?: string
-  /** Version of the encoding product */
+  /** Version of the encoding product @group Technical */
   readonly Encoded_Application_Version?: string
-  /** URL associated with the encoding software */
+  /** URL associated with the encoding software @group Technical */
   readonly Encoded_Application_Url?: string
-  /** Software used to create the file */
+  /** Software used to create the file @group Technical */
   readonly Encoded_Library?: string
-  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Library_String?: string
-  /** Name of the encoding software company */
+  /** Name of the encoding software company @group Technical */
   readonly Encoded_Library_CompanyName?: string
-  /** Name of the encoding software */
+  /** Name of the encoding software @group Technical */
   readonly Encoded_Library_Name?: string
-  /** Version of the encoding software */
+  /** Version of the encoding software @group Technical */
   readonly Encoded_Library_Version?: string
-  /** Release date of the encoding software, in UTC */
+  /** Release date of the encoding software, in UTC @group Technical */
   readonly Encoded_Library_Date?: string
-  /** Parameters used by the encoding software */
+  /** Parameters used by the encoding software @group Technical */
   readonly Encoded_Library_Settings?: string
-  /** Operating System of the encoding software */
+  /** Operating System of the encoding software @group Technical */
   readonly Encoded_OperatingSystem?: string
   /** Language, formatted as 2-letter ISO 639-1 if exists, else 3-letter ISO 639-2, and with optional ISO 3166-1 country separated by a dash if available (e.g. en, en-US, en-CN) */
   readonly Language?: string
@@ -2738,9 +2389,9 @@ export interface TextTrack extends BaseTrack {
   readonly AlternateGroup_String?: string
   /** Plot outline or a summary of the story */
   readonly Summary?: string
-  /** Time/date/year that the encoding of this content was completed */
+  /** Time/date/year that the encoding of this content was completed @group Temporal */
   readonly Encoded_Date?: string
-  /** Time/date/year that the tags were added to this content */
+  /** Time/date/year that the tags were added to this content @group Temporal */
   readonly Tagged_Date?: string
   /** Whether this stream is encrypted and, if available, how it is encrypted */
   readonly Encryption?: string
@@ -2770,66 +2421,10 @@ export interface TextTrack extends BaseTrack {
 
 export interface VideoTrack extends BaseTrack {
   readonly '@type': 'Video'
-  /** Count of objects available in this stream created by MediaInfo when analyzing file. This is mostly for internal use */
-  readonly Count?: number
-  /** Status of bit field when parsing. Options are: 0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished. This is mostly for internal use */
-  readonly Status?: number
-  /** Total number of streams available for this StreamKind. Counting starts at 1 */
-  readonly StreamCount?: number
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind?: string
-  /** Name of stream type. Options are: Audio, General, Image, Menu, Other, Text, or Video */
-  readonly StreamKind_String?: string
-  /** Identification number for stream, assigned in order of parsing. Counting starts at 0 */
-  readonly StreamKindID?: number
-  /** Identification number for stream when multiple, assigned in order of parsing. Counting starts at 1 */
-  readonly StreamKindPos?: number
-  /** Stream order in the file for type of stream. Counting starts at 0 */
-  readonly StreamOrder?: string
-  /** Order of the first fully decodable packet parsed in the file for stream type. Counting starts at 0 */
-  readonly FirstPacketOrder?: number
-  /** Last **Inform** call. This is mostly for internal use */
-  readonly Inform?: string
-  /** The identification number for this stream in this file */
-  readonly ID?: string
-  /** The identification number for this stream in this file (String format) */
-  readonly ID_String?: string
-  /** Identification for this stream in the original medium of the material */
-  readonly OriginalSourceMedium_ID?: string
-  /** Identification for this stream in the original medium of the material (String format) */
-  readonly OriginalSourceMedium_ID_String?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID?: string
-  /** The unique ID for this stream, should be copied with stream copy */
-  readonly UniqueID_String?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID?: string
-  /** The menu ID for this stream in this file */
-  readonly MenuID_String?: string
-  /** Format used */
-  readonly Format?: string
-  /** Format used and any additional features or settings */
-  readonly Format_String?: string
-  /** More details about the identified Format */
-  readonly Format_Info?: string
-  /** Link to a description of this format */
-  readonly Format_Url?: string
-  /** Commercial name used by vendor for these settings or Format field if there is no difference */
-  readonly Format_Commercial?: string
-  /** Commercial name used by vendor for these settings, if available */
-  readonly Format_Commercial_IfAny?: string
-  /** Version for the identified format */
-  readonly Format_Version?: string
-  /** Profile of the Format */
-  readonly Format_Profile?: string
   /** Level of the Format */
   readonly Format_Level?: string
   /** Tier of the Format */
   readonly Format_Tier?: string
-  /** Compression method used */
-  readonly Format_Compression?: string
-  /** Features from the format that are required to fully support the file content */
-  readonly Format_AdditionalFeatures?: string
   /** Profile of the base stream for Multiview Video Coding */
   readonly MultiView_BaseProfile?: string
   /** View count for Multiview Video Coding */
@@ -2854,8 +2449,6 @@ export interface VideoTrack extends BaseTrack {
   readonly HDR_Format_Compression?: string
   /** HDR Format compatibility with commercial products (e.g. HDR10) */
   readonly HDR_Format_Compatibility?: string
-  /** Settings used and required by decoder */
-  readonly Format_Settings?: string
   /** Whether BVOP settings are required for decoding MPEG (Yes, No) */
   readonly Format_Settings_BVOP?: string
   /** Whether BVOP settings are required for decoding MPEG (Yes, No) */
@@ -2904,18 +2497,6 @@ export interface VideoTrack extends BaseTrack {
   readonly InternetMediaType?: string
   /** How this file is muxed in the container (e.g. Muxed in Video #1) */
   readonly MuxingMode?: string
-  /** Codec identifier as indicated by the container */
-  readonly CodecID?: string
-  /** Codec identifier, as indicated by the container */
-  readonly CodecID_String?: string
-  /** More information about this codec identifier */
-  readonly CodecID_Info?: string
-  /** Common alternative names for this codec identifier */
-  readonly CodecID_Hint?: string
-  /** A link to more details about this codec identifier */
-  readonly CodecID_Url?: string
-  /** Codec description, as defined by the container */
-  readonly CodecID_Description?: string
   /** Play time of the stream, in s (ms for text output) */
   readonly Duration?: number
   /** Play time in format XXx YYy, with YYy value omitted if zero (e.g. 1 h 40 min) */
@@ -3362,33 +2943,33 @@ export interface VideoTrack extends BaseTrack {
   readonly Alignment_String?: string
   /** Title of track */
   readonly Title?: string
-  /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) */
+  /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) @group Technical */
   readonly Encoded_Application?: string
-  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Application_String?: string
-  /** Name of the company of the encoding application */
+  /** Name of the company of the encoding application @group Technical */
   readonly Encoded_Application_CompanyName?: string
-  /** Name of the encoding product */
+  /** Name of the encoding product @group Technical */
   readonly Encoded_Application_Name?: string
-  /** Version of the encoding product */
+  /** Version of the encoding product @group Technical */
   readonly Encoded_Application_Version?: string
-  /** URL associated with the encoding software */
+  /** URL associated with the encoding software @group Technical */
   readonly Encoded_Application_Url?: string
-  /** Software used to create the file */
+  /** Software used to create the file @group Technical */
   readonly Encoded_Library?: string
-  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" */
+  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
   readonly Encoded_Library_String?: string
-  /** Name of the encoding software company */
+  /** Name of the encoding software company @group Technical */
   readonly Encoded_Library_CompanyName?: string
-  /** Name of the encoding software */
+  /** Name of the encoding software @group Technical */
   readonly Encoded_Library_Name?: string
-  /** Version of the encoding software */
+  /** Version of the encoding software @group Technical */
   readonly Encoded_Library_Version?: string
-  /** Release date of the encoding software, in UTC */
+  /** Release date of the encoding software, in UTC @group Technical */
   readonly Encoded_Library_Date?: string
-  /** Parameters used by the encoding software */
+  /** Parameters used by the encoding software @group Technical */
   readonly Encoded_Library_Settings?: string
-  /** Operating System of the encoding software */
+  /** Operating System of the encoding software @group Technical */
   readonly Encoded_OperatingSystem?: string
   /** Language, formatted as 2-letter ISO 639-1 if exists, else 3-letter ISO 639-2, and with optional ISO 3166-1 country separated by a dash if available (e.g. en, en-US, en-CN) */
   readonly Language?: string
@@ -3424,9 +3005,9 @@ export interface VideoTrack extends BaseTrack {
   readonly AlternateGroup?: string
   /** Number of a group in order to provide versions of the same track */
   readonly AlternateGroup_String?: string
-  /** Time that the encoding of this item was completed, in UTC */
+  /** Time that the encoding of this item was completed, in UTC @group Temporal */
   readonly Encoded_Date?: string
-  /** Time that the tags were added to this item, in UTC */
+  /** Time that the tags were added to this item, in UTC @group Temporal */
   readonly Tagged_Date?: string
   /** Whether this stream is encrypted and, if available, how it is encrypted */
   readonly Encryption?: string

@@ -9,6 +9,7 @@ export type { MediaInfoFactoryOptions } from './mediaInfoFactory.js'
 export { default, default as mediaInfoFactory } from './mediaInfoFactory.js'
 export type {
   AudioTrack,
+  BaseTrack,
   CreationInfo,
   Extra,
   GeneralTrack,

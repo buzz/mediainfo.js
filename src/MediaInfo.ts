@@ -50,7 +50,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   private readonly mediainfoModule: MediaInfoModule
   private readonly mediainfoModuleInstance: MediaInfoWasmInterface
 
-  /** @category General Use */
+  /** @group General Use */
   readonly options: MediaInfoOptions<TFormat>
 
   /**
@@ -77,7 +77,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    *
    * @param size Return total buffer size in bytes.
    * @param readChunk Read chunk of data and return an {@link Uint8Array}.
-   * @category General Use
+   * @group General Use
    */
   analyzeData(size: SizeArg, readChunk: ReadChunkFunc): Promise<ResultMap[TFormat]>
 
@@ -87,7 +87,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @param size Return total buffer size in bytes.
    * @param readChunk Read chunk of data and return an {@link Uint8Array}.
    * @param callback Function that is called once the processing is done
-   * @category General Use
+   * @group General Use
    */
   analyzeData(size: SizeArg, readChunk: ReadChunkFunc, callback: ResultCallback<TFormat>): void
 
@@ -181,7 +181,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   /**
    * Close the MediaInfoLib WASM instance.
    *
-   * @category General Use
+   * @group General Use
    */
   close(): void {
     if (typeof this.mediainfoModuleInstance.close === 'function') {
@@ -198,7 +198,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * (This is a low-level MediaInfoLib function.)
    *
    * @returns Result data (format can be configured in options)
-   * @category Low-level
+   * @group Low-level
    */
   inform(): string {
     return this.mediainfoModuleInstance.inform()
@@ -212,7 +212,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @param data Data buffer
    * @param size Buffer size
    * @returns Processing state: `0` (no bits set) = not finished, Bit `0` set = enough data read for providing information
-   * @category Low-level
+   * @group Low-level
    */
   openBufferContinue(data: Uint8Array, size: number): boolean {
     // bit 3 set -> done
@@ -228,7 +228,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * (This is a low-level MediaInfoLib function.)
    *
    * @returns Seek position (where MediaInfoLib wants go in the data buffer)
-   * @category Low-level
+   * @group Low-level
    */
   openBufferContinueGotoGet(): number {
     // JS bindings don't support 64 bit int
@@ -251,7 +251,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    *
    * (This is a low-level MediaInfoLib function.)
    *
-   * @category Low-level
+   * @group Low-level
    */
   openBufferFinalize(): void {
     this.mediainfoModuleInstance.open_buffer_finalize()
@@ -264,7 +264,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    *
    * @param size Expected buffer size
    * @param offset Buffer offset
-   * @category Low-level
+   * @group Low-level
    */
   openBufferInit(size: number, offset: number): void {
     this.mediainfoModuleInstance.open_buffer_init(size, offset)

@@ -23,7 +23,7 @@ export function createProperty(
 export function createInterface(
   name: string,
   members: readonly ts.TypeElement[],
-  extendsInterface?: ts.InterfaceDeclaration,
+  extendsInterface?: string,
   modifiers: readonly ts.ModifierLike[] = [exportModifier]
 ) {
   return ts.factory.createInterfaceDeclaration(
@@ -33,7 +33,10 @@ export function createInterface(
     extendsInterface
       ? [
           ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
-            ts.factory.createExpressionWithTypeArguments(extendsInterface.name, []),
+            ts.factory.createExpressionWithTypeArguments(
+              ts.factory.createIdentifier(extendsInterface),
+              []
+            ),
           ]),
         ]
       : undefined,
