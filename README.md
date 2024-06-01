@@ -1,14 +1,14 @@
+<p align="center">
+  <a href="#">
+    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://mediainfo.js.org/img/logo.svg"></img>
+  </a>
+</p>
+
 # mediainfo.js
-
-<img src="https://mediainfo.js.org/img/logo.svg" alt="mediainfo.js Logo" width="120" height="120" style="float: right; margin-left: 1.5em;" />
-
-*Extract media file metadata in the browser using WebAssembly.*
 
 mediainfo.js is a web-compatible version of the [MediaInfoLib](https://mediaarea.net/en/MediaInfo), originally written in C++. Compiled
 from C++ to WebAssembly, mediainfo.js enables browser compatibility while also supporting Node.js
 execution.
-
-<div style="clear: right;"></div>
 
 ## Live Demo
 
@@ -16,7 +16,9 @@ execution.
 
 ## Documentation
 
-See the [documentation](https://mediainfo.js.org/docs) for detailed instructions.
+- [Introduction](https://mediainfo.js.org/docs/intro/)
+- [Getting Started](https://mediainfo.js.org/docs/getting-started/installation/)
+- [API](https://mediainfo.js.org/api/)
 
 ## License
 
