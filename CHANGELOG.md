@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 Changes preceding version 0.2.0 are not included in the changelog.
 :::
 
+## [0.3.1](https://github.com/buzz/mediainfo.js/compare/v0.3.0...v0.3.1) (2024-06-01)
+
+
+### Bug Fixes
+
+* **deps:** support Node.js 18 ([dbbfbed](https://github.com/buzz/mediainfo.js/commit/dbbfbedc53d54bbf0e50a73be1a68cf9f01229f6)), closes [#155](https://github.com/buzz/mediainfo.js/issues/155)
+
 ## [0.3.0](https://github.com/buzz/mediainfo.js/compare/v0.2.2...v0.3.0) (2024-05-31)
 
 
