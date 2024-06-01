@@ -10,10 +10,7 @@ import babel from './transpile/babel.ts'
 import rollup from './transpile/rollup.ts'
 
 const defaultTask = gulp.series([
-  gulp.parallel([
-    generateTypes,
-    gulp.series([download, gulp.series([zenlib, mediainfolib, wasm])]),
-  ]),
+  gulp.parallel([generateTypes, gulp.series([download, zenlib, mediainfolib, wasm])]),
   gulp.parallel([babel, declaration, rollup]),
 ])
 defaultTask.displayName = 'default'

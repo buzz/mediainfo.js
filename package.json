@@ -34,7 +34,7 @@
   },
   "packageManager": "pnpm@9.1.2",
   "engines": {
-    "node": ">=20.13.1"
+    "node": ">=18.0.0"
   },
   "bin": {
     "mediainfo.js": "./dist/esm/cli.js"

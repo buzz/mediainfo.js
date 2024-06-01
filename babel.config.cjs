@@ -15,7 +15,7 @@ const babel = (api) => {
   api.cache(true)
 
   const browserTarget = '> 0.25%, not dead'
-  const nodeTarget = { node: '20' }
+  const nodeTarget = { node: '18.0' }
 
   const buildMixin = {
     ignore: ['./__tests__', './**/*.d.ts'],
