@@ -33,7 +33,7 @@ const FeatureList: FeatureItem[] = [
   {
     title: 'Written in TypeScript',
     Image: TsSvg,
-    description: <>Fully typed TypeScript codebase for exceptional developer experience</>,
+    description: <>Fully typed codebase for enhanced developer experience.</>,
   },
   {
     title: 'Powered by WebAssembly',
