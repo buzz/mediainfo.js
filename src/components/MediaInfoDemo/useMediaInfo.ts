@@ -10,7 +10,7 @@ function useMediaInfo() {
   const mediaInfoRef = useRef<MediaInfo>()
 
   useEffect(() => {
-    mediaInfoFactory({ locateFile: (url, scriptDirectory) => `${scriptDirectory}${url}` })
+    mediaInfoFactory({ locateFile: (url: string) => `/${url}` })
       .then((mediaInfo) => {
         mediaInfoRef.current = mediaInfo
       })
