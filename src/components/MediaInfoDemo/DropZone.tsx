@@ -14,24 +14,23 @@ function DropZone({ isAnalyzing, onDrop }: DropZoneProps) {
   })
   return (
     <div
-      id="dropzone"
       className={clsx(styles.dropzone, 'margin-vert--lg text--center', { dragover: isDragActive })}
       {...getRootProps()}
     >
-      {isAnalyzing ? (
-        <div id="status" className="hidden">
-          <FontAwesomeIcon icon={faCog} size="lg" spin /> Analyzing file…
-        </div>
-      ) : (
-        <div id="dropcontrols">
-          <div id="dropcontrolstext">
+      <div>
+        {isAnalyzing ? (
+          <>
+            <FontAwesomeIcon icon={faCog} size="lg" spin /> Analyzing file…
+          </>
+        ) : (
+          <>
             <FontAwesomeIcon icon={faHandRock} size="lg" /> Drop a media file here!
             <br />
             <span className={styles.dropZoneSmall}>(or click)</span>
-          </div>
-          <input id="fileinput" type="file" {...getInputProps()} />
-        </div>
-      )}
+            <input type="file" {...getInputProps()} />
+          </>
+        )}
+      </div>
     </div>
   )
 }
