@@ -16,7 +16,11 @@
 }
 
 .dropzone:global(.dragover) {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .dropzone:global(.dragover) {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .dropZoneSmall {

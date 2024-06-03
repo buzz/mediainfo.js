@@ -1,6 +1,6 @@
-import { faFile, faFileAlt, faFileAudio, faFileVideo } from '@fortawesome/free-regular-svg-icons'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faFile, faFont, faVideo, faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
 import type { Track } from 'mediainfo.js'
 
 import { isObject } from '@site/src/utils'
@@ -9,10 +9,10 @@ import styles from './styles.module.css'
 import type { Result } from './Result'
 
 const typeIconMap = {
-  Audio: faFileAudio,
+  Audio: faVolumeHigh,
   Menu: faBars,
-  Text: faFileAlt,
-  Video: faFileVideo,
+  Text: faFont,
+  Video: faVideo,
   default: faFile,
 } as const
 
@@ -30,7 +30,7 @@ function PropertyRow({ name, value }: PropertyRowProps) {
   if (isValue(value)) {
     return (
       <tr>
-        <td>{name}</td>
+        <td className="text--truncate">{name}</td>
         <td>{value}</td>
       </tr>
     )
@@ -41,7 +41,7 @@ function PropertyRow({ name, value }: PropertyRowProps) {
     return Object.entries(value).map(([extraName, extraValue], idx) =>
       isValue(extraValue) ? (
         <tr key={`extra-${idx}`}>
-          <td>{extraName}</td>
+          <td className="text--truncate">{extraName}</td>
           <td>{extraValue}</td>
         </tr>
       ) : null
@@ -56,42 +56,67 @@ interface PropertyRowProps {
   value: Track[keyof Track]
 }
 
-function Track({ track }: TrackProps) {
+function Track({ index, track }: TrackProps) {
   const { '@type': type, ...properties } = track
+  const [collapsed, setCollapsed] = useState(index > 0)
+
+  const onClick = () => {
+    setCollapsed((prevCollapsed) => !prevCollapsed)
+  }
+
+  const headerRow = (
+    <tr>
+      <th colSpan={2}>
+        <button
+          className={styles.trackCollapseButton}
+          onClick={onClick}
+          aria-label={collapsed ? 'Expand' : 'Collapse'}
+        >
+          <h3 className="margin-bottom--none">
+            <span>
+              <FontAwesomeIcon className="margin-right--xs" fixedWidth icon={getIcon(type)} />{' '}
+              {type}
+            </span>
+            <span>{`#${index + 1}`}</span>
+          </h3>
+        </button>
+      </th>
+    </tr>
+  )
+
+  const propertyRows = collapsed
+    ? null
+    : Object.entries(properties).map(([name, value]) => (
+        <PropertyRow name={name} value={value} key={name} />
+      ))
 
   return (
-    <>
-      <tr>
-        <td colSpan={2}>
-          <h3 className="margin-bottom--none">
-            <FontAwesomeIcon icon={getIcon(type)} /> {type}
-          </h3>
-        </td>
-      </tr>
-      {Object.entries(properties).map(([name, value]) => (
-        <PropertyRow name={name} value={value} key={name} />
-      ))}
-    </>
+    <table className={styles.resultTable} data-collapsed={collapsed ? 'true' : 'false'}>
+      <colgroup>
+        <col className={styles.colLabel} />
+        <col className={styles.colValue} />
+      </colgroup>
+      <thead>{headerRow}</thead>
+      <tbody>{propertyRows}</tbody>
+    </table>
   )
 }
 
 interface TrackProps {
+  index: number
   track: Track
 }
 
 function ResultTable({ result }: ResultTableProps) {
-  const track = result.media?.track ?? []
+  const tracks = result.media?.track ?? []
 
-  return (
-    <table className={styles.resultTable}>
-      <tbody>
-        {track.map((track, idx) => {
-          const key = track.UniqueID ?? track.ID ?? `${track['@type']}${idx}`
-          return <Track track={track} key={key} />
-        })}
-      </tbody>
-    </table>
-  )
+  return tracks.map((track, idx) => (
+    <Track
+      index={idx}
+      track={track}
+      key={track.UniqueID ?? track.ID ?? `${track['@type']}${idx}`}
+    />
+  ))
 }
 
 interface ResultTableProps {

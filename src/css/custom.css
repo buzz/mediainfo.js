@@ -14,7 +14,7 @@
   --ifm-color-primary: #0078ad;
   --ifm-color-secondary: #ebedf0;
   --ifm-color-success: #68af4c;
-  --ifm-color-info: #54c7ec;
+  --ifm-color-info: #52cbff;
   --ifm-color-warning: #ffba00;
   --ifm-color-danger: #d23638;
 
@@ -45,6 +45,7 @@
 
   --color-bg: #484043;
   --color-bg-secondary: #363032;
+  --result-table-header-background: rgba(0, 0, 0, 0.0686);
 
   --ifm-color-content: var(--color-bg);
   --ifm-color-content-secondary: var(--color-bg-secondary);
@@ -52,7 +53,7 @@
   --ifm-menu-color-active: var(--ifm-color-primary-dark);
   --ifm-breadcrumb-color-active: var(--ifm-color-primary-dark);
   --ifm-navbar-link-hover-color: black;
-  --ifm-code-font-size: 95%;
+  --ifm-code-font-size: 90%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --hero-gradient: linear-gradient(
     to right,
@@ -76,6 +77,8 @@ html[data-theme='dark'] {
       var(--ifm-color-$(color)) tint(var(--ifm-contrast-foreground-dark-value))
     );
   }
+
+  --result-table-header-background: rgba(255, 255, 255, 0.16);
 
   --ifm-color-content: #c9cfcd;
   --ifm-color-content-secondary: #b7bfbc;
