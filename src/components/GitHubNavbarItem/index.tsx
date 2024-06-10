@@ -26,7 +26,7 @@ function GitHubNavbarItem() {
     >
       <FontAwesomeIcon className="margin-right--sm" icon={faGithub} size="xl" />
       <FontAwesomeIcon icon={faStar} />
-      <div>
+      <div className={styles.stargazers}>
         <BrowserOnly>
           {() => <StarGazersCount organizationName={organizationName} projectName={projectName} />}
         </BrowserOnly>

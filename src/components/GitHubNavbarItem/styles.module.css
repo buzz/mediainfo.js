@@ -2,4 +2,12 @@
   display: flex;
   align-items: center;
   gap: 0.2em;
+
+  :global(.navbar-sidebar) & {
+    display: none;
+  }
+
+  .stargazers {
+    padding-top: 4px;
+  }
 }
