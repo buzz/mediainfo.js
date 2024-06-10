@@ -161,7 +161,7 @@ const config: Config = {
       '@docusaurus/plugin-content-docs',
       {
         sidebarPath: './sidebars.ts',
-        editUrl: 'https://github.com/buzz/mediainfo.js/tree/main/website/',
+        editUrl: 'https://github.com/buzz/mediainfo.js/blob/gh-pages-src/',
       },
     ],
     '@docusaurus/plugin-content-pages',
