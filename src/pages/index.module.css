@@ -40,6 +40,12 @@
   }
 
   .buttons {
-    justify-content: center;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 576px) {
+  .buttons {
+    align-items: normal;
   }
 }
