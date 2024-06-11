@@ -20,7 +20,7 @@ const onChangeFile = (mediainfo) => {
   }
 }
 
-MediaInfo({ format: 'text' }, (mediainfo) => {
+MediaInfo.mediaInfoFactory({ format: 'text' }, (mediainfo) => {
   fileinput.removeAttribute('disabled')
   fileinput.addEventListener('change', () => onChangeFile(mediainfo))
 })
