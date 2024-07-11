@@ -8,7 +8,7 @@
     "url": "https://github.com/buzz/mediainfo.js"
   },
   "bugs": "https://github.com/buzz/mediainfo.js/issues",
-  "homepage": "https://github.com/buzz/mediainfo.js",
+  "homepage": "https://mediainfo.js.org/",
   "license": "BSD-2-Clause",
   "sideEffects": false,
   "keywords": [
