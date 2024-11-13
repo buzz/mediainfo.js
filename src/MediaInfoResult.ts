@@ -33,6 +33,8 @@ export const INT_FIELDS = [
   'Height_Offset',
   'Height_Original',
   'ImageCount',
+  'Lines_MaxCharacterCount',
+  'Lines_MaxCountPerEvent',
   'Matrix_Channels',
   'MenuCount',
   'OtherCount',
@@ -1643,8 +1645,12 @@ export interface OtherTrack extends BaseTrack {
   readonly '@type': 'Other'
   /** Type */
   readonly Type?: string
+  /** Wrapping mode set for format (e.g. Frame, Clip) */
+  readonly Format_Settings_Wrapping?: string
   /** How this file is muxed in the container */
   readonly MuxingMode?: string
+  /** More information about MuxingMode */
+  readonly MuxingMode_MoreInfo?: string
   /** Play time of the stream in ms */
   readonly Duration?: number
   /** Play time in format : XXx YYy only, YYy omited if zero */
@@ -2103,9 +2109,9 @@ export interface TextTrack extends BaseTrack {
   readonly BitRate_Encoded?: number
   /** Encoded bit rate (with forced padding), if container padding is present, in bps */
   readonly BitRate_Encoded_String?: string
-  /** Width of frame (trimmed to "clean aperture" size if present) in characters */
+  /** "Width of frame (trimmed to ""clean aperture"" size if present) in characters" */
   readonly Width?: number
-  /** Width of frame (trimmed to "clean aperture" size if present) in characters, presented in SI unit digit spacing style, with measurement */
+  /** "Width of frame (trimmed to ""clean aperture"" size if present) in characters, presented in SI unit digit spacing style, with measurement" */
   readonly Width_String?: string
   /** Height of frame (including aperture size if present) in characters */
   readonly Height?: number
@@ -2327,7 +2333,7 @@ export interface TextTrack extends BaseTrack {
   readonly Title?: string
   /** Name of the software package used to create the file (e.g. Microsoft WaveEdiTY) @group Technical */
   readonly Encoded_Application?: string
-  /** Name of the software package used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
+  /** "Name of the software package used to create the file, in the format ""CompanyName ProductName (OperatingSystem) Version (Date)""" @group Technical */
   readonly Encoded_Application_String?: string
   /** Name of the company of the encoding application @group Technical */
   readonly Encoded_Application_CompanyName?: string
@@ -2339,7 +2345,7 @@ export interface TextTrack extends BaseTrack {
   readonly Encoded_Application_Url?: string
   /** Software used to create the file @group Technical */
   readonly Encoded_Library?: string
-  /** Software used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
+  /** "Software used to create the file, in the format ""CompanyName ProductName (OperatingSystem) Version (Date)""" @group Technical */
   readonly Encoded_Library_String?: string
   /** Name of the encoding software company @group Technical */
   readonly Encoded_Library_CompanyName?: string
@@ -2414,7 +2420,8 @@ export interface TextTrack extends BaseTrack {
   readonly Events_RollUp?: string
   readonly Events_PaintOn?: string
   readonly Lines_Count?: string
-  readonly Lines_MaxCountPerEvent?: string
+  readonly Lines_MaxCountPerEvent?: number
+  readonly Lines_MaxCharacterCount?: number
   readonly FirstDisplay_Delay_Frames?: string
   readonly FirstDisplay_Type?: string
 }
