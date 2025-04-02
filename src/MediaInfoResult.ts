@@ -1159,8 +1159,28 @@ export interface GeneralTrack extends BaseTrack {
   readonly Encoded_Library_Date?: string
   /** Parameters used by the encoding software @group Technical */
   readonly Encoded_Library_Settings?: string
-  /** Operating System of the encoding software @group Technical */
+  /** Operating system of the encoding software @group Technical */
   readonly Encoded_OperatingSystem?: string
+  /** Operating system used to create the file, in the format "CompanyName ProductName (OperatingSystem) Version (Date)" @group Technical */
+  readonly Encoded_OperatingSystem_String?: string
+  /** Name of the operating system company @group Technical */
+  readonly Encoded_OperatingSystem_CompanyName?: string
+  /** Name of the operating system @group Technical */
+  readonly Encoded_OperatingSystem_Name?: string
+  /** Version of the operating system @group Technical */
+  readonly Encoded_OperatingSystem_Version?: string
+  /** Hardware of the encoding software @group Technical */
+  readonly Encoded_Hardware?: string
+  /** Hardware used to create the file, in the format "CompanyName ProductName (ModelName) Version" @group Technical */
+  readonly Encoded_Hardware_String?: string
+  /** Name of the hardware company @group Technical */
+  readonly Encoded_Hardware_CompanyName?: string
+  /** Name of the hardware @group Technical */
+  readonly Encoded_Hardware_Name?: string
+  /** Model of the hardware @group Technical */
+  readonly Encoded_Hardware_Model?: string
+  /** Version of the hardware @group Technical */
+  readonly Encoded_Hardware_Version?: string
   /** Describes whether an image has been cropped and, if so, how it was cropped @group Technical */
   readonly Cropped?: string
   /** Specifies the size of the original subject of the file (e.g. 8.5 in h, 11 in w) @group Technical */
