@@ -100,6 +100,8 @@ async function parseXsd() {
   properties.Active_Height_String = { type: 'string' }
   properties.Active_DisplayAspectRatio_String = { type: 'string' }
   properties.HDR_Format_Compression = { type: 'string' }
+  properties.Encoded_OperatingSystem_String = { type: 'string' }
+  properties.Encoded_Hardware_String = { type: 'string' }
 
   return { properties, intFields, floatFields }
 }
