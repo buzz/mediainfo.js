@@ -10,7 +10,7 @@ import optimizeWasm from './optimizeWasm.ts'
 
 const moduleFilepath = path.join(BUILD_DIR, 'MediaInfoModule.js')
 
-function makeArgs(environment: 'web' | 'node', es6: boolean, es6ImportMeta: boolean) {
+function makeArgs(environment: 'web' | 'node', es6: boolean) {
   return [
     ...CXXFLAGS.split(' '),
     ...MediaInfoLib_CXXFLAGS.split(' '),
@@ -23,7 +23,6 @@ function makeArgs(environment: 'web' | 'node', es6: boolean, es6ImportMeta: bool
     '-sLEGACY_VM_SUPPORT=0',
     '-sMODULARIZE=1',
     '-sNO_FILESYSTEM=1',
-    `-sUSE_ES6_IMPORT_META=${es6ImportMeta ? '1' : '0'}`,
     '-sEMBIND_STD_STRING_IS_UTF8=1',
     '-sINCOMING_MODULE_JS_API=locateFile',
     '--closure',
@@ -61,7 +60,7 @@ compileMediaInfoModule.description = 'Compile MediaInfoModule'
 
 // MediaInfoModule.js (Node CJS)
 async function buildNodeCjs() {
-  await spawn('emcc', makeArgs('node', false, false), BUILD_DIR)
+  await spawn('emcc', makeArgs('node', false), BUILD_DIR)
   await format(moduleFilepath, path.join(BUILD_DIR, 'MediaInfoModule.cjs.js'))
 }
 
@@ -70,7 +69,7 @@ buildNodeCjs.description = 'Build WASM (Node CJS)'
 
 // MediaInfoModule.js (Node ESM)
 async function buildNodeEsm() {
-  await spawn('emcc', makeArgs('node', true, true), BUILD_DIR)
+  await spawn('emcc', makeArgs('node', true), BUILD_DIR)
   await format(moduleFilepath, path.join(BUILD_DIR, 'MediaInfoModule.esm.js'))
 }
 
@@ -79,7 +78,7 @@ buildNodeEsm.description = 'Build WASM (Node ESM)'
 
 // MediaInfoModule.js (Browser)
 async function buildBrowser() {
-  await spawn('emcc', makeArgs('web', true, false), BUILD_DIR)
+  await spawn('emcc', makeArgs('web', true), BUILD_DIR)
   await format(moduleFilepath, path.join(BUILD_DIR, 'MediaInfoModule.browser.js'))
 }
 
