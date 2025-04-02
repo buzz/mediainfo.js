@@ -1,6 +1,6 @@
 {
   "name": "mediainfo.js",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Emscripten port of MediaInfoLib displays information about video and audio files.",
   "author": "buzz",
   "repository": {
