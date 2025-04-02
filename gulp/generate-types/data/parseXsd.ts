@@ -1,3 +1,4 @@
+import { assertIsNodeLike } from '@xmldom/is-dom-node'
 import { DOMParser } from '@xmldom/xmldom'
 import xpath from 'xpath'
 
@@ -11,6 +12,8 @@ async function parseXsd() {
   const parser = new DOMParser()
   const xmlDoc = parser.parseFromString(xmlDocData, 'text/xml')
   const select = xpath.useNamespaces({ xmlns: namespace })
+
+  assertIsNodeLike(xmlDoc)
 
   const elements = select('//xmlns:complexType[@name="trackType"]/xmlns:all/*', xmlDoc)
 

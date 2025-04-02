@@ -86,6 +86,9 @@ importers:
       '@types/yargs':
         specifier: ^17.0.33
         version: 17.0.33
+      '@xmldom/is-dom-node':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@xmldom/xmldom':
         specifier: ^0.9.8
         version: 0.9.8
@@ -1387,6 +1390,10 @@ packages:
   '@typescript-eslint/visitor-keys@8.29.0':
     resolution: {integrity: sha512-Sne/pVz8ryR03NFK21VpN88dZ2FdQXOlq3VIklbrTYEt8yXtRFr9tvUhqvCeKjqYk5FSim37sHbooT6vzBTZcg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@xmldom/is-dom-node@1.0.1':
+    resolution: {integrity: sha512-CJDxIgE5I0FH+ttq/Fxy6nRpxP70+e2O048EPe85J2use3XKdatVM7dDVvFNjQudd9B49NPoZ+8PG49zj4Er8Q==}
+    engines: {node: '>= 16'}
 
   '@xmldom/xmldom@0.9.8':
     resolution: {integrity: sha512-p96FSY54r+WJ50FIOsCOjyj/wavs8921hG5+kVMmZgKcvIKxMXHTrjNJvRgWa/zuX3B6t2lijLNFaOyuxUH+2A==}
@@ -6067,6 +6074,8 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.29.0
       eslint-visitor-keys: 4.2.0
+
+  '@xmldom/is-dom-node@1.0.1': {}
 
   '@xmldom/xmldom@0.9.8': {}
 

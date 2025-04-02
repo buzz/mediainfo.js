@@ -1,3 +1,4 @@
+import { assertIsNodeLike } from '@xmldom/is-dom-node'
 import { DOMParser } from '@xmldom/xmldom'
 import xpath from 'xpath'
 
@@ -125,6 +126,7 @@ it('should return XML string', async () => {
 
     const parser = new DOMParser()
     const doc = parser.parseFromString(result, 'text/xml')
+    assertIsNodeLike(doc)
     const select = xpath.useNamespaces({ mi: 'https://mediaarea.net/mediainfo' })
 
     const elems = select('//mi:media/mi:track/mi:FileSize/text()', doc)

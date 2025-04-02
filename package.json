@@ -130,6 +130,7 @@
     "@types/vinyl-buffer": "^1.0.3",
     "@types/vinyl-source-stream": "^0.0.34",
     "@types/yargs": "^17.0.33",
+    "@xmldom/is-dom-node": "^1.0.1",
     "@xmldom/xmldom": "^0.9.8",
     "babel-jest": "^29.7.0",
     "babel-plugin-add-import-extension": "^1.6.0",
