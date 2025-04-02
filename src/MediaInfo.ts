@@ -167,7 +167,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
       getChunk()
     }
 
-    const fileSizeValue = size instanceof Function ? size() : size
+    const fileSizeValue = typeof size === 'function' ? size() : size
 
     if (fileSizeValue instanceof Promise) {
       fileSizeValue.then(runReadDataLoop).catch((error: unknown) => {

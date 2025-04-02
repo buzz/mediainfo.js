@@ -44,8 +44,12 @@ const analyze = async ({ coverData, file, format, full }: ReturnType<typeof pars
     }
     console.log(await mediainfo.analyzeData(() => fileSize, readChunk))
   } finally {
-    fileHandle && (await fileHandle.close())
-    mediainfo && mediainfo.close()
+    if (fileHandle) {
+      await fileHandle.close()
+    }
+    if (mediainfo) {
+      mediainfo.close()
+    }
   }
 }
 
