@@ -103,6 +103,7 @@ packages:
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -110,6 +111,7 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
+    deprecated: Use @eslint/object-schema instead
 
   '@humanwhocodes/retry@0.3.0':
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
@@ -434,6 +436,7 @@ packages:
 
   acorn-import-assertions@1.9.0:
     resolution: {integrity: sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==}
+    deprecated: package has been renamed to acorn-import-attributes
     peerDependencies:
       acorn: ^8
 
@@ -1235,8 +1238,8 @@ packages:
   http-parser-js@0.5.8:
     resolution: {integrity: sha512-SGeBX54F94Wgu5RH3X5jsDtf4eHyRogWX1XGT3b4HuW3tQPM4AaBzoUji/4AAJNXCEOWZ5O0DgZmJw1947gD5Q==}
 
-  http-proxy-middleware@2.0.6:
-    resolution: {integrity: sha512-ya/UeJ6HVBYxrgYotAZo1KvPWlgB48kUJLDePFeneHsVujFaW5WNj2NgWCAE//B1Dl02BIfYlpNgBy8Kf8Rjmw==}
+  http-proxy-middleware@2.0.7:
+    resolution: {integrity: sha512-fgVY8AV7qU7z/MmXJ/rxwbrtQH4jBQ9m7kp3llF0liB7glmFeVZFBepQb32T3y8n8k2+AEYuMPCpinYW+/CuRA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@types/express': ^4.17.13
@@ -3849,7 +3852,7 @@ snapshots:
 
   http-parser-js@0.5.8: {}
 
-  http-proxy-middleware@2.0.6(@types/express@4.17.21):
+  http-proxy-middleware@2.0.7(@types/express@4.17.21):
     dependencies:
       '@types/http-proxy': 1.17.14
       http-proxy: 1.18.1
@@ -5019,7 +5022,7 @@ snapshots:
       express: 4.19.2
       graceful-fs: 4.2.11
       html-entities: 2.5.2
-      http-proxy-middleware: 2.0.6(@types/express@4.17.21)
+      http-proxy-middleware: 2.0.7(@types/express@4.17.21)
       ipaddr.js: 2.2.0
       launch-editor: 2.6.1
       open: 10.1.0
