@@ -9,12 +9,13 @@ function makeReadChunk(file: File): ReadChunkFunc {
 }
 
 function App() {
-  const mediaInfoRef = useRef<MediaInfo<'text'>>()
+  const mediaInfoRef = useRef<MediaInfo<'text'> | null>(null)
   const [result, setResult] = useState('')
 
   useEffect(() => {
     mediaInfoFactory({
       format: 'text',
+      // IMPORTANT: load the wasm file from same directory
       locateFile: (filename) => filename,
     })
       .then((mi) => {

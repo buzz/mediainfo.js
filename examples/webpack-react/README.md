@@ -1,20 +1,27 @@
-# mediainfo.js Webpack/React example
+# mediainfo.js Webpack + React Example
 
-## WASM module
+This minimal example demonstrates how to integrate `mediainfo.js` with a Webpack + React setup. It focuses on correctly handling the WebAssembly (WASM) file so Webpack can locate and load it properly.
 
-The `MediaInfoModule.wasm` file is copied during build using `copy-webpack-plugin`.
+## Webpack Configuration
 
-```javascript
-const wasmFile = path.resolve(
-  import.meta.dirname,
-  '..',
-  'node_modules',
-  'mediainfo.js',
-  'dist',
-  'MediaInfoModule.wasm'
-)
+To ensure the WASM file is handled correctly, two adjustments are necessary in `webpack.config.js`:
 
-new CopyPlugin({
-  patterns: [{ from: wasmFile, to: '.' }],
-}),
+1. **Preserve the original WASM filename**
+
+```js
+assetModuleFilename: '[name][ext]',
+```
+
+2. **Make the WASM file discoverable via alias**
+
+```js
+alias: { 'MediaInfoModule.wasm': wasmFilePath },
+```
+
+## Loading the WASM in React
+
+In `App.tsx`, override the `locateFile` function when calling `mediaInfoFactory` to instruct the browser where to find the WASM file:
+
+```js
+locateFile: (filename) => filename,
 ```
