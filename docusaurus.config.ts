@@ -6,6 +6,7 @@ import type { Config, ThemeConfig } from '@docusaurus/types'
 import mediainfoJsPackageJson from '../mediainfo.js/package.json' assert { type: 'json' }
 import copyWasmPlugin from './plugins/copyWasm'
 import extractVersionsPlugin from './plugins/extractVersions'
+import overrideWebpackConfig from './plugins/overrideWebpackConfig'
 import postcss from './plugins/postcss'
 
 const PROJECT_NAME = 'mediainfo.js'
@@ -187,6 +188,7 @@ const config: Config = {
     copyWasmPlugin,
     extractVersionsPlugin,
     postcss,
+    overrideWebpackConfig,
     process.env.NODE_ENV !== 'production' && '@docusaurus/plugin-debug',
     '@docusaurus/plugin-sitemap',
   ].filter(Boolean),
