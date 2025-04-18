@@ -1,5 +1,5 @@
 import path from 'path'
-import { defineConfig } from 'vite'
+import { defineConfig, searchForWorkspaceRoot } from 'vite'
 import react from '@vitejs/plugin-react'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
@@ -10,10 +10,26 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: path.join(__dirname, 'node_modules', 'mediainfo.js', 'dist', 'MediaInfoModule.wasm'),
+          src: path.join(
+            import.meta.dirname,
+            'node_modules',
+            'mediainfo.js',
+            'dist',
+            'MediaInfoModule.wasm'
+          ),
           dest: '',
         },
       ],
     }),
   ],
+  server: {
+    fs: {
+      allow: [
+        // search up for workspace root
+        searchForWorkspaceRoot(process.cwd()),
+        // allow wasm file
+        '../../dist/MediaInfoModule.wasm',
+      ],
+    },
+  },
 })

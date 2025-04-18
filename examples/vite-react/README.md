@@ -1,16 +1,24 @@
-# mediainfo.js Vite/React example
+# mediainfo.js Vite + React Example
 
-## WASM module
+This example shows how to use `mediainfo.js` in a Vite + React project, with proper handling of the WebAssembly (WASM) file.
 
-The `MediaInfoModule.wasm` file is copied during build using `vite-plugin-static-copy`.
+## WebAssembly Handling
 
-```javascript
-  viteStaticCopy({
-    targets: [
-      {
-        src: path.join(__dirname, 'node_modules', 'mediainfo.js', 'dist', 'MediaInfoModule.wasm'),
-        dest: '',
-      },
-    ],
-  }),
+The `MediaInfoModule.wasm` file is copied into the build output using `vite-plugin-static-copy` to ensure it's available at runtime:
+
+```js
+viteStaticCopy({
+  targets: [
+    {
+      src: path.join(
+        import.meta.dirname,
+        'node_modules',
+        'mediainfo.js',
+        'dist',
+        'MediaInfoModule.wasm'
+      ),
+      dest: '',
+    },
+  ],
+}),
 ```
