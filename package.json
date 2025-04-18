@@ -16,15 +16,15 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "3.6.3",
-    "@docusaurus/plugin-content-docs": "^3.6.3",
-    "@docusaurus/plugin-content-pages": "^3.6.3",
-    "@docusaurus/plugin-debug": "^3.6.3",
-    "@docusaurus/plugin-sitemap": "^3.6.3",
-    "@docusaurus/theme-classic": "^3.6.3",
-    "@fortawesome/fontawesome-svg-core": "^6.7.1",
-    "@fortawesome/free-regular-svg-icons": "^6.7.1",
-    "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@docusaurus/core": "3.7.0",
+    "@docusaurus/plugin-content-docs": "^3.7.0",
+    "@docusaurus/plugin-content-pages": "^3.7.0",
+    "@docusaurus/plugin-debug": "^3.7.0",
+    "@docusaurus/plugin-sitemap": "^3.7.0",
+    "@docusaurus/theme-classic": "^3.7.0",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mdx-js/react": "^3.1.0",
     "clsx": "^2.1.1",
@@ -32,33 +32,41 @@
     "postcss-color-mod-function": "^4.1.1",
     "postcss-each": "0.10.0",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-dropzone": "^14.3.5"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-dropzone": "^14.3.8"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.6.3",
-    "@docusaurus/tsconfig": "3.6.3",
-    "@docusaurus/types": "3.6.3",
-    "@eslint/js": "^9.17.0",
-    "@fortawesome/free-brands-svg-icons": "^6.7.1",
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.0.1",
+    "@docusaurus/module-type-aliases": "3.7.0",
+    "@docusaurus/tsconfig": "3.7.0",
+    "@docusaurus/types": "3.7.0",
+    "@eslint/js": "^9.24.0",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.1.2",
     "docusaurus-plugin-typedoc-api": "^4.4.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-unicorn": "^56.0.1",
-    "globals": "^15.13.0",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.0"
+    "eslint-plugin-unicorn": "^58.0.0",
+    "globals": "^16.0.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.30.1"
   },
   "browserslist": {
-    "production": [">0.5%", "not dead", "not op_mini all"],
-    "development": ["last 3 chrome version", "last 3 firefox version", "last 5 safari version"]
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
   },
   "engines": {
     "node": ">=20.13.1"
