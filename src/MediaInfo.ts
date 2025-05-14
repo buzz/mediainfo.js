@@ -201,9 +201,23 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     if (typeof this.mediainfoModuleInstance.close === 'function') {
       this.mediainfoModuleInstance.close()
     }
-    if (typeof this.mediainfoModule.destroy === 'function') {
-      this.mediainfoModule.destroy(this.mediainfoModuleInstance)
-    }
+  }
+
+  /**
+   * Reset the MediaInfoLib WASM instance to its initial state.
+   *
+   * This method ensures that the instance is ready for a new parse.
+   * @group General Use
+   */
+  reset(): void {
+    this.close();
+    this.mediainfoModuleInstance.close();
+    const newInstance = new this.mediainfoModule.MediaInfo(
+      this.options.format === 'object' ? 'JSON' : this.options.format,
+      this.options.coverData,
+      this.options.full
+    );
+    Object.assign(this.mediainfoModuleInstance, newInstance);
   }
 
   /**
