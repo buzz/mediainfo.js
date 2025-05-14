@@ -1,4 +1,4 @@
-import mediaInfoFactory, { type MediaInfo } from '..'
+import mediaInfoFactory, { type MediaInfo } from '../src'
 
 const methodNames = [
   'analyzeData',
@@ -18,7 +18,7 @@ const expectMediainfoObj = (mi: MediaInfo) => {
 }
 
 it('should instantiate via callback', (done) => {
-  mediaInfoFactory({}, (mi) => {
+  mediaInfoFactory({}, (mi: MediaInfo) => {
     try {
       expectMediainfoObj(mi)
     } finally {
@@ -40,3 +40,22 @@ it('should instantiate via Promise', async () => {
     }
   }
 })
+
+it('should reset the MediaInfo instance', async () => {
+  expect.assertions(9);
+  let mi: MediaInfo | undefined;
+  try {
+    mi = await mediaInfoFactory();
+    expectMediainfoObj(mi);
+
+    // Perform a reset
+    mi.reset();
+
+    // Verify that the instance is still functional after reset
+    expectMediainfoObj(mi);
+  } finally {
+    if (mi) {
+      mi.close();
+    }
+  }
+});
