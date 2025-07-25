@@ -22,7 +22,7 @@ repeatedly. Retain the instance for the duration of its required usage.
     import mediaInfoFactory from 'mediainfo.js';
 
     const mediainfo = await mediaInfoFactory();
-    const result = mediainfo.analyzeFile(...);
+    const result = mediainfo.analyzeData(...);
     mediainfo.close();
     ```
   </TabItem>
@@ -31,7 +31,7 @@ repeatedly. Retain the instance for the duration of its required usage.
     import mediaInfoFactory from 'mediainfo.js';
 
     mediaInfoFactory().then((mediainfo) => {
-      const result = mediainfo.analyzeFile(...);
+      const result = mediainfo.analyzeData(...);
       mediainfo.close();
     });
     ```
@@ -41,7 +41,7 @@ repeatedly. Retain the instance for the duration of its required usage.
     import mediaInfoFactory from 'mediainfo.js';
 
     mediaInfoFactory({}, (mediainfo) => {
-      const result = mediainfo.analyzeFile(...);
+      const result = mediainfo.analyzeData(...);
       mediainfo.close();
     });
     ```
