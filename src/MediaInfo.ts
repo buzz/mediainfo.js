@@ -49,6 +49,7 @@ type ResultCallback<TFormat extends FormatType> = (
 class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   private readonly mediainfoModule: MediaInfoModule
   private readonly mediainfoModuleInstance: MediaInfoWasmInterface
+  private isAnalyzing = false
 
   /** @group General Use */
   readonly options: MediaInfoOptions<TFormat>
@@ -100,6 +101,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     if (callback === undefined) {
       return new Promise((resolve, reject) => {
         const resultCb: ResultCallback<TFormat> = (result, error) => {
+          this.isAnalyzing = false
           if (error || !result) {
             reject(unknownToError(error))
           } else {
@@ -110,13 +112,23 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
       })
     }
 
+    if (this.isAnalyzing) {
+      callback('', new Error('cannot start a new analysis while another is in progress'))
+      return
+    }
+    this.isAnalyzing = true
+
     const finalize = () => {
-      this.openBufferFinalize()
-      const result = this.inform()
-      if (this.options.format === 'object') {
-        callback(this.parseResultJson(result))
-      } else {
-        callback(result)
+      try {
+        this.openBufferFinalize()
+        const result = this.inform()
+        if (this.options.format === 'object') {
+          callback(this.parseResultJson(result))
+        } else {
+          callback(result)
+        }
+      } finally {
+        this.isAnalyzing = false
       }
     }
 
@@ -136,12 +148,14 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
           const safeSize = Math.min(this.options.chunkSize, fileSize - offset)
           dataValue = readChunk(safeSize, offset)
         } catch (error: unknown) {
+          this.isAnalyzing = false
           callback('', unknownToError(error))
           return
         }
 
         if (dataValue instanceof Promise) {
           dataValue.then(readNextChunk).catch((error: unknown) => {
+            this.isAnalyzing = false
             callback('', unknownToError(error))
           })
         } else {
