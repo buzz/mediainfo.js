@@ -1,6 +1,6 @@
 {
   "editor.formatOnSave": true,
-  "eslint.experimental.useFlatConfig": true,
+  "eslint.useFlatConfig": true,
   "search.exclude": {
     "**/.husky": true,
     "**/build": true,
