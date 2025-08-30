@@ -65,7 +65,18 @@ function makeTrackFields(
       continue
     }
 
-    const xsdProperty = getXsdType(normalizedName)
+    let xsdProperty: XsdProperty
+    try {
+      xsdProperty = getXsdType(normalizedName)
+    } catch (error) {
+      if (error instanceof Error && error.message === "Property 'Type_String' not found in XSD") {
+        // 'Type_String' is missing in
+        // https://github.com/MediaArea/MediaAreaXml/blob/master/mediainfo.xsd
+        xsdProperty = { type: 'string' }
+      } else {
+        throw error
+      }
+    }
 
     const field: TrackField = {
       type: xsdProperty.type,
@@ -99,7 +110,7 @@ async function getFields(): Promise<[TrackTypes, string[], string[]]> {
 
   const getXsdType = (fieldName: string): XsdProperty => {
     if (!Object.keys(xsdProperties).includes(fieldName)) {
-      throw new Error(`Property '${fieldName}' not found XSD`)
+      throw new Error(`Property '${fieldName}' not found in XSD`)
     }
     return xsdProperties[fieldName]
   }
