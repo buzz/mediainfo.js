@@ -26,6 +26,10 @@ const TEST_FILES = {
     url: 'https://github.com/sbraz/pymediainfo/raw/master/tests/data/sample.mkv',
     md5: '130830537d5b0b79e78d68be16dde0fd',
   },
+  'freeMXF-mxf1.mxf': {
+    url: 'http://freemxf.org/samples/freeMXF-mxf1.mxf',
+    md5: '25f21195085450603ba476d22ab85dae',
+  },
 }
 
 function downloadFile(url: string, filePath: string) {
