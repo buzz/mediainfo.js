@@ -3,6 +3,7 @@ import type { FORMAT_CHOICES } from './MediaInfo.js'
 type WasmConstructableFormatType = (typeof FORMAT_CHOICES)[number]
 
 interface MediaInfoWasmInterface {
+  delete(): void
   close(): void
   inform(): string
   open_buffer_continue(data: Uint8Array, size: number): number

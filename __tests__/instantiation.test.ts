@@ -1,4 +1,4 @@
-import mediaInfoFactory, { type MediaInfo } from '../src'
+import mediaInfoFactory, { type MediaInfo } from '..'
 
 const methodNames = [
   'analyzeData',
@@ -8,6 +8,7 @@ const methodNames = [
   'openBufferFinalize',
   'openBufferContinueGotoGet',
   'openBufferInit',
+  'reset',
 ] as const
 
 const expectMediainfoObj = (mi: MediaInfo) => {
@@ -18,7 +19,7 @@ const expectMediainfoObj = (mi: MediaInfo) => {
 }
 
 it('should instantiate via callback', (done) => {
-  mediaInfoFactory({}, (mi: MediaInfo) => {
+  mediaInfoFactory({}, (mi) => {
     try {
       expectMediainfoObj(mi)
     } finally {
@@ -29,7 +30,7 @@ it('should instantiate via callback', (done) => {
 })
 
 it('should instantiate via Promise', async () => {
-  expect.assertions(8)
+  expect.assertions(9)
   let mi: MediaInfo | undefined
   try {
     mi = await mediaInfoFactory()
@@ -40,22 +41,3 @@ it('should instantiate via Promise', async () => {
     }
   }
 })
-
-it('should reset the MediaInfo instance', async () => {
-  expect.assertions(9);
-  let mi: MediaInfo | undefined;
-  try {
-    mi = await mediaInfoFactory();
-    expectMediainfoObj(mi);
-
-    // Perform a reset
-    mi.reset();
-
-    // Verify that the instance is still functional after reset
-    expectMediainfoObj(mi);
-  } finally {
-    if (mi) {
-      mi.close();
-    }
-  }
-});

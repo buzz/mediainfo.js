@@ -63,6 +63,7 @@ public:
 EMSCRIPTEN_BINDINGS(mediainfojs)
 {
   emscripten::class_<MediaInfoJs>("MediaInfo")
+      .smart_ptr<std::shared_ptr<MediaInfoJs>>("MediaInfo")
       .constructor<const MediaInfoLib::String &, bool, bool>()
       .function("open", &MediaInfoJs::open)
       .function("open_buffer_init", &MediaInfoJs::open_buffer_init)

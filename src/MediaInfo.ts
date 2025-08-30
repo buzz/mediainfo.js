@@ -48,7 +48,7 @@ type ResultCallback<TFormat extends FormatType> = (
  */
 class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   private readonly mediainfoModule: MediaInfoModule
-  private readonly mediainfoModuleInstance: MediaInfoWasmInterface
+  private mediainfoModuleInstance: MediaInfoWasmInterface
   private isAnalyzing = false
 
   /** @group General Use */
@@ -64,13 +64,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   constructor(mediainfoModule: MediaInfoModule, options: MediaInfoOptions<TFormat>) {
     this.mediainfoModule = mediainfoModule
     this.options = options
-
-    // Instantiate
-    this.mediainfoModuleInstance = new mediainfoModule.MediaInfo(
-      options.format === 'object' ? 'JSON' : options.format,
-      options.coverData,
-      options.full
-    )
+    this.mediainfoModuleInstance = this.instantiateModuleInstance()
   }
 
   /**
@@ -116,6 +110,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
       callback('', new Error('cannot start a new analysis while another is in progress'))
       return
     }
+    this.reset()
     this.isAnalyzing = true
 
     const finalize = () => {
@@ -210,14 +205,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @group General Use
    */
   reset(): void {
-    this.close();
-    this.mediainfoModuleInstance.close();
-    const newInstance = new this.mediainfoModule.MediaInfo(
-      this.options.format === 'object' ? 'JSON' : this.options.format,
-      this.options.coverData,
-      this.options.full
-    );
-    Object.assign(this.mediainfoModuleInstance, newInstance);
+    this.mediainfoModuleInstance.delete()
+    this.mediainfoModuleInstance = this.instantiateModuleInstance()
   }
 
   /**
@@ -339,6 +328,19 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     }
 
     return result as ResultMap[TFormat]
+  }
+
+  /**
+   * Instantiate a new WASM module instance.
+   *
+   * @returns MediaInfo module instance
+   */
+  private instantiateModuleInstance(): MediaInfoWasmInterface {
+    return new this.mediainfoModule.MediaInfo(
+      this.options.format === 'object' ? 'JSON' : this.options.format,
+      this.options.coverData,
+      this.options.full
+    )
   }
 }
 
