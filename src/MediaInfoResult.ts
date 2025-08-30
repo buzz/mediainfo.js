@@ -931,8 +931,6 @@ export interface GeneralTrack extends BaseTrack {
   readonly Movie?: string
   /** More information about the Movie @group Title */
   readonly Movie_More?: string
-  /** Country where the movie was produced @group Title */
-  readonly Movie_Country?: string
   /** Homepage for the movie @group Title */
   readonly Movie_Url?: string
   /** Name of the album (e.g. The Joshua Tree) @group Title */
@@ -1283,6 +1281,10 @@ export interface GeneralTrack extends BaseTrack {
 
 export interface ImageTrack extends BaseTrack {
   readonly '@type': 'Image'
+  /** Type */
+  readonly Type?: string
+  /** Type */
+  readonly Type_String?: string
   /** Title of track */
   readonly Title?: string
   /** High Dynamic Range Format used */
@@ -1307,6 +1309,8 @@ export interface ImageTrack extends BaseTrack {
   readonly Format_Settings_Packing?: string
   /** Wrapping mode set for format (e.g. Frame, Clip) */
   readonly Format_Settings_Wrapping?: string
+  /** How this file is muxed in the container (e.g. Muxed in Video #1) */
+  readonly MuxingMode?: string
   /** Internet Media Type (aka MIME Type, Content-Type) */
   readonly InternetMediaType?: string
   /** Width of frame (trimmed to "clean aperture" size if present) in pixels, as integer (e.g. 1920) */
