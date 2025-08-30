@@ -88,7 +88,7 @@ it('should return HTML string', async () => {
     mi = await mediaInfoFactory({ format: 'HTML' })
     const result = await analyzeFakeData(mi)
     expect(result).toEqual(expect.any(String))
-    expect(result).toMatch('<html>')
+    expect(result).toMatch(/<html/)
     expect(result).toMatch('20.0 Bytes')
     expect(result).toMatch('</html>')
   } finally {
