@@ -18,9 +18,7 @@
     "gulp/**/*",
     "gulpfile.ts",
     "rollup.config.js",
-    "runJest.cjs",
-    "src/**/*.ts",
-    "env.d.ts"
+    "src/**/*.ts"
   ],
   "exclude": ["build/**/*", "dist/**/*", "examples/**/*", "node_modules/**/*"]
 }
