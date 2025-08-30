@@ -15,7 +15,7 @@ const WASM_INITIAL_MEMORY = 2 ** 25 // 32 MiB
 // Global variable name for UMD build
 const UMD_NAME = 'MediaInfo'
 
-const LIBMEDIAINFO_VERSION = '25.03'
+const LIBMEDIAINFO_VERSION = '25.07'
 const LIBZEN_VERSION = '0.4.41'
 
 const CXXFLAGS = '-DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 -fno-rtti -fno-exceptions'
