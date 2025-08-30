@@ -13,7 +13,8 @@ const TEST_FILES = {
     url: 'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Creative_Commons/Dead_Combo/CC_Affiliates_Mixtape_1/Dead_Combo_-_01_-_Povo_Que_Cas_Descalo.mp3',
     md5: 'b02fc030703403a13c9a6cef5922c6d1',
   },
-  'file_example_MP4_480_1_5MG.mp4': {
+  // File has 0 bytes when downloaded...
+  'dwsample mp4 360p.mp4': {
     url: 'https://www.dwsamplefiles.com/?dl_id=348',
     md5: '6c104de9464c1b0c29f0510b5d520f53',
   },
