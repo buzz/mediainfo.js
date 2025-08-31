@@ -6,6 +6,20 @@ All notable changes to this project will be documented in this file.
 Changes preceding version 0.2.0 are not included in the changelog.
 :::
 
+## [0.3.6](https://github.com/buzz/mediainfo.js/compare/v0.3.5...v0.3.6) (2025-08-31)
+
+
+### Bug Fixes
+
+* prevent multiple simultaneous analysis runs ([3b0c2cb](https://github.com/buzz/mediainfo.js/commit/3b0c2cb2e073c83902a748fd97c7cb01f424f03b)), closes [#173](https://github.com/buzz/mediainfo.js/issues/173)
+* reset MediaInfo module instance before analyze ([2a9e587](https://github.com/buzz/mediainfo.js/commit/2a9e587a99824a9870373fb0e2c76aaf84589256)), closes [#177](https://github.com/buzz/mediainfo.js/issues/177)
+* reset MediaInfoModule to its initial state ([3444be5](https://github.com/buzz/mediainfo.js/commit/3444be577d98df8432f03cf44061d41af8338fa9))
+
+
+### Upgrades
+
+* **deps:** upgrade libmediainfo to v25.07 ([66a1467](https://github.com/buzz/mediainfo.js/commit/66a14673015cfa2555a9853e6af47c33114c25f6))
+
 ## [0.3.5](https://github.com/buzz/mediainfo.js/compare/v0.3.4...v0.3.5) (2025-04-02)
 
 
