@@ -6,8 +6,8 @@ import type { Config, ThemeConfig } from '@docusaurus/types'
 import mediainfoJsPackageJson from '../mediainfo.js/package.json' assert { type: 'json' }
 import copyWasmPlugin from './plugins/copyWasm'
 import extractVersionsPlugin from './plugins/extractVersions'
-import overrideWebpackConfig from './plugins/overrideWebpackConfig'
 import postcss from './plugins/postcss'
+import webpackResolveWasm from './plugins/webpackResolveWasm'
 
 const PROJECT_NAME = 'mediainfo.js'
 const ORGANIZATION_NAME = 'buzz'
@@ -159,6 +159,12 @@ const config: Config = {
 
   plugins: [
     [
+      '@docusaurus/plugin-svgr',
+      {
+        svgrConfig: {},
+      },
+    ],
+    [
       '@docusaurus/plugin-content-docs',
       {
         sidebarPath: './sidebars.ts',
@@ -188,7 +194,7 @@ const config: Config = {
     copyWasmPlugin,
     extractVersionsPlugin,
     postcss,
-    overrideWebpackConfig,
+    webpackResolveWasm,
     process.env.NODE_ENV !== 'production' && '@docusaurus/plugin-debug',
     '@docusaurus/plugin-sitemap',
   ].filter(Boolean),
