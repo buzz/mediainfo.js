@@ -7,7 +7,7 @@ const readChunkFunc: (file: File) => ReadChunkFunc = (file) => async (chunkSize,
 
 function useMediaInfo() {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const mediaInfoRef = useRef<MediaInfo>()
+  const mediaInfoRef = useRef<MediaInfo | undefined>(undefined)
 
   useEffect(() => {
     mediaInfoFactory({ locateFile: (url: string) => `/${url}` })

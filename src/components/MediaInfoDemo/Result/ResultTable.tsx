@@ -74,8 +74,7 @@ function Track({ index, track }: TrackProps) {
         >
           <h3 className="margin-bottom--none">
             <span>
-              <FontAwesomeIcon className="margin-right--xs" fixedWidth icon={getIcon(type)} />{' '}
-              {type}
+              <FontAwesomeIcon className="margin-right--xs" icon={getIcon(type)} widthAuto /> {type}
             </span>
             <span>{`#${index + 1}`}</span>
           </h3>

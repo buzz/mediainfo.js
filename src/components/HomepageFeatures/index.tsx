@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import type { ReactElement } from 'react'
 
 import AnalyzeSvg from '@site/static/img/feature-analyze.svg'
 import FeatureSvg from '@site/static/img/feature-metadata.svg'
@@ -11,7 +12,7 @@ import styles from './styles.module.css'
 interface FeatureItem {
   title: string
   Image: React.ComponentType<React.ComponentProps<'svg'>> | string
-  description: JSX.Element
+  description: ReactElement
 }
 
 const FeatureList: FeatureItem[] = [
@@ -63,7 +64,7 @@ function Feature({ title, Image, description }: FeatureItem) {
   )
 }
 
-export default function HomepageFeatures(): JSX.Element {
+export default function HomepageFeatures(): ReactElement {
   return (
     <section className={styles.features}>
       <div className="container">

@@ -3,6 +3,10 @@
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "@site/*": ["./*"],
+      "@theme/*": ["./node_modules/@docusaurus/theme-classic/lib/theme/*"]
+    },
     "strict": true
   }
 }

@@ -6,7 +6,7 @@ import { isResults, type Results } from './Result/Result'
 const EMPTY_RESULTS = {}
 
 const restore = (key: string): Results => {
-  const restoredJson = window.localStorage.getItem(key)
+  const restoredJson = globalThis.localStorage.getItem(key)
   if (restoredJson) {
     try {
       const results: unknown = JSON.parse(restoredJson)
@@ -15,7 +15,7 @@ const restore = (key: string): Results => {
       }
     } catch {
       // Reset if data is corrupted
-      window.localStorage.setItem(key, JSON.stringify(EMPTY_RESULTS))
+      globalThis.localStorage.setItem(key, JSON.stringify(EMPTY_RESULTS))
     }
   }
 
@@ -23,7 +23,7 @@ const restore = (key: string): Results => {
 }
 
 const save = (key: string, state: Results) => {
-  window.localStorage.setItem(key, JSON.stringify(state))
+  globalThis.localStorage.setItem(key, JSON.stringify(state))
 }
 
 const usePersist = (key: string): [Results, Dispatch<SetStateAction<Results | undefined>>] => {

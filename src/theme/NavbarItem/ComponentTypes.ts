@@ -1,4 +1,4 @@
-import type { ComponentTypesObject } from '@theme/NavbarItem/ComponentTypes'
+import type ComponentTypesObject from '@theme/NavbarItem/ComponentTypes'
 
 import GitHubNavbarItem from '@site/src/components/GitHubNavbarItem'
 import DefaultNavbarItem from '@theme/NavbarItem/DefaultNavbarItem'
@@ -11,7 +11,7 @@ import HtmlNavbarItem from '@theme/NavbarItem/HtmlNavbarItem'
 import LocaleDropdownNavbarItem from '@theme/NavbarItem/LocaleDropdownNavbarItem'
 import SearchNavbarItem from '@theme/NavbarItem/SearchNavbarItem'
 
-const ComponentTypes: ComponentTypesObject = {
+const ComponentTypes: typeof ComponentTypesObject = {
   default: DefaultNavbarItem,
   localeDropdown: LocaleDropdownNavbarItem,
   search: SearchNavbarItem,
