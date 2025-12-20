@@ -43,7 +43,7 @@ function compileMediaInfoModule() {
     [
       ...CXXFLAGS.split(' '),
       ...MediaInfoLib_CXXFLAGS.split(' '),
-      '-std=c++11',
+      '-std=c++17',
       '-I',
       'vendor/MediaInfoLib/Source',
       '-I',
