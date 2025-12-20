@@ -13,7 +13,7 @@ type TrackFields = Record<string, TrackField>
 
 type TrackTypes = Record<'Base' | CsvType, TrackFields>
 
-type GetXsdPropery = (name: string) => XsdProperty
+type GetXsdPropery = (csvType: CsvType | 'Common', name: string) => XsdProperty
 
 function normalizeName(name: string) {
   let normalizedName = name.replace('*', '_')
@@ -42,7 +42,7 @@ function findCommonFields(descriptions: CsvData, getXsdType: GetXsdPropery): Tra
       commonFields[normalizedName] = {
         description: general[csvName].description, // ok: all common properties have descriptions
         group: general[csvName].group,
-        type: getXsdType(normalizedName).type,
+        type: getXsdType('Common', normalizedName).type,
       }
     }
   }
@@ -50,7 +50,14 @@ function findCommonFields(descriptions: CsvData, getXsdType: GetXsdPropery): Tra
   return commonFields
 }
 
+const MISSING_PROPERTIES: Record<string, XsdProperty['type']> = {
+  Type_String: 'string',
+  MasteringDisplay_Luminance_Original_Min: 'string',
+  MasteringDisplay_Luminance_Original_Max: 'string',
+}
+
 function makeTrackFields(
+  csvType: CsvType,
   csvRecords: CsvRecords,
   commonFieldsNames: string[],
   getXsdType: GetXsdPropery
@@ -65,15 +72,18 @@ function makeTrackFields(
       continue
     }
 
-    let xsdProperty: XsdProperty
+    let xsdProperty: XsdProperty | null = null
     try {
-      xsdProperty = getXsdType(normalizedName)
+      xsdProperty = getXsdType(csvType, normalizedName)
     } catch (error) {
-      if (error instanceof Error && error.message === "Property 'Type_String' not found in XSD") {
-        // 'Type_String' is missing in
-        // https://github.com/MediaArea/MediaAreaXml/blob/master/mediainfo.xsd
-        xsdProperty = { type: 'string' }
-      } else {
+      if (error instanceof Error && /Property .+ not found in XSD/.test(error.message)) {
+        for (const [propName, propType] of Object.entries(MISSING_PROPERTIES)) {
+          if (error.message.includes(`'${propName}'`)) {
+            xsdProperty = { type: propType }
+          }
+        }
+      }
+      if (xsdProperty === null) {
         throw error
       }
     }
@@ -108,9 +118,9 @@ async function getFields(): Promise<[TrackTypes, string[], string[]]> {
   // Parse CSV
   const csvData = await parseCsv()
 
-  const getXsdType = (fieldName: string): XsdProperty => {
+  const getXsdType: GetXsdPropery = (csvType, fieldName) => {
     if (!Object.keys(xsdProperties).includes(fieldName)) {
-      throw new Error(`Property '${fieldName}' not found in XSD`)
+      throw new Error(`Property '${fieldName}' not found in XSD (csvType=${csvType})`)
     }
     return xsdProperties[fieldName]
   }
@@ -122,13 +132,13 @@ async function getFields(): Promise<[TrackTypes, string[], string[]]> {
   return [
     {
       Base: commonFields,
-      Audio: makeTrackFields(csvData.Audio, commonFieldNames, getXsdType),
-      General: makeTrackFields(csvData.General, commonFieldNames, getXsdType),
-      Image: makeTrackFields(csvData.Image, commonFieldNames, getXsdType),
-      Menu: makeTrackFields(csvData.Menu, commonFieldNames, getXsdType),
-      Other: makeTrackFields(csvData.Other, commonFieldNames, getXsdType),
-      Text: makeTrackFields(csvData.Text, commonFieldNames, getXsdType),
-      Video: makeTrackFields(csvData.Video, commonFieldNames, getXsdType),
+      Audio: makeTrackFields('Audio', csvData.Audio, commonFieldNames, getXsdType),
+      General: makeTrackFields('General', csvData.General, commonFieldNames, getXsdType),
+      Image: makeTrackFields('Image', csvData.Image, commonFieldNames, getXsdType),
+      Menu: makeTrackFields('Menu', csvData.Menu, commonFieldNames, getXsdType),
+      Other: makeTrackFields('Other', csvData.Other, commonFieldNames, getXsdType),
+      Text: makeTrackFields('Text', csvData.Text, commonFieldNames, getXsdType),
+      Video: makeTrackFields('Video', csvData.Video, commonFieldNames, getXsdType),
     },
     intFields,
     floatFields,
