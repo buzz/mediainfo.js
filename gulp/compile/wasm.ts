@@ -25,6 +25,7 @@ function makeArgs(environment: 'web' | 'node', es6: boolean) {
     '-sNO_FILESYSTEM=1',
     '-sEMBIND_STD_STRING_IS_UTF8=1',
     '-sINCOMING_MODULE_JS_API=locateFile',
+    '-sDYNAMIC_EXECUTION=0',
     '--closure',
     '0',
     '-lembind',
