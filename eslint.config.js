@@ -7,7 +7,7 @@ import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import globals from 'globals'
 import tsEslint from 'typescript-eslint'
 
-const groupWithTypes = (/** @type {string} */ re) => [re, `${re}.*\\u0000$`]
+const groupWithTypes = (/** @type {string} */ re) => [re, String.raw`${re}.*\u0000$`]
 
 export default tsEslint.config(
   // plugins
