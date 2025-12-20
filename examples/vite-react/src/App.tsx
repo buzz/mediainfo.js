@@ -2,6 +2,7 @@ import { type ChangeEvent, useState, useEffect, useRef } from 'react'
 
 import mediaInfoFactory from 'mediainfo.js'
 import type { MediaInfo, ReadChunkFunc } from 'mediainfo.js'
+import mediaInfoWasmUrl from 'mediainfo.js/MediaInfoModule.wasm?url'
 
 function makeReadChunk(file: File): ReadChunkFunc {
   return async (chunkSize: number, offset: number) =>
@@ -13,7 +14,11 @@ function App() {
   const [result, setResult] = useState('')
 
   useEffect(() => {
-    mediaInfoFactory({ format: 'text' })
+    mediaInfoFactory({
+      format: 'text',
+      locateFile: (path, prefix) =>
+        path === 'MediaInfoModule.wasm' ? mediaInfoWasmUrl : `${prefix}${path}`,
+    })
       .then((mi) => {
         mediaInfoRef.current = mi
       })

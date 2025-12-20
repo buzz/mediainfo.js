@@ -1,24 +1,21 @@
 # mediainfo.js Vite + React Example
 
-This example shows how to use `mediainfo.js` in a Vite + React project, with proper handling of the WebAssembly (WASM) file.
+This example shows how to use `mediainfo.js` in a Vite + React project with Vite’s asset pipeline for the WebAssembly (WASM) file.
 
-## WebAssembly Handling
+## WebAssembly Handling (Recommended)
 
-The `MediaInfoModule.wasm` file is copied into the build output using `vite-plugin-static-copy` to ensure it's available at runtime:
+Import the WASM as an asset URL so Vite fingerprints and emits it, then provide that URL to `mediainfo.js` via the `locateFile` option:
 
-```js
-viteStaticCopy({
-  targets: [
-    {
-      src: path.join(
-        import.meta.dirname,
-        'node_modules',
-        'mediainfo.js',
-        'dist',
-        'MediaInfoModule.wasm'
-      ),
-      dest: '',
-    },
-  ],
-}),
+```ts
+import mediaInfoFactory from 'mediainfo.js'
+import mediaInfoWasmUrl from 'mediainfo.js/MediaInfoModule.wasm?url'
+
+await mediaInfoFactory({
+  locateFile: (path, prefix) =>
+    path === 'MediaInfoModule.wasm' ? mediaInfoWasmUrl : `${prefix}${path}`,
+})
 ```
+
+## Vite Build Warning
+
+Vite can emit a warning about `new URL('MediaInfoModule.wasm', import.meta.url)` inside the generated loader. This example removes it via a tiny transform plugin in `examples/vite-react/vite.config.ts` (`fixMediainfoWasmImportMetaUrl`).
