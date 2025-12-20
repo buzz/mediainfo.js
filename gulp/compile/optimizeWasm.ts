@@ -6,6 +6,7 @@ import { spawn } from '../utils'
 
 const DCE_CONFIG_FILE = path.join(BUILD_DIR, 'dceConfig.json')
 const DCE_WASM_PATH = path.join(BUILD_DIR, 'dce.wasm')
+const DCE_STRIPPED_WASM_PATH = path.join(BUILD_DIR, 'dce.stripped.wasm')
 
 async function extractExports() {
   const objdump = await spawn('wasm-objdump', ['-x', 'MediaInfoModule.wasm'], BUILD_DIR, true)
@@ -61,18 +62,51 @@ async function createDceConfig(exports: string[]) {
   await fs.writeFile(DCE_CONFIG_FILE, JSON.stringify(config))
 }
 
+async function getWasmOptFeatureFlags() {
+  const output = await spawn('wasm-opt', ['--print-features', WASM_FILE], BUILD_DIR, true)
+  return [
+    ...new Set(
+      output
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.startsWith('--enable-'))
+    ),
+  ]
+}
+
 async function optimizeWasm() {
   const exports = await extractExports()
   await createDceConfig(exports)
+
+  const wasmOptFeatureFlags = await getWasmOptFeatureFlags()
+
   await spawn(
     'wasm-metadce',
     ['-all', '-f', DCE_CONFIG_FILE, '-o', DCE_WASM_PATH, WASM_FILE],
     BUILD_DIR
   )
+
+  // Strip `target_features` section
+  await spawn(
+    'wasm-opt',
+    ['--strip-target-features', '-o', DCE_STRIPPED_WASM_PATH, DCE_WASM_PATH],
+    BUILD_DIR
+  )
+
   await fs.mkdir(DIST_DIR, { recursive: true })
   await spawn(
     'wasm-opt',
-    ['-c', '-Oz', '-o', path.join(DIST_DIR, WASM_FILE), DCE_WASM_PATH],
+    [
+      // Run with explicit safe feature set
+      '--mvp-features',
+      ...wasmOptFeatureFlags,
+      '--emit-target-features',
+      '-c',
+      '-Oz',
+      '-o',
+      path.join(DIST_DIR, WASM_FILE),
+      DCE_STRIPPED_WASM_PATH,
+    ],
     BUILD_DIR
   )
 }
