@@ -105,6 +105,8 @@ async function parseXsd() {
   properties.HDR_Format_Compression = { type: 'string' }
   properties.Encoded_OperatingSystem_String = { type: 'string' }
   properties.Encoded_Hardware_String = { type: 'string' }
+  properties.MasteringDisplay_Luminance_Original_Min = { type: 'string' }
+  properties.MasteringDisplay_Luminance_Original_Max = { type: 'string' }
 
   return { properties, intFields, floatFields }
 }

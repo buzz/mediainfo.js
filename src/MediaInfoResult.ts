@@ -108,6 +108,12 @@ export const FLOAT_FIELDS = [
   'Interleave_Duration',
   'Interleave_Preload',
   'Interleave_VideoFrames',
+  'MasteringDisplay_Luminance_Max',
+  'MasteringDisplay_Luminance_Min',
+  'MaxCLL',
+  'MaxCLL_Original',
+  'MaxFALL',
+  'MaxFALL_Original',
   'OverallBitRate_Maximum',
   'OverallBitRate_Minimum',
   'OverallBitRate',
@@ -1515,24 +1521,40 @@ export interface ImageTrack extends BaseTrack {
   readonly MasteringDisplay_Luminance?: string
   /** Luminance of the mastering display (source) */
   readonly MasteringDisplay_Luminance_Source?: string
+  /** Min luminance of the mastering display */
+  readonly MasteringDisplay_Luminance_Min?: number
+  /** Max luminance of the mastering display */
+  readonly MasteringDisplay_Luminance_Max?: number
   /** Luminance of the mastering display (if incoherencies) */
   readonly MasteringDisplay_Luminance_Original?: string
   /** Luminance of the mastering display (source if incoherencies) */
   readonly MasteringDisplay_Luminance_Original_Source?: string
+  /** Min luminance of the mastering display (source if incoherencies) */
+  readonly MasteringDisplay_Luminance_Original_Min?: string
+  /** Max luminance of the mastering display (source if incoherencies) */
+  readonly MasteringDisplay_Luminance_Original_Max?: string
   /** Maximum content light level */
-  readonly MaxCLL?: string
+  readonly MaxCLL?: number
+  /** Maximum content light level, with measurement */
+  readonly MaxCLL_String?: string
   /** Maximum content light level (source) */
   readonly MaxCLL_Source?: string
+  /** Maximum content light level (if incoherencies), with measurement */
+  readonly MaxCLL_Original?: number
   /** Maximum content light level (if incoherencies) */
-  readonly MaxCLL_Original?: string
+  readonly MaxCLL_Original_String?: string
   /** Maximum content light level (source if incoherencies) */
   readonly MaxCLL_Original_Source?: string
   /** Maximum frame average light level */
-  readonly MaxFALL?: string
-  /** Maximum frame average light level (source) */
+  readonly MaxFALL?: number
+  /** Maximum frame average light level */
+  readonly MaxFALL_String?: string
+  /** Maximum frame average light level (source), with measurement */
   readonly MaxFALL_Source?: string
   /** Maximum frame average light level (if incoherencies) */
-  readonly MaxFALL_Original?: string
+  readonly MaxFALL_Original?: number
+  /** Maximum frame average light level (if incoherencies), with measurement */
+  readonly MaxFALL_Original_String?: string
   /** Maximum frame average light level (source if incoherencies) */
   readonly MaxFALL_Original_Source?: string
 }
@@ -2009,33 +2031,33 @@ export interface TextTrack extends BaseTrack {
   readonly Duration_Start_String4?: string
   /** Timestamp of first display in format HH:MM:SS.mmm (HH:MM:SS:FF) */
   readonly Duration_Start_String5?: string
-  /** Play time of the stream, in s (ms for text output) */
+  /** Timestamp of after the last display, in s (ms for text output) */
   readonly Duration_End?: number
-  /** Play time in format XXx YYy, with YYy value omitted if zero (e.g. 1 h 40 min) */
+  /** Timestamp of after the last display in format XXx YYy, with YYy value omitted if zero (e.g. 1 h 40 min) */
   readonly Duration_End_String?: string
-  /** Play time in format HHh MMmn SSs MMMms, with any fields omitted if zero */
+  /** Timestamp of after the last display in format HHh MMmn SSs MMMms, with any fields omitted if zero */
   readonly Duration_End_String1?: string
-  /** Play time in format XXx YYy, with YYy omitted if value is zero */
+  /** Timestamp of after the last display in format XXx YYy, with YYy omitted if value is zero */
   readonly Duration_End_String2?: string
-  /** Play time in format HH:MM:SS.mmm */
+  /** Timestamp of after the last display in format HH:MM:SS.mmm */
   readonly Duration_End_String3?: string
-  /** Play time in format HH:MM:SS:FF, with last colon replaced by semicolon for drop frame if available */
+  /** Timestamp of after the last display in format HH:MM:SS:FF, with last colon replaced by semicolon for drop frame if available */
   readonly Duration_End_String4?: string
-  /** Play time in format HH:MM:SS.mmm (HH:MM:SS:FF) */
+  /** Timestamp of after the last display in format HH:MM:SS.mmm (HH:MM:SS:FF) */
   readonly Duration_End_String5?: string
-  /** Play time of the stream, in s (ms for text output) */
+  /** Timestamp of the last command, in s (ms for text output) */
   readonly Duration_End_Command?: number
-  /** Play time in format XXx YYy, with YYy value omitted if zero (e.g. 1 h 40 min) */
+  /** Timestamp of the last command in format XXx YYy, with YYy value omitted if zero (e.g. 1 h 40 min) */
   readonly Duration_End_Command_String?: string
-  /** Play time in format HHh MMmn SSs MMMms, with any fields omitted if zero */
+  /** Timestamp of the last command in format HHh MMmn SSs MMMms, with any fields omitted if zero */
   readonly Duration_End_Command_String1?: string
-  /** Play time in format XXx YYy, with YYy omitted if value is zero */
+  /** Timestamp of the last command in format XXx YYy, with YYy omitted if value is zero */
   readonly Duration_End_Command_String2?: string
-  /** Play time in format HH:MM:SS.mmm */
+  /** PTimestamp of the last command in format HH:MM:SS.mmm */
   readonly Duration_End_Command_String3?: string
-  /** Play time in format HH:MM:SS:FF, with last colon replaced by semicolon for drop frame if available */
+  /** Timestamp of the last command in format HH:MM:SS:FF, with last colon replaced by semicolon for drop frame if available */
   readonly Duration_End_Command_String4?: string
-  /** Play time in format HH:MM:SS.mmm (HH:MM:SS:FF) */
+  /** Timestamp of the last command in format HH:MM:SS.mmm (HH:MM:SS:FF) */
   readonly Duration_End_Command_String5?: string
   /** Duration of the first frame (if different than other frames), in ms */
   readonly Duration_FirstFrame?: number
@@ -3096,24 +3118,40 @@ export interface VideoTrack extends BaseTrack {
   readonly MasteringDisplay_Luminance?: string
   /** Luminance of the mastering display (source) */
   readonly MasteringDisplay_Luminance_Source?: string
+  /** Min luminance of the mastering display */
+  readonly MasteringDisplay_Luminance_Min?: number
+  /** Max luminance of the mastering display */
+  readonly MasteringDisplay_Luminance_Max?: number
   /** Luminance of the mastering display (if incoherencies) */
   readonly MasteringDisplay_Luminance_Original?: string
   /** Luminance of the mastering display (source if incoherencies) */
   readonly MasteringDisplay_Luminance_Original_Source?: string
+  /** Min luminance of the mastering display (source if incoherencies) */
+  readonly MasteringDisplay_Luminance_Original_Min?: string
+  /** Max luminance of the mastering display (source if incoherencies) */
+  readonly MasteringDisplay_Luminance_Original_Max?: string
   /** Maximum content light level */
-  readonly MaxCLL?: string
+  readonly MaxCLL?: number
+  /** Maximum content light level, with measurement */
+  readonly MaxCLL_String?: string
   /** Maximum content light level (source) */
   readonly MaxCLL_Source?: string
+  /** Maximum content light level (if incoherencies), with measurement */
+  readonly MaxCLL_Original?: number
   /** Maximum content light level (if incoherencies) */
-  readonly MaxCLL_Original?: string
+  readonly MaxCLL_Original_String?: string
   /** Maximum content light level (source if incoherencies) */
   readonly MaxCLL_Original_Source?: string
   /** Maximum frame average light level */
-  readonly MaxFALL?: string
-  /** Maximum frame average light level (source) */
+  readonly MaxFALL?: number
+  /** Maximum frame average light level */
+  readonly MaxFALL_String?: string
+  /** Maximum frame average light level (source), with measurement */
   readonly MaxFALL_Source?: string
   /** Maximum frame average light level (if incoherencies) */
-  readonly MaxFALL_Original?: string
+  readonly MaxFALL_Original?: number
+  /** Maximum frame average light level (if incoherencies), with measurement */
+  readonly MaxFALL_Original_String?: string
   /** Maximum frame average light level (source if incoherencies) */
   readonly MaxFALL_Original_Source?: string
 }

@@ -16,6 +16,9 @@ function makeArgs(environment: 'web' | 'node', es6: boolean) {
     ...MediaInfoLib_CXXFLAGS.split(' '),
     `-INITIAL_HEAP=${WASM_INITIAL_MEMORY}`,
     '-sALLOW_MEMORY_GROWTH=1',
+    // Disallow eval/new Function in generated JS to be CSP-friendly
+    // See https://emscripten.org/docs/tools_reference/settings_reference.html#dynamic-execution
+    '-sDYNAMIC_EXECUTION=0',
     '-sMALLOC=emmalloc',
     '-sASSERTIONS=0',
     `-sENVIRONMENT=${environment}`,
