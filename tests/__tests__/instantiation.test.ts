@@ -20,17 +20,20 @@ const expectMediainfoObj = (mi: MediaInfo) => {
 }
 
 it('should instantiate via callback', (done) => {
-  console.log(mediaInfoFactory)
-
-  mediaInfoFactory({}, (mi) => {
-    console.log('mediainfo created', mi)
-    try {
-      expectMediainfoObj(mi)
-    } finally {
-      mi.close()
-      done()
+  mediaInfoFactory(
+    {},
+    (mi) => {
+      try {
+        expectMediainfoObj(mi)
+      } finally {
+        mi.close()
+        done()
+      }
+    },
+    (err) => {
+      done(err)
     }
-  })
+  )
 })
 
 it('should instantiate via Promise', async () => {

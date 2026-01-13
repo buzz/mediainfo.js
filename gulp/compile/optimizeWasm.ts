@@ -9,7 +9,12 @@ const DCE_WASM_PATH = path.join(BUILD_DIR, 'dce.wasm')
 const DCE_STRIPPED_WASM_PATH = path.join(BUILD_DIR, 'dce.stripped.wasm')
 
 async function extractExports() {
-  const objdump = await spawn('wasm-objdump', ['-x', 'MediaInfoModule.wasm'], BUILD_DIR, true)
+  const objdump = await spawn(
+    'wasm-objdump',
+    ['--details', 'MediaInfoModule.wasm'],
+    BUILD_DIR,
+    true
+  )
   const lines = objdump.split('\n')
 
   const reExport = /^ - \w+\[\d+] .+"(.+)"/
@@ -63,7 +68,17 @@ async function createDceConfig(exports: string[]) {
 }
 
 async function getWasmOptFeatureFlags() {
-  const output = await spawn('wasm-opt', ['--print-features', WASM_FILE], BUILD_DIR, true)
+  const output = await spawn(
+    'wasm-opt',
+    [
+      '--print-features',
+      '--enable-bulk-memory-opt',
+      '--enable-nontrapping-float-to-int',
+      WASM_FILE,
+    ],
+    BUILD_DIR,
+    true
+  )
   return [
     ...new Set(
       output
@@ -76,6 +91,7 @@ async function getWasmOptFeatureFlags() {
 
 async function optimizeWasm() {
   const exports = await extractExports()
+
   await createDceConfig(exports)
 
   const wasmOptFeatureFlags = await getWasmOptFeatureFlags()
@@ -89,7 +105,14 @@ async function optimizeWasm() {
   // Strip `target_features` section
   await spawn(
     'wasm-opt',
-    ['--strip-target-features', '-o', DCE_STRIPPED_WASM_PATH, DCE_WASM_PATH],
+    [
+      '--strip-target-features',
+      '--enable-bulk-memory-opt',
+      '--enable-nontrapping-float-to-int',
+      '-o',
+      DCE_STRIPPED_WASM_PATH,
+      DCE_WASM_PATH,
+    ],
     BUILD_DIR
   )
 
@@ -99,6 +122,8 @@ async function optimizeWasm() {
     [
       // Run with explicit safe feature set
       '--mvp-features',
+      '--enable-bulk-memory-opt',
+      '--enable-nontrapping-float-to-int',
       ...wasmOptFeatureFlags,
       '--emit-target-features',
       '-c',

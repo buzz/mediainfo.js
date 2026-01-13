@@ -10,11 +10,31 @@ import optimizeWasm from './optimizeWasm.ts'
 
 const moduleFilepath = path.join(BUILD_DIR, 'MediaInfoModule.js')
 
+const EXPORTED_FUNCTIONS = [
+  '_mi_new',
+  '_mi_delete',
+  '_mi_open_buffer_init',
+  '_mi_open_buffer_continue',
+  '_mi_open_buffer_finalize',
+  '_mi_open_buffer_continue_goto_get',
+  '_mi_inform',
+  '_mi_close',
+  '_malloc',
+  '_free',
+] as const
+
+const EXPORTED_RUNTIME_METHODS = [
+  'HEAPU8',
+  'lengthBytesUTF8',
+  'stringToUTF8',
+  'UTF8ToString',
+] as const
+
 function makeArgs(environment: 'web' | 'node', es6: boolean) {
   return [
     ...CXXFLAGS.split(' '),
     ...MediaInfoLib_CXXFLAGS.split(' '),
-    `-INITIAL_HEAP=${WASM_INITIAL_MEMORY}`,
+    `-sINITIAL_HEAP=${WASM_INITIAL_MEMORY}`,
     '-sALLOW_MEMORY_GROWTH=1',
     '-sMALLOC=emmalloc',
     '-sASSERTIONS=0',
@@ -22,13 +42,13 @@ function makeArgs(environment: 'web' | 'node', es6: boolean) {
     `-sEXPORT_ES6=${es6 ? '1' : '0'}`,
     '-sLEGACY_VM_SUPPORT=0',
     '-sMODULARIZE=1',
-    '-sNO_FILESYSTEM=1',
-    '-sEMBIND_STD_STRING_IS_UTF8=1',
-    '-sINCOMING_MODULE_JS_API=locateFile',
+    '-sFILESYSTEM=0',
+    '-sWASM_BIGINT=1',
+    '-sINCOMING_MODULE_JS_API=locateFile,print,printErr,onAbort',
     '-sDYNAMIC_EXECUTION=0',
-    '--closure',
-    '0',
-    '-lembind',
+    '-sEXIT_RUNTIME=0',
+    `-sEXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS.join(',')}`,
+    `-sEXPORTED_RUNTIME_METHODS=${EXPORTED_RUNTIME_METHODS.join(',')}`,
     'MediaInfoModule.o',
     'vendor/MediaInfoLib/Project/GNU/Library/.libs/libmediainfo.a',
     'vendor/ZenLib/Project/GNU/Library/.libs/libzen.a',

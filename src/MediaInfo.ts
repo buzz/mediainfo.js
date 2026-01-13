@@ -1,9 +1,8 @@
 import { unknownToError } from './error.js'
-import { FLOAT_FIELDS, INT_FIELDS, type MediaInfoResult, type Track } from './MediaInfoResult.js'
+import { FLOAT_FIELDS, INT_FIELDS } from './MediaInfoResult.js'
 import type { MediaInfoFactoryOptions } from './mediaInfoFactory.js'
-import type { MediaInfoModule, MediaInfoWasmInterface } from './MediaInfoModule.js'
-
-const MAX_UINT32_PLUS_ONE = 2 ** 32
+import type { MediaInfoModule } from './MediaInfoModule.js'
+import type { MediaInfoResult, Track } from './MediaInfoResult.js'
 
 /** Format of the result type */
 type FormatType = 'object' | 'JSON' | 'XML' | 'HTML' | 'text'
@@ -48,7 +47,7 @@ type ResultCallback<TFormat extends FormatType> = (
  */
 class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   private readonly mediainfoModule: MediaInfoModule
-  private mediainfoModuleInstance: MediaInfoWasmInterface
+  private ptr: number
   private isAnalyzing = false
 
   /** @group General Use */
@@ -64,7 +63,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   constructor(mediainfoModule: MediaInfoModule, options: MediaInfoOptions<TFormat>) {
     this.mediainfoModule = mediainfoModule
     this.options = options
-    this.mediainfoModuleInstance = this.instantiateModuleInstance()
+    this.ptr = this.instantiateModuleInstance()
   }
 
   /**
@@ -107,7 +106,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     }
 
     if (this.isAnalyzing) {
-      callback('', new Error('cannot start a new analysis while another is in progress'))
+      callback(null, new Error('cannot start a new analysis while another is in progress'))
       return
     }
     this.reset()
@@ -144,14 +143,14 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
           dataValue = readChunk(safeSize, offset)
         } catch (error: unknown) {
           this.isAnalyzing = false
-          callback('', unknownToError(error))
+          callback(null, unknownToError(error))
           return
         }
 
         if (dataValue instanceof Promise) {
           dataValue.then(readNextChunk).catch((error: unknown) => {
             this.isAnalyzing = false
-            callback('', unknownToError(error))
+            callback(null, unknownToError(error))
           })
         } else {
           readNextChunk(dataValue)
@@ -193,8 +192,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @group General Use
    */
   close(): void {
-    if (typeof this.mediainfoModuleInstance.close === 'function') {
-      this.mediainfoModuleInstance.close()
+    if (this.ptr) {
+      this.mediainfoModule._mi_close(this.ptr)
     }
   }
 
@@ -205,8 +204,10 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @group General Use
    */
   reset(): void {
-    this.mediainfoModuleInstance.delete()
-    this.mediainfoModuleInstance = this.instantiateModuleInstance()
+    if (this.ptr) {
+      this.mediainfoModule._mi_delete(this.ptr)
+    }
+    this.ptr = this.instantiateModuleInstance()
   }
 
   /**
@@ -218,7 +219,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @group Low-level
    */
   inform(): string {
-    return this.mediainfoModuleInstance.inform()
+    const resPtr = this.mediainfoModule._mi_inform(this.ptr)
+    return this.mediainfoModule.UTF8ToString(resPtr)
   }
 
   /**
@@ -232,8 +234,15 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @group Low-level
    */
   openBufferContinue(data: Uint8Array, size: number): boolean {
-    // bit 3 set -> done
-    return !!(this.mediainfoModuleInstance.open_buffer_continue(data, size) & 0x08)
+    // Copy data to Wasm heap
+    const dataPtr = this.mediainfoModule._malloc(size)
+    this.mediainfoModule.HEAPU8.set(data, dataPtr)
+
+    const result = this.mediainfoModule._mi_open_buffer_continue(this.ptr, dataPtr, size)
+
+    this.mediainfoModule._free(dataPtr)
+    // Bit 3 set (0x08) means processing is complete
+    return !!(result & 0x08)
   }
 
   /**
@@ -248,19 +257,9 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @group Low-level
    */
   openBufferContinueGotoGet(): number {
-    // JS bindings don't support 64 bit int
-    // https://github.com/buzz/mediainfo.js/issues/11
-    let seekTo = -1
-    const seekToLow: number = this.mediainfoModuleInstance.open_buffer_continue_goto_get_lower()
-    const seekToHigh: number = this.mediainfoModuleInstance.open_buffer_continue_goto_get_upper()
-    if (seekToLow == -1 && seekToHigh == -1) {
-      seekTo = -1
-    } else if (seekToLow < 0) {
-      seekTo = seekToLow + MAX_UINT32_PLUS_ONE + seekToHigh * MAX_UINT32_PLUS_ONE
-    } else {
-      seekTo = seekToLow + seekToHigh * MAX_UINT32_PLUS_ONE
-    }
-    return seekTo
+    // BigInt return value converted to standard JS number
+    const seekTo = this.mediainfoModule._mi_open_buffer_continue_goto_get(this.ptr)
+    return Number(seekTo)
   }
 
   /**
@@ -271,7 +270,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @group Low-level
    */
   openBufferFinalize(): void {
-    this.mediainfoModuleInstance.open_buffer_finalize()
+    this.mediainfoModule._mi_open_buffer_finalize(this.ptr)
   }
 
   /**
@@ -284,7 +283,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @group Low-level
    */
   openBufferInit(size: number, offset: number): void {
-    this.mediainfoModuleInstance.open_buffer_init(size, offset)
+    // Use BigInt for 64-bit compatibility
+    this.mediainfoModule._mi_open_buffer_init(this.ptr, BigInt(size), BigInt(offset))
   }
 
   /**
@@ -335,12 +335,23 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    *
    * @returns MediaInfo module instance
    */
-  private instantiateModuleInstance(): MediaInfoWasmInterface {
-    return new this.mediainfoModule.MediaInfo(
-      this.options.format === 'object' ? 'JSON' : this.options.format,
-      this.options.coverData,
-      this.options.full
-    )
+  private instantiateModuleInstance(): number {
+    const format = this.options.format === 'object' ? 'JSON' : this.options.format
+
+    const bytesNeeded = this.mediainfoModule.lengthBytesUTF8(format) + 1
+    const formatPtr = this.mediainfoModule._malloc(bytesNeeded)
+
+    try {
+      this.mediainfoModule.stringToUTF8(format, formatPtr, bytesNeeded)
+
+      return this.mediainfoModule._mi_new(
+        formatPtr,
+        this.options.coverData ? 1 : 0,
+        this.options.full ? 1 : 0
+      )
+    } finally {
+      this.mediainfoModule._free(formatPtr)
+    }
   }
 }
 

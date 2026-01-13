@@ -42,8 +42,6 @@ function defaultLocateFile(path: string, prefix: string) {
   return `${prefix}../${path}`
 }
 
-// TODO pass through more emscripten module options?
-
 /**
  * Creates a {@link MediaInfo} instance with the specified options.
  *
@@ -86,11 +84,11 @@ function mediaInfoFactory<TFormat extends FormatType = typeof DEFAULT_OPTIONS.fo
     format: (options.format ?? DEFAULT_OPTIONS.format) as TFormat,
   }
 
+  // Options passed to the Emscripten module loader
   const mediaInfoModuleFactoryOpts: Partial<MediaInfoModule> = {
     // Silence all print in module
     print: noopPrint,
     printErr: noopPrint,
-
     locateFile: locateFile ?? defaultLocateFile,
     onAbort: (err: Error) => {
       if (errCallback) {
