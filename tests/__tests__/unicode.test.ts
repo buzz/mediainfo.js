@@ -1,4 +1,4 @@
-import { analyzeFile, expectToBeDefined, fixturePath } from './utils.ts'
+import { analyzeFile, expectToBeDefined, fixturePath } from '../utils.ts'
 
 const filePath = fixturePath('sample.mkv')
 

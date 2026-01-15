@@ -1,6 +1,7 @@
 // toBeNear by offset match from
 // https://github.com/jest-community/jest-extended/pull/183/commits/dca63a359c9856c5c761cfc1a598f4d7e583978e
 
+import { expect } from '@jest/globals'
 import { matcherHint, printExpected, printReceived } from 'jest-matcher-utils'
 
 const passMessage = (received: number, value: number, offset: number) => () =>

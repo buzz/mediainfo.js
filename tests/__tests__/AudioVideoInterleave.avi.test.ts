@@ -1,4 +1,4 @@
-import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from './utils.ts'
+import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from '../utils.ts'
 
 it('should parse file', async () => {
   const result = await analyzeFile(fixturePath('AudioVideoInterleave.avi'))

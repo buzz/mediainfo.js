@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "module": "es2022",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "types": ["@types/jest", "@types/node"]
+  },
+  "include": ["__tests__/*.ts", "*.ts"],
+  "exclude": ["node_modules/**/*"]
+}

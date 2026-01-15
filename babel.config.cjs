@@ -18,7 +18,7 @@ const babel = (api) => {
   const nodeTarget = { node: '18.0' }
 
   const buildMixin = {
-    ignore: ['./__tests__', './**/*.d.ts'],
+    ignore: ['./**/*.d.ts'],
     sourceMaps: 'inline',
   }
 
@@ -56,13 +56,6 @@ const babel = (api) => {
       // Gulp
       GULP: {
         presets: [['@babel/preset-env', { modules: false, targets: nodeTarget }]],
-        plugins: [transformImportMetaDirname],
-        sourceMaps: false,
-      },
-
-      // Jest
-      JEST: {
-        presets: [['@babel/preset-env', { modules: 'commonjs', targets: nodeTarget }]],
         plugins: [transformImportMetaDirname],
         sourceMaps: false,
       },

@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import mediaInfoFactory, { isTrackType } from '..'
+import mediaInfoFactory, { isTrackType } from 'mediainfo.js'
+
 import type {
   FormatType,
   MediaInfo,
@@ -9,7 +10,7 @@ import type {
   ReadChunkFunc,
   ResultMap,
   Track,
-} from '..'
+} from 'mediainfo.js'
 
 function fixturePath(name: string) {
   return path.resolve(import.meta.dirname, 'fixtures', name)

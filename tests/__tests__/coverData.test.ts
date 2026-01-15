@@ -1,7 +1,8 @@
 import crypto from 'node:crypto'
 
-import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from './utils.ts'
-import type { MediaInfoResult } from '..'
+import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from '../utils.ts'
+
+import type { MediaInfoResult } from 'mediainfo.js'
 
 const filePath = fixturePath('Dead_Combo_-_01_-_Povo_Que_Cas_Descalo.mp3')
 

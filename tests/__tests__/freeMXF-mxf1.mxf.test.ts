@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises'
 
-import mediaInfoFactory from '..'
-import { expectToBeDefined, expectTrackType, fixturePath } from './utils'
+import mediaInfoFactory from 'mediainfo.js'
+
+import { expectToBeDefined, expectTrackType, fixturePath } from '../utils.ts'
 
 const makeReadChunk = (fh: fs.FileHandle) => async (chunkSize: number, offset: number) => {
   const buffer = new Uint8Array(chunkSize)

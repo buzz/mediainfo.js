@@ -101,7 +101,7 @@ export default tsEslint.config(
   // Node
 
   {
-    files: ['__tests__/**/*.ts', 'gulp/**/*.ts'],
+    files: ['tests/__tests__/**/*.ts', 'gulp/**/*.ts'],
     languageOptions: { globals: globals.node },
     rules: {
       'import/extensions': ['error', { ts: 'always', js: 'never' }],
@@ -111,7 +111,7 @@ export default tsEslint.config(
   // Tests
 
   {
-    files: ['__tests__/**/*.ts'],
+    files: ['tests/__tests__/**/*.ts'],
     plugins: { jest: eslintPluginJest },
     languageOptions: { globals: globals.node },
     rules: {
@@ -136,7 +136,13 @@ export default tsEslint.config(
   // Configuration files
 
   {
-    files: ['babel.config.cjs', 'eslint.config.js', 'gulpfile.ts', 'rollup.config.js'],
+    files: [
+      'babel.config.cjs',
+      'eslint.config.js',
+      'gulpfile.ts',
+      'jest.config.ts',
+      'rollup.config.js',
+    ],
     extends: [tsEslint.configs.disableTypeChecked],
     languageOptions: { globals: globals.node },
   },

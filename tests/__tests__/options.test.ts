@@ -1,10 +1,11 @@
 import { assertIsNodeLike } from '@xmldom/is-dom-node'
 import { DOMParser } from '@xmldom/xmldom'
+import mediaInfoFactory from 'mediainfo.js'
 import xpath from 'xpath'
 
-import mediaInfoFactory from '..'
-import { expectToBeDefined, expectTrackType } from './utils'
-import type { FormatType, MediaInfo, ResultMap } from '..'
+import { expectToBeDefined, expectTrackType } from '../utils.ts'
+
+import type { FormatType, MediaInfo, ResultMap } from 'mediainfo.js'
 
 function analyzeFakeData<TFormat extends FormatType>(mi: MediaInfo<TFormat>) {
   return mi.analyzeData(

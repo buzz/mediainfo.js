@@ -58,7 +58,7 @@ function downloadFile(url: string, filePath: string) {
 
 async function downloadFixtures() {
   for (const [fileName, { url, md5 }] of Object.entries(TEST_FILES)) {
-    const filePath = path.resolve(import.meta.dirname, '..', 'fixtures', fileName)
+    const filePath = path.resolve(__dirname, 'fixtures', fileName)
 
     // Check existing file
     try {

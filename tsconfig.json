@@ -12,7 +12,6 @@
     "types": ["@types/emscripten", "@types/node"]
   },
   "include": [
-    "__tests__/**/*",
     "babel.config.cjs",
     "eslint.config.js",
     "gulp/**/*",
@@ -20,5 +19,5 @@
     "rollup.config.js",
     "src/**/*.ts"
   ],
-  "exclude": ["build/**/*", "dist/**/*", "examples/**/*", "node_modules/**/*"]
+  "exclude": ["build/**/*", "dist/**/*", "examples/**/*", "node_modules/**/*", "tests/**/*"]
 }

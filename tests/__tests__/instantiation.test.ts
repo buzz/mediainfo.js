@@ -1,4 +1,5 @@
-import mediaInfoFactory, { type MediaInfo } from '..'
+import { expect } from '@jest/globals'
+import mediaInfoFactory, { type MediaInfo } from 'mediainfo.js'
 
 const methodNames = [
   'analyzeData',
@@ -19,7 +20,10 @@ const expectMediainfoObj = (mi: MediaInfo) => {
 }
 
 it('should instantiate via callback', (done) => {
+  console.log(mediaInfoFactory)
+
   mediaInfoFactory({}, (mi) => {
+    console.log('mediainfo created', mi)
     try {
       expectMediainfoObj(mi)
     } finally {

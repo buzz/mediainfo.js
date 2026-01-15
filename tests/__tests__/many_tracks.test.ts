@@ -1,4 +1,4 @@
-import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from './utils'
+import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from '../utils.ts'
 
 it('should parse file with many tracks', async () => {
   const result = await analyzeFile(fixturePath('many_tracks.mp4'))

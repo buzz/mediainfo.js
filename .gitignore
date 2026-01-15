@@ -4,10 +4,8 @@
 ThumbsDB
 \#*#
 .#*
-/node_modules
+node_modules
 npm-debug.log
 /build
 /dist
-/__tests__/fixtures
-!/__tests__/fixtures/many_tracks.mp4
 /TODO.txt

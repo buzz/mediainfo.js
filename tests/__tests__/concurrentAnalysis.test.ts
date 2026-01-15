@@ -1,4 +1,4 @@
-import mediaInfoFactory, { type ReadChunkFunc } from '..'
+import mediaInfoFactory, { type ReadChunkFunc } from 'mediainfo.js'
 
 const readChunk: ReadChunkFunc = async () => {
   await new Promise((r) => setTimeout(r, 50))

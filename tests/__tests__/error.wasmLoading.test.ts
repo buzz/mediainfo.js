@@ -1,5 +1,7 @@
-import mediaInfoFactory from '..'
-import { expectToBeError } from './utils'
+import { jest } from '@jest/globals'
+import mediaInfoFactory from 'mediainfo.js'
+
+import { expectToBeError } from '../utils.ts'
 
 beforeEach(() => {
   // Suppress console output from emscripten module

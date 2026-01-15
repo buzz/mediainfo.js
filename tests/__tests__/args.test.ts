@@ -1,6 +1,8 @@
-import mediaInfoFactory from '..'
-import { expectToBeDefined, expectTrackType } from './utils'
-import type { MediaInfo, SizeArg } from '..'
+import mediaInfoFactory from 'mediainfo.js'
+
+import { expectToBeDefined, expectTrackType } from '../utils.ts'
+
+import type { MediaInfo, SizeArg } from 'mediainfo.js'
 
 it.each([
   ['number', 20],

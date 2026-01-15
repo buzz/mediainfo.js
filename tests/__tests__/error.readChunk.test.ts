@@ -1,5 +1,6 @@
-import mediaInfoFactory, { type MediaInfo } from '..'
-import { expectToBeError } from './utils.ts'
+import mediaInfoFactory, { type MediaInfo } from 'mediainfo.js'
+
+import { expectToBeError } from '../utils.ts'
 
 const getSize = () => 99
 const readChunk = () => {

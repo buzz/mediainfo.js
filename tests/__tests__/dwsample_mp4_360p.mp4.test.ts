@@ -1,4 +1,4 @@
-import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from './utils.ts'
+import { analyzeFile, expectToBeDefined, expectTrackType, fixturePath } from '../utils.ts'
 
 const filePath = fixturePath('dwsample mp4 360p.mp4')
 
