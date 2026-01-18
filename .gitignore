@@ -9,3 +9,4 @@ npm-debug.log
 /build
 /dist
 /TODO.txt
+/tests/fixtures
