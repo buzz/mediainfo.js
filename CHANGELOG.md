@@ -6,6 +6,23 @@ All notable changes to this project will be documented in this file.
 Changes preceding version 0.2.0 are not included in the changelog.
 :::
 
+## [0.3.7](https://github.com/buzz/mediainfo.js/compare/v0.3.6...v0.3.7) (2026-01-18)
+
+
+### Features
+
+* replace embind with extern "C" ABI and adopt size-first WASM pipeline ([c6b843d](https://github.com/buzz/mediainfo.js/commit/c6b843df517bbcf139f1d661a8396a966f17dff1))
+
+
+### Bug Fixes
+
+* **examples:** use Vite asset pipeline over `vite-plugin-static-copy` ([26159f6](https://github.com/buzz/mediainfo.js/commit/26159f61828e6b5c0ae92035114aedd83883e19e)), closes [#183](https://github.com/buzz/mediainfo.js/issues/183)
+
+
+### Upgrades
+
+* **deps:** upgrade libmediainfo to v25.10 ([1442871](https://github.com/buzz/mediainfo.js/commit/14428713a6b35b60752140d55293d1c11926e1b7))
+
 ## [0.3.6](https://github.com/buzz/mediainfo.js/compare/v0.3.5...v0.3.6) (2025-08-31)
 
 
