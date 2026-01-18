@@ -46,3 +46,17 @@ to your website.
 Users of the CDN version do not need to manage WASM file loading, as it is preconfigured to load
 from the CDN server.
 :::
+
+## Content Security Policy (CSP)
+
+mediainfo.js is compiled with Emscripten `DYNAMIC_EXECUTION=0`, so it does not require
+`script-src 'unsafe-eval'`.
+
+In strict CSP setups, WebAssembly compilation may still require `script-src 'wasm-unsafe-eval'`:
+
+```http
+Content-Security-Policy: script-src 'self' 'wasm-unsafe-eval'
+```
+
+Also ensure the URL used to load `MediaInfoModule.wasm` is permitted by your CSP (for example via
+`connect-src` or `default-src`).
