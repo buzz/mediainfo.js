@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start --no-open",
+    "start": "docusaurus start --no-open --no-minify",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -16,6 +16,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@apify/docusaurus-plugin-typedoc-api": "^5.0.0",
     "@docusaurus/core": "3.9.2",
     "@docusaurus/plugin-content-docs": "^3.9.2",
     "@docusaurus/plugin-content-pages": "^3.9.2",
@@ -45,7 +46,6 @@
     "@fortawesome/free-brands-svg-icons": "^7.1.0",
     "@types/node": "^25.0.9",
     "@types/react": "^19.2.8",
-    "docusaurus-plugin-typedoc-api": "^4.4.0",
     "eslint": "^9.39.2",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",

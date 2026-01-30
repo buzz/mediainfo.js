@@ -179,7 +179,7 @@ const config: Config = {
       },
     ],
     [
-      'docusaurus-plugin-typedoc-api',
+      '@apify/docusaurus-plugin-typedoc-api',
       {
         projectRoot: path.resolve(__dirname, '..', 'mediainfo.js'),
         packages: ['.'],
