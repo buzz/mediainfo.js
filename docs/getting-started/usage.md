@@ -555,7 +555,6 @@ The remaining output options return the result as a string.
   [close]: /api/class/MediaInfo#close
   [MediaInfoFactoryOptions]: /api/interface/MediaInfoFactoryOptions
   [analyzeData]: /api/class/MediaInfo#analyzeData
-  [MediaInfo]: /api/interface/MediaInfo
   [Track]: /api#Track
   [GeneralTrack]: /api/interface/GeneralTrack
   [VideoTrack]: /api/interface/VideoTrack
