@@ -1,4 +1,3 @@
-import { expect } from '@jest/globals'
 import mediaInfoFactory, { type MediaInfo } from 'mediainfo.js'
 
 const methodNames = [
@@ -19,25 +18,26 @@ const expectMediainfoObj = (mi: MediaInfo) => {
   expect(mi.options.chunkSize).toEqual(expect.any(Number))
 }
 
-it('should instantiate via callback', (done) => {
-  mediaInfoFactory(
-    {},
-    (mi) => {
-      try {
-        expectMediainfoObj(mi)
-      } finally {
-        mi.close()
-        done()
+it('should instantiate via callback', async () => {
+  await new Promise<void>((resolve, reject) => {
+    mediaInfoFactory(
+      {},
+      (mi) => {
+        try {
+          expectMediainfoObj(mi)
+        } finally {
+          mi.close()
+          resolve()
+        }
+      },
+      (err) => {
+        reject(err instanceof Error ? err : new Error(String(err)))
       }
-    },
-    (err) => {
-      done(err)
-    }
-  )
+    )
+  })
 })
 
 it('should instantiate via Promise', async () => {
-  expect.assertions(9)
   let mi: MediaInfo | undefined
   try {
     mi = await mediaInfoFactory()

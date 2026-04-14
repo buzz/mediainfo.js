@@ -1,12 +1,12 @@
 import path from 'node:path'
 
-import { jest } from '@jest/globals'
 import mediaInfoFactory from 'mediainfo.js'
+import { vi } from 'vitest'
 
 const distDir = path.resolve(import.meta.dirname, '..', '..', 'dist', 'esm')
 
 it('should use locateFile callback', async () => {
-  const locateFile = jest.fn((filename: string, prefix: string) =>
+  const locateFile = vi.fn((filename: string, prefix: string) =>
     path.resolve(prefix, '..', filename)
   )
   const mi = await mediaInfoFactory({ locateFile })

@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "types": ["@types/jest", "@types/node"]
+    "types": ["node", "vitest/globals"]
   },
   "include": ["__tests__/*.ts", "*.ts"],
   "exclude": ["node_modules/**/*"]

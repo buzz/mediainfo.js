@@ -1,44 +1,43 @@
-import { jest } from '@jest/globals'
 import mediaInfoFactory from 'mediainfo.js'
+import { vi } from 'vitest'
 
 import { expectToBeError } from '../utils.ts'
 
 beforeEach(() => {
   // Suppress console output from emscripten module
-  jest.spyOn(console, 'error')
-  // @ts-expect-error TS doesn't know mockImplementation
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  console.error.mockImplementation(() => null)
+  vi.spyOn(console, 'error').mockImplementation(() => null)
 })
 
 afterEach(() => {
-  jest.restoreAllMocks()
+  vi.restoreAllMocks()
 })
 
 describe('Error on WASM loading', () => {
-  it('should return error via callback and throw Exception', (done) => {
-    mediaInfoFactory(
-      { locateFile: () => 'file_does_not_exist.wasm' },
-      () => {
-        done('Resolve callback should not fire')
-      },
-      (error) => {
-        expectToBeError(error)
-        expect(error.message).toMatch('no such file')
-        done()
-      }
-    )
+  it('should return error via callback and throw Exception', async () => {
+    await expect(
+      new Promise<void>((resolve, reject) => {
+        mediaInfoFactory(
+          { locateFile: () => 'file_does_not_exist.wasm' },
+          () => {
+            reject(new Error('Resolve callback should not fire'))
+          },
+          (error) => {
+            try {
+              expectToBeError(error)
+              expect(error.message).toMatch('no such file')
+              resolve()
+            } catch (error_) {
+              reject(error_ instanceof Error ? error_ : new Error(String(error_)))
+            }
+          }
+        )
+      })
+    ).resolves.toBeUndefined()
   })
 
-  it('should return error via Promise and throw Exception', (done) => {
-    mediaInfoFactory({ locateFile: () => 'file_does_not_exist.wasm' })
-      .then(() => {
-        done('Resolve callback should not fire')
-      })
-      .catch((error: unknown) => {
-        expectToBeError(error)
-        expect(error.message).toMatch('no such file')
-        done()
-      })
+  it('should return error via Promise and throw Exception', async () => {
+    await expect(
+      mediaInfoFactory({ locateFile: () => 'file_does_not_exist.wasm' })
+    ).rejects.toThrow('no such file')
   })
 })
