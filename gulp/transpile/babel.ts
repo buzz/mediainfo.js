@@ -35,7 +35,7 @@ function transpileBabel(variant: Variant) {
         // gulp-sourcemaps patched to support .cjs extension
         sourcemaps.write('.', {
           sourceMappingURL:
-            variant === 'cjs' ? undefined : (file) => `${changeExtname(file.relative)}.map`,
+            variant === 'cjs' ? undefined : (file) => `${file.relative}.map`,
           mapFile: variant === 'cjs' ? changeExtname : undefined,
           sourceRoot: '../../src',
         })
