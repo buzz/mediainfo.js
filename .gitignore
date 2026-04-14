@@ -8,5 +8,4 @@ node_modules
 npm-debug.log
 /build
 /dist
-/TODO.txt
 /tests/fixtures
