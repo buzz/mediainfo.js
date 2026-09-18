@@ -21,6 +21,20 @@ ffmpeg/SVT-AV1 version may produce a different byte layout and thus no longer tr
 **Povo Que Caís Descalço** by [Dead Combo](https://freemusicarchive.org/music/Dead_Combo/) is licensed under a
 [Attribution-NonCommercial 3.0 International License](https://creativecommons.org/licenses/by-nc/3.0/).
 
+## `flv-duration-no-metadata.flv`
+
+Generated using `generate-flv-duration-no-metadata.sh`. Fully synthetic: ffmpeg's `testsrc2`
+pattern plus a generated sine tone, muxed as Sorenson Spark video + MP3 audio (2.41 MiB, 60 s).
+
+The two unusual properties are what make it a reproducer for
+[issue #164](https://github.com/buzz/mediainfo.js/issues/164): without an `onMetaData` tag, and
+with the file above 2 MiB, MediaInfoLib has to recover the duration by walking FLV tags backwards
+from the end of the file, which needs several seeks. Announcing those seeks with the known file
+size aborts the walk and drops Duration, OverallBitRate and StreamSize.
+
+Committed as-is (2523204 bytes, md5 `839903b35fe4528bd90400ebb4156b9d`). Regenerating it with
+another ffmpeg version may produce a different byte layout and thus no longer trigger the bug.
+
 ## `freeMXF-mxf1.mxf`
 
 Taken from http://freemxf.org/samples/index.html.
