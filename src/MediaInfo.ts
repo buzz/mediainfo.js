@@ -126,63 +126,73 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
       }
     }
 
+    const fail = (error: unknown) => {
+      this.isAnalyzing = false
+      callback(null, unknownToError(error))
+    }
+
     let offset = 0
-    const runReadDataLoop = (fileSize: number) => {
-      const readNextChunk = (data: Uint8Array) => {
-        if (shouldContinueBuffer(data)) {
-          getChunk()
-        } else {
-          finalize()
-        }
-      }
+    let lastSeekTo = -1
 
-      const getChunk = () => {
-        let dataValue
-        try {
-          const safeSize = Math.min(this.options.chunkSize, fileSize - offset)
-          dataValue = readChunk(safeSize, offset)
-        } catch (error: unknown) {
-          this.isAnalyzing = false
-          callback(null, unknownToError(error))
-          return
-        }
-
-        if (dataValue instanceof Promise) {
-          dataValue.then(readNextChunk).catch((error: unknown) => {
-            this.isAnalyzing = false
-            callback(null, unknownToError(error))
-          })
-        } else {
-          readNextChunk(dataValue)
-        }
-      }
-
-      const shouldContinueBuffer = (data: Uint8Array): boolean => {
-        if (data.length === 0 || this.openBufferContinue(data, data.length)) {
+    const runReadDataLoop = async (fileSize: number) => {
+      /**
+       * Hand one chunk to MediaInfoLib and update the read position.
+       *
+       * @returns `true` when more data has to be read
+       */
+      const shouldReadMore = (data: Uint8Array): boolean => {
+        if (data.length === 0) {
           return false
         }
+
+        const isFinished = this.openBufferContinue(data, data.length)
         const seekTo: number = this.openBufferContinueGotoGet()
-        if (seekTo === -1) {
-          offset += data.length
-        } else {
+
+        // A pending seek wins over the "finished" flag: MediaInfoLib can raise both in the same
+        // call, e.g. when the MP4 parser jumps back to a codec config box after having been given
+        // the whole file at once (issue #188). Skipping the seek loses the fields it would fill.
+        if (seekTo !== -1) {
+          // Past the end of the file, or asked for a second time without any progress in between:
+          // the parser can not be satisfied, so let the finalizer wrap it up. Only catches a parser
+          // stuck on one target, not an alternating X->Y->X cycle.
+          if (seekTo === lastSeekTo || seekTo >= fileSize) {
+            return false
+          }
           offset = seekTo
+          lastSeekTo = seekTo
           this.openBufferInit(fileSize, seekTo)
+          return true
         }
-        return true
+
+        lastSeekTo = -1
+        offset += data.length
+        return offset < fileSize && !isFinished
       }
 
-      this.openBufferInit(fileSize, offset)
-      getChunk()
+      try {
+        this.openBufferInit(fileSize, offset)
+
+        for (;;) {
+          // await (also for synchronous readers) keeps this iterative, a mutual recursion with
+          // shouldReadMore() would add a stack frame per chunk
+          const data = await readChunk(Math.min(this.options.chunkSize, fileSize - offset), offset)
+          if (!shouldReadMore(data)) {
+            break
+          }
+        }
+
+        finalize()
+      } catch (error: unknown) {
+        fail(error)
+      }
     }
 
     const fileSizeValue = typeof size === 'function' ? size() : size
 
     if (fileSizeValue instanceof Promise) {
-      fileSizeValue.then(runReadDataLoop).catch((error: unknown) => {
-        callback(null, unknownToError(error))
-      })
+      fileSizeValue.then(runReadDataLoop).catch(fail)
     } else {
-      runReadDataLoop(fileSizeValue)
+      void runReadDataLoop(fileSizeValue)
     }
   }
 
