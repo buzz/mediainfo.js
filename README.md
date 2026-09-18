@@ -21,6 +21,28 @@ ffmpeg/SVT-AV1 version may produce a different byte layout and thus no longer tr
 **Povo Que Caís Descalço** by [Dead Combo](https://freemusicarchive.org/music/Dead_Combo/) is licensed under a
 [Attribution-NonCommercial 3.0 International License](https://creativecommons.org/licenses/by-nc/3.0/).
 
+## `empty-menu-track.mp4`
+
+Generated with `generate-empty-menu-track.sh` (ffmpeg n9.0.1). Fully synthetic: `testsrc` pattern plus
+`anullsrc` tone, muxed with a single chapter whose title is empty and `-movflags +faststart`.
+
+The chapter with an empty title leaves MediaInfoLib with a Menu stream that has no field to display
+at all. That is the only case in which the JSON writer serialises the per-stream node created by
+`new Node()` in `MediaInfo_Inform.cpp` - and `Node`'s default constructor does not initialise its
+`bool Multiple`. When that byte reads back as non-zero, `To_JSON_Elements()` wraps the stream body in
+a `[ ... ]` pair, closing the `"track"` array too early:
+
+```
+,{"@type":"Menu","@typeorder":"2","":{}]}]}   mediainfo.js (broken, uninitialised read)
+,{"@type":"Menu","@typeorder":"2","":null}]}  native mediainfo, same version
+```
+
+The upstream bug is tracked in [issue #159](https://github.com/buzz/mediainfo.js/issues/159).
+
+Committed as-is (10410 bytes, md5 `3d1a78875d179f8588f71d34d01e9e59`). Whether the uninitialised byte
+is zero depends on the heap layout down to the 4 `mvhd` creation-time bytes, so regenerating the file
+is expected to produce a file that parses cleanly - keep this copy.
+
 ## `flv-duration-no-metadata.flv`
 
 Generated using `generate-flv-duration-no-metadata.sh`. Fully synthetic: ffmpeg's `testsrc2`
@@ -34,6 +56,7 @@ size aborts the walk and drops Duration, OverallBitRate and StreamSize.
 
 Committed as-is (2523204 bytes, md5 `839903b35fe4528bd90400ebb4156b9d`). Regenerating it with
 another ffmpeg version may produce a different byte layout and thus no longer trigger the bug.
+
 
 ## `freeMXF-mxf1.mxf`
 
