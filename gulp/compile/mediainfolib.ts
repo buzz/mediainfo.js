@@ -117,6 +117,12 @@ async function patchNodeMultipleInit() {
 }
 
 async function task() {
+  // Emscripten 6.x moved zlib to the lazy-built ports system: libz.a is no
+  // longer prebuilt in the sysroot, only generated when a command line carries
+  // -sUSE_ZLIB=1. configure link-tests `-lz` with CFLAGS (which don't carry
+  // it, only CXXFLAGS do), so prebuild the port for it.
+  await spawn('embuilder', ['build', 'zlib'], mediainfolibDir)
+
   await spawn('./autogen.sh', [], mediainfolibDir)
   await spawn('sed', ['-i', 's/-O2/-Oz/', 'configure'], mediainfolibDir)
   await patchC1Filter()
