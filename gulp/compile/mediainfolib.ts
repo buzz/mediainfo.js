@@ -78,11 +78,50 @@ async function patchAv1Reject() {
   )
 }
 
+// FIXME(libmediainfo): Drop once upstream initializes the member.
+// `struct Node` (Source/MediaInfo/OutputHelpers.h) has a default constructor that leaves its
+// `bool Multiple` uninitialized while every other constructor sets it, and MediaInfo_Inform.cpp
+// creates exactly one such node per stream: `Node* Track = new Node()`. To_JSON_Elements() branches
+// on that member, so whenever the recycled heap byte is non-zero the stream body is wrapped in a
+// stray `[ ... ]` pair, which closes the "track" array before the track object itself is closed and
+// the result is not valid JSON. Only reachable for a stream with no field to display (the node's
+// RawContent is empty then), e.g. an MP4 carrying a Nero chapter with an empty title. Native
+// mediainfo reads back 0 for the same bytes and prints valid JSON, which is why this only ever
+// showed up here. Covered by tests/__tests__/empty-menu-track.mp4.test.ts (issue #159).
+const outputHelpersFile = 'MediaInfo/OutputHelpers.h'
+const nodeDefaultCtorMarker = '    Node()\n    {\n    }'
+const nodeDefaultCtorFixed = '    Node() : Multiple(false)\n    {\n    }'
+
+async function patchNodeMultipleInit() {
+  const file = path.join(sourceDir, outputHelpersFile)
+  const source = await readFile(file, 'utf8')
+
+  // No-op when the member is already initialized: our own patch on a dirty vendor tree, or upstream
+  // fixed it (in which case delete this patch per the FIXME).
+  if (source.includes(nodeDefaultCtorFixed)) {
+    return
+  }
+
+  // Fails loudly if upstream changed the struct: a silently skipped patch means shipping a JSON
+  // writer that reads uninitialized memory, so check by hand instead of guessing.
+  if (!source.includes(nodeDefaultCtorMarker)) {
+    throw new Error(
+      `Cannot patch ${outputHelpersFile}: "${nodeDefaultCtorMarker}" not found. Either upstream initialized Node::Multiple (delete this patch) or the constructor moved (re-check the JSON output before dropping it).`
+    )
+  }
+
+  await writeFile(
+    file,
+    source.replace(nodeDefaultCtorMarker, () => nodeDefaultCtorFixed)
+  )
+}
+
 async function task() {
   await spawn('./autogen.sh', [], mediainfolibDir)
   await spawn('sed', ['-i', 's/-O2/-Oz/', 'configure'], mediainfolibDir)
   await patchC1Filter()
   await patchAv1Reject()
+  await patchNodeMultipleInit()
   await spawn(
     'emconfigure',
     [
