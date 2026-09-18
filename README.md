@@ -62,6 +62,25 @@ another ffmpeg version may produce a different byte layout and thus no longer tr
 
 Taken from http://freemxf.org/samples/index.html.
 
+## `id3_char_encodings.mp3`
+
+Generated with `generate-id3_char_encodings.sh` (ffmpeg + mutagen): one second of silence carrying
+four ID3v2.3 text frames, one per frame encoding.
+
+| Frame | Encoding   | Field      |
+|-------|------------|------------|
+| TIT2  | UTF-8      | Title      |
+| TPE1  | Latin-1    | Performer  |
+| TALB  | UTF-16+BOM | Album      |
+| TCON  | UTF-16BE   | Genre      |
+
+Every frame holds the same non-ASCII text. The WASM build of MediaInfoLib returns the UTF-8 frame
+only; Latin-1 comes back mangled and the two UTF-16 frames come back as `binary.base64`, which is
+the symptom of [issue #150](https://github.com/buzz/mediainfo.js/issues/150).
+
+Committed as-is (6400 bytes, md5 `9ad305f22be7e4566c225b857ae570c3`). The audio payload does not
+matter, only the tag bytes do.
+
 ## `many_tracks.mp4`
 
 Generated using [HandBrake](https://handbrake.fr/). Based on [*Big Buck Bunny*](https://peach.blender.org/), licensed under [Creative Commons Attribution 3.0](https://creativecommons.org/licenses/by/3.0/).
