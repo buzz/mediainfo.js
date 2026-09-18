@@ -95,6 +95,19 @@ export default tsEslint.config(
       'unicorn/filename-case': 'off',
       'unicorn/no-null': 'off',
       'unicorn/prevent-abbreviations': 'off',
+      // One-line JSDoc is deliberate, `//` comments are not shown as docs by editors
+      'unicorn/single-line-block-comment-style': 'off',
+      // Rename opinions (doc -> document, opts -> options), same family as prevent-abbreviations
+      'unicorn/name-replacements': 'off',
+      // The factory/readChunk APIs are callback-based and may-return-promise, so `.then()`
+      // chaining is structural here, not a style choice
+      'unicorn/prefer-await': 'off',
+      // Type generation composes output from nested template calls
+      'unicorn/max-nested-calls': 'off',
+      // MediaInfo.ts orders members by runtime flow (init -> read -> parse), not by visibility
+      'unicorn/consistent-class-member-order': 'off',
+      // MediaInfo reports numbers as unit-suffixed strings, parseInt/parseFloat are the lenient parsers
+      'unicorn/prefer-number-coercion': 'off',
     },
   },
 
@@ -122,6 +135,10 @@ export default tsEslint.config(
       'vitest/no-identical-title': 'error',
       'vitest/prefer-to-have-length': 'warn',
       'vitest/valid-expect': 'error',
+      // Fixtures carry literal http:// metadata (copyright URLs, codec IDs), asserting them verbatim is the point
+      'unicorn/prefer-https': 'off',
+      // That test reads methods off the instance on purpose to assert they exist
+      '@typescript-eslint/unbound-method': 'off',
     },
   },
 
