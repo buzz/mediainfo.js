@@ -16,6 +16,7 @@ const TEST_FILES = {
   'many_tracks.mp4': '0e002574aad79365477ab8f904fef616',
   'sample.mkv': '130830537d5b0b79e78d68be16dde0fd',
   'freeMXF-mxf1.mxf': '25f21195085450603ba476d22ab85dae',
+  'id3_char_encodings.mp3': '9ad305f22be7e4566c225b857ae570c3', // issue #150
 }
 
 function url(filename: string) {
