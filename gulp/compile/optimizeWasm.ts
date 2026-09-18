@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import { BUILD_DIR, DIST_DIR, WASM_FILE } from '../constants'
-import { spawn } from '../utils'
+import { BUILD_DIR, DIST_DIR, WASM_FILE } from '../constants.ts'
+import { spawn } from '../utils.ts'
 
 const DCE_CONFIG_FILE = path.join(BUILD_DIR, 'dceConfig.json')
 const DCE_WASM_PATH = path.join(BUILD_DIR, 'dce.wasm')

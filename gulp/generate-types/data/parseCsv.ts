@@ -1,6 +1,6 @@
 import { parse } from 'csv-parse/sync'
 
-import { downloadFile } from '../../utils'
+import { downloadFile } from '../../utils.ts'
 
 const url = (type: CsvType) =>
   `https://raw.githubusercontent.com/MediaArea/MediaInfoLib/master/Source/Resource/Text/Stream/${type}.csv`
