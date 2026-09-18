@@ -25,6 +25,12 @@ interface ResultMap {
 
 const FORMAT_CHOICES = ['JSON', 'XML', 'HTML', 'text'] as const
 
+/**
+ * MediaInfoLib's `(int64u)-1` file size: `Open_Buffer_Init()` then only moves the read position
+ * instead of re-initializing the parser. The native file reader uses it for every seek.
+ */
+const POSITION_ONLY = -1
+
 const DEFAULT_OPTIONS = {
   coverData: false,
   chunkSize: 256 * 1024,
@@ -160,7 +166,15 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
           }
           offset = seekTo
           lastSeekTo = seekTo
-          this.openBufferInit(fileSize, seekTo)
+          // While the parser still expects data, a seek is just a reposition: passing the known
+          // file size runs a full re-init, which clears the durations collected so far and aborts
+          // the walk FLV does backwards from end of file to find them (issue #164). Only a parser
+          // that already reported "finished" needs the full re-init, to get that flag cleared
+          // (issue #188).
+          // Known limit: when one readChunk() call delivers the whole file, MediaInfoLib raises the
+          // walk seek together with "finished", so the re-init is unavoidable and resets the walk -
+          // handing the parser smaller pieces internally is what would be needed to cover it.
+          this.openBufferInit(isFinished ? fileSize : POSITION_ONLY, seekTo)
           return true
         }
 
@@ -288,7 +302,8 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    *
    * (This is a low-level MediaInfoLib function.)
    *
-   * @param size Expected buffer size
+   * @param size Expected buffer size, or -1 to keep the parser state and only move the read
+   * position
    * @param offset Buffer offset
    * @group Low-level
    */
