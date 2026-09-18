@@ -1,3 +1,4 @@
+import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { CPU_CORES, CXXFLAGS, MediaInfoLib_CXXFLAGS, VENDOR_DIR } from '../constants.ts'
@@ -31,10 +32,55 @@ async function patchC1Filter() {
   await spawn('sed', ['-i', `s/${c1FilterMarker}/(c == 0x7F)/`, analyzedStreamsFile], sourceDir)
 }
 
+// FIXME(libmediainfo): Drop once upstream merges
+// https://github.com/MediaArea/MediaInfoLib/pull/2661 (fix for
+// https://github.com/MediaArea/MediaInfoLib/issues/2659).
+// 26.05's AnnexB AV1 support (MediaArea/MediaInfoLib#2516) reads `obu_size` via Get_leb128;
+// on zero bytes that yields 0 and the parser loops through the whole file without ever
+// rejecting, so File__MultipleParsing never empties and the analysis only fills at EOF. On a
+// virtual 2^63-byte file that overflows the analyzeData recursion stack
+// (tests/__tests__/bigInt.test.ts). The #2661 patch, unlike re-adding the 25.10 "probing
+// mode" early reject, keeps the new AnnexB AV1 feature working.
+const av1File = 'MediaInfo/Video/File_Av1.cpp'
+const av1RejectMarker = 'if (obu_size == 0 && Element_Offset < Element_Size)'
+const av1InsertMarker =
+  '        Get_leb128 (obu_size,                                   "obu_size");'
+const av1RejectCode = [
+  '        if (obu_size == 0 && Element_Offset < Element_Size) {',
+  '            // Prevents looping on zero bytes',
+  '            // Real AV1 files should have OBU of at least one byte for the OBU header',
+  '            // Exclude conditions where Get_leb128 runs out of buffer on valid files and returns 0',
+  '            Reject();',
+  '            return;',
+  '        }',
+].join('\n')
+
+async function patchAv1Reject() {
+  const file = path.join(sourceDir, av1File)
+  const source = await readFile(file, 'utf8')
+
+  // No-op when the reject is already there: our own patch on a dirty vendor tree, or upstream
+  // merged PR #2661 (in which case delete this patch per the FIXME).
+  if (source.includes(av1RejectMarker)) {
+    return
+  }
+
+  // Fails loudly if upstream changed Header_Parse: a silently skipped patch means shipping
+  // an AV1 parser that loops forever on zero bytes, so check by hand instead of guessing.
+  if (!source.includes(av1InsertMarker)) {
+    throw new Error(
+      `Cannot patch ${av1File}: "${av1InsertMarker}" not found. Upstream changed File_Av1::Header_Parse (re-check AV1 reject handling before dropping this patch).`
+    )
+  }
+
+  await writeFile(file, source.replace(av1InsertMarker, `${av1InsertMarker}\n${av1RejectCode}`))
+}
+
 async function task() {
   await spawn('./autogen.sh', [], mediainfolibDir)
   await spawn('sed', ['-i', 's/-O2/-Oz/', 'configure'], mediainfolibDir)
   await patchC1Filter()
+  await patchAv1Reject()
   await spawn(
     'emconfigure',
     [
