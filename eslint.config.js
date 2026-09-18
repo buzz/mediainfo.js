@@ -158,12 +158,17 @@ export default tsEslint.config(
     files: [
       'babel.config.cjs',
       'eslint.config.js',
-      'gulpfile.ts',
+      'gulpfile.mjs',
       'jest.config.ts',
       'rollup.config.js',
     ],
     extends: [tsEslint.configs.disableTypeChecked],
     languageOptions: { globals: globals.node },
+    rules: {
+      // CommonJS config files have to use require()
+      '@typescript-eslint/no-require-imports': 'off',
+      'unicorn/import-style': 'off',
+    },
   },
 
   // Ignore patterns

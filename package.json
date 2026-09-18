@@ -131,7 +131,6 @@
     "@vitest/eslint-plugin": "^1.6.27",
     "@xmldom/is-dom-node": "^1.0.1",
     "@xmldom/xmldom": "^0.9.12",
-    "babel-plugin-add-import-extension": "^1.6.0",
     "commit-and-tag-version": "^13.2.1",
     "csv-parse": "^7.0.2",
     "decompress": "^4.2.1",

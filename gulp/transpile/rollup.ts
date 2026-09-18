@@ -6,7 +6,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 import virtual from '@rollup/plugin-virtual'
 import gulp from 'gulp'
-import rollup from 'rollup'
+import { rollup as rollupBuild } from 'rollup'
 
 import { BUILD_DIR, DIST_DIR, SRC_DIR, UMD_NAME } from '../constants.ts'
 
@@ -28,7 +28,7 @@ async function loadMediaInfoModuleContent() {
 
 function makeBuildTask({ format, minify }: Bundle) {
   const task = async () => {
-    const bundle = await rollup.rollup({
+    const bundle = await rollupBuild({
       input: path.join(SRC_DIR, 'index.ts'),
       plugins: [
         resolve({ extensions: ['.ts'] }),

@@ -15,7 +15,7 @@
     "babel.config.cjs",
     "eslint.config.js",
     "gulp/**/*",
-    "gulpfile.ts",
+    "gulpfile.mjs",
     "rollup.config.js",
     "src/**/*.ts"
   ],
