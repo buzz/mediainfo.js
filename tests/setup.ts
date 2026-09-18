@@ -43,7 +43,7 @@ function downloadFile(filename: string, filePath: string) {
   })
 }
 
-async function downloadFixtures() {
+export default async function downloadFixtures() {
   const fixturesPath = path.resolve(__dirname, 'fixtures')
   if (!existsSync(fixturesPath)) {
     await mkdir(fixturesPath)
@@ -66,5 +66,3 @@ async function downloadFixtures() {
     }
   }
 }
-
-export default downloadFixtures

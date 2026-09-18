@@ -21,6 +21,8 @@ let mediaInfoModuleContent: string
 
 async function loadMediaInfoModuleContent() {
   const modulePath = path.join(BUILD_DIR, 'MediaInfoModule.browser.js')
+  // Handoff from this loader task to the build tasks, gulp runs them in series
+  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
   mediaInfoModuleContent = await fs.readFile(modulePath, { encoding: 'utf8' })
 }
 

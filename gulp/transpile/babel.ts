@@ -25,17 +25,15 @@ function transpileBabel(variant: Variant) {
           if (variant === 'esm') {
             return path
           }
-          if (path.extname === '.js') {
-            return { ...path, extname: '.cjs' }
-          }
-          return { ...path, basename: changeExtname(path.basename) } // .map
+          return path.extname === '.js'
+            ? { ...path, extname: '.cjs' }
+            : { ...path, basename: changeExtname(path.basename) } // .map
         })
       )
       .pipe(
         // gulp-sourcemaps patched to support .cjs extension
         sourcemaps.write('.', {
-          sourceMappingURL:
-            variant === 'cjs' ? undefined : (file) => `${file.relative}.map`,
+          sourceMappingURL: variant === 'cjs' ? undefined : (file) => `${file.relative}.map`,
           mapFile: variant === 'cjs' ? changeExtname : undefined,
           sourceRoot: '../../src',
         })

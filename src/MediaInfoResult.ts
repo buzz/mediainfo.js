@@ -3157,13 +3157,7 @@ export interface VideoTrack extends BaseTrack {
 }
 
 export type Track =
-  | GeneralTrack
-  | VideoTrack
-  | AudioTrack
-  | TextTrack
-  | ImageTrack
-  | MenuTrack
-  | OtherTrack
+  GeneralTrack | VideoTrack | AudioTrack | TextTrack | ImageTrack | MenuTrack | OtherTrack
 
 export interface Media {
   readonly '@ref': string

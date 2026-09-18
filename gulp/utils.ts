@@ -63,14 +63,14 @@ async function format(filepath: string, destFilepath: string) {
   await writeFile(destFilepath, await prettier.format(text, { ...options, filepath }))
 }
 
-function spawn(cmd: string, args: string[], cwd: string, captureStdout = false) {
+function spawn(cmd: string, args: string[], cwd: string, shouldCaptureStdout = false) {
   return new Promise<string>((resolve, reject) => {
     const proc = spawnChild(cmd, args, { cwd })
     let output = ''
 
     proc.stdout.on('data', (data) => {
       if (Buffer.isBuffer(data)) {
-        if (captureStdout) {
+        if (shouldCaptureStdout) {
           output += data.toString()
         } else {
           process.stdout.write(data.toString())

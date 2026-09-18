@@ -18,12 +18,11 @@ const c1FilterMarker = '(c >= 0x7F && c < 0xA0)'
 async function patchC1Filter() {
   // Fails loudly if upstream changed the filter: a silently skipped patch means shipping
   // corrupted UTF-8 metadata, so check by hand instead of guessing.
-  const present = await spawn('grep', ['-qF', c1FilterMarker, analyzedStreamsFile], sourceDir).then(
-    () => true,
-    () => false
-  )
+  const isPresent = await spawn('grep', ['-qF', c1FilterMarker, analyzedStreamsFile], sourceDir)
+    .then(() => true)
+    .catch(() => false)
 
-  if (!present) {
+  if (!isPresent) {
     throw new Error(
       `Cannot patch ${analyzedStreamsFile}: "${c1FilterMarker}" not found. Either upstream fixed MediaArea/MediaInfoLib#2601 (delete this patch) or the filter moved (re-check UTF-8 metadata before dropping it).`
     )
@@ -73,7 +72,10 @@ async function patchAv1Reject() {
     )
   }
 
-  await writeFile(file, source.replace(av1InsertMarker, `${av1InsertMarker}\n${av1RejectCode}`))
+  await writeFile(
+    file,
+    source.replace(av1InsertMarker, () => `${av1InsertMarker}\n${av1RejectCode}`)
+  )
 }
 
 async function task() {

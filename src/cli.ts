@@ -8,21 +8,21 @@ import yargs from 'yargs/yargs'
 import { unknownToError } from './error.js'
 import { FORMAT_CHOICES } from './MediaInfo.js'
 import mediaInfoFactory from './mediaInfoFactory.js'
-import type { ReadChunkFunc } from './MediaInfo.js'
 import type MediaInfo from './MediaInfo.js'
+import type { ReadChunkFunc } from './MediaInfo.js'
 
 const analyze = async ({ coverData, file, format, full }: ReturnType<typeof parseArgs>) => {
-  let fileHandle: fsPromises.FileHandle | undefined
-  let fileSize: number
-  let mediainfo: MediaInfo<typeof format> | undefined
-
   if (!file) {
     throw new TypeError('No file received!')
   }
-
   if (coverData && !['JSON', 'XML'].includes(format)) {
     throw new TypeError('For cover data you need to choose JSON or XML as output format!')
   }
+  let fileHandle: fsPromises.FileHandle | undefined
+
+  let fileSize: number
+
+  let mediainfo: MediaInfo<typeof format> | undefined
 
   const readChunk: ReadChunkFunc = async (size, offset) => {
     if (fileHandle === undefined) {

@@ -26,6 +26,28 @@ async function parseXsd() {
   const floatFields: string[] = []
   const properties: Record<string, XsdProperty> = {}
 
+  function resolveType(xsdType: string, name: string): PropertyType {
+    switch (xsdType) {
+      case 'extraType': {
+        return 'Extra'
+      }
+      case 'xsd:string': {
+        return 'string'
+      }
+      case 'xsd:integer': {
+        intFields.push(name)
+        return 'number'
+      }
+      case 'xsd:float': {
+        floatFields.push(name)
+        return 'number'
+      }
+      default: {
+        throw new Error(`Unknown type: ${xsdType}`)
+      }
+    }
+  }
+
   for (const element of elements) {
     if (!xpath.isElement(element)) {
       continue
@@ -56,38 +78,14 @@ async function parseXsd() {
     }
 
     // extract type
-    let type: string
-    switch (xsdType) {
-      case 'extraType': {
-        type = 'Extra'
-        break
-      }
-      case 'xsd:string': {
-        type = 'string'
-        break
-      }
-      case 'xsd:integer': {
-        type = 'number'
-        intFields.push(name)
-        break
-      }
-      case 'xsd:float': {
-        type = 'number'
-        floatFields.push(name)
-        break
-      }
-      default: {
-        throw new Error(`Unknown type: ${xsdType}`)
-      }
-    }
+    const type = resolveType(xsdType, name)
 
-    const property: XsdProperty = { type: type as PropertyType }
+    const property: XsdProperty = { type }
 
     // extract annotation if available
-    let annotation: string | undefined
     const docEl = select('./xmlns:annotation/xmlns:documentation/text()', element)
     if (xpath.isArrayOfNodes(docEl) && xpath.isTextNode(docEl[0])) {
-      annotation = docEl[0].nodeValue?.trim()
+      const annotation = docEl[0].nodeValue?.trim()
       if (!annotation) {
         throw new Error('Empty documentation element found.')
       }

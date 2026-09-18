@@ -9,5 +9,5 @@ export default defineConfig({
     include: ['__tests__/**/*.test.ts'],
     exclude: ['node_modules/**/*'],
     watch: false,
-  }
+  },
 })

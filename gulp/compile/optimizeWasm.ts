@@ -21,21 +21,21 @@ async function extractExports() {
 
   const exports: string[] = []
 
-  let foundExports = false
+  let isFoundExports = false
   while (true) {
     const line = lines.shift()
     if (line === undefined) {
       throw new Error('Failed to parse wasm-objdump output')
     }
 
-    if (foundExports) {
+    if (isFoundExports) {
       const match = reExport.exec(line)
       if (!match) {
         break
       }
       exports.push(match[1])
     } else if (line.startsWith('Export[')) {
-      foundExports = true
+      isFoundExports = true
     }
   }
 

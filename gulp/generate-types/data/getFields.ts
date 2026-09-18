@@ -29,21 +29,22 @@ function findCommonFields(descriptions: CsvData, getXsdType: GetXsdPropery): Tra
   const { General: general, ...others } = descriptions
 
   // Find fields present in every track type
-  for (const csvName of Object.keys(general)) {
+  for (const [csvName, generalField] of Object.entries(general)) {
     // Ignore `Title` as it has different descriptions that are worth keeping
-    if (csvName === 'Title') {
+    if (
+      csvName === 'Title' ||
+      Object.values(others).some((descr) => !Object.keys(descr).includes(csvName))
+    ) {
       continue
     }
 
-    if (Object.values(others).every((descr) => Object.keys(descr).includes(csvName))) {
-      const normalizedName = normalizeName(csvName)
+    const normalizedName = normalizeName(csvName)
 
-      // Add to common
-      commonFields[normalizedName] = {
-        description: general[csvName].description, // ok: all common properties have descriptions
-        group: general[csvName].group,
-        type: getXsdType('Common', normalizedName).type,
-      }
+    // Add to common
+    commonFields[normalizedName] = {
+      description: generalField.description, // ok: all common properties have descriptions
+      group: generalField.group,
+      type: getXsdType('Common', normalizedName).type,
     }
   }
 

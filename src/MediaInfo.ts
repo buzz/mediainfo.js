@@ -129,7 +129,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     let offset = 0
     const runReadDataLoop = (fileSize: number) => {
       const readNextChunk = (data: Uint8Array) => {
-        if (continueBuffer(data)) {
+        if (shouldContinueBuffer(data)) {
           getChunk()
         } else {
           finalize()
@@ -157,7 +157,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
         }
       }
 
-      const continueBuffer = (data: Uint8Array): boolean => {
+      const shouldContinueBuffer = (data: Uint8Array): boolean => {
         if (data.length === 0 || this.openBufferContinue(data, data.length)) {
           return false
         }
@@ -309,9 +309,6 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
         for (const track of result.media.track) {
           let newTrack: Writable<Track> = { '@type': track['@type'] }
           for (const [key, val] of Object.entries(track) as [string, unknown][]) {
-            if (key === '@type') {
-              continue
-            }
             if (typeof val === 'string' && intFields.includes(key)) {
               newTrack = { ...newTrack, [key]: Number.parseInt(val, 10) }
             } else if (typeof val === 'string' && floatFields.includes(key)) {

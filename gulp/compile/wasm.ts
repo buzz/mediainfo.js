@@ -30,7 +30,7 @@ const EXPORTED_RUNTIME_METHODS = [
   'UTF8ToString',
 ] as const
 
-function makeArgs(environment: 'web' | 'node', es6: boolean) {
+function makeArgs(environment: 'web' | 'node', isEs6: boolean) {
   return [
     ...CXXFLAGS.split(' '),
     ...MediaInfoLib_CXXFLAGS.split(' '),
@@ -39,7 +39,7 @@ function makeArgs(environment: 'web' | 'node', es6: boolean) {
     '-sMALLOC=emmalloc',
     '-sASSERTIONS=0',
     `-sENVIRONMENT=${environment}`,
-    `-sEXPORT_ES6=${es6 ? '1' : '0'}`,
+    `-sEXPORT_ES6=${isEs6 ? '1' : '0'}`,
     '-sLEGACY_VM_SUPPORT=0',
     '-sMODULARIZE=1',
     '-sFILESYSTEM=0',

@@ -7,10 +7,7 @@ function isError(error: unknown): error is Error {
 }
 
 function unknownToError(error: unknown): Error {
-  if (isError(error)) {
-    return error
-  }
-  return new Error(typeof error === 'string' ? error : 'Unknown error')
+  return isError(error) ? error : new Error(typeof error === 'string' ? error : 'Unknown error')
 }
 
 export { unknownToError }
