@@ -6,6 +6,27 @@ All notable changes to this project will be documented in this file.
 Changes preceding version 0.2.0 are not included in the changelog.
 :::
 
+## [0.3.8](https://github.com///compare/v0.3.7...v0.3.8) (2026-09-18)
+
+### Bug Fixes
+
+* **build:** add missing .ts extensions in gulp imports ([f6b6d52](https://github.com///commit/f6b6d522f2ecdeca9cd9bd8c93556d1a51968191))
+* **build:** correct ESM source map filenames ([c84feb9](https://github.com///commit/c84feb9bb1883e5c7eae38ace9b422f5be582089))
+* **build:** link the module as C++ for Emscripten 6.x ([fb8ccc2](https://github.com///commit/fb8ccc221df500736a4a3e3f2b78d124263dbeca))
+* **build:** patch AV1 reject regression in libmediainfo ([1c1b7a9](https://github.com///commit/1c1b7a9b8a9648d7c12a39f8979832622ae13a67))
+* **build:** patch UTF-8 corruption in libmediainfo ([504eefd](https://github.com///commit/504eefdeb05ed37867cbac386eda3a31b7dbaae8))
+* **build:** prebuild the zlib port for Emscripten 6.x ([ee711ec](https://github.com///commit/ee711ec14d460873919229352713f92fbbfa733a))
+* **build:** repair the gulp pipeline after the dependency upgrade ([9ad45a4](https://github.com///commit/9ad45a438f73b581a0e8e9d259de9db1c37f1926))
+* decode id3 tag frames as UTF-8 ([3e7cc51](https://github.com///commit/3e7cc51f78c6f5e14eca048c8edaf86e023a135f)), closes [#150](https://github.com///issues/150)
+* initialize Node::Multiple to keep JSON output parsable ([#159](https://github.com///issues/159)) ([3ce6a27](https://github.com///commit/3ce6a27e57f642454b2b29402eba06bcc4a10f79))
+* reposition the parser on seeks instead of re-initializing it ([338181e](https://github.com///commit/338181e875f1ae658ad6840b3fc2ec8850c3bdbe)), closes [#164](https://github.com///issues/164), references [#188](https://github.com///issues/188)
+* service seek requests raised with the finished flag ([ebfe4e6](https://github.com///commit/ebfe4e6c23bf3baebf68191731180b432c0c8c7a)), closes [#188](https://github.com///issues/188)
+* **tests:** type the toBeNear matcher and modernise tests tsconfig ([97166a1](https://github.com///commit/97166a15d4c928255cc083b3720a07770aef0758))
+
+### Upgrades
+
+* **deps:** upgrade libmediainfo to v26.05 ([ff8ade5](https://github.com///commit/ff8ade5fd6ddd5049c43c455cccedbcae5b991ee))
+
 ## [0.3.7](https://github.com/buzz/mediainfo.js/compare/v0.3.6...v0.3.7) (2026-01-18)
 
 
