@@ -1,3 +1,6 @@
 {
-  "header": "# Changelog\n\nAll notable changes to this project will be documented in this file.\n\n:::note\nChanges preceding version 0.2.0 are not included in the changelog.\n:::\n"
+  "header": "# Changelog\n\nAll notable changes to this project will be documented in this file.\n\n:::note\nChanges preceding version 0.2.0 are not included in the changelog.\n:::\n",
+  "commitUrlFormat": "https://github.com/buzz/mediainfo.js/commit/{{hash}}",
+  "compareUrlFormat": "https://github.com/buzz/mediainfo.js/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://github.com/buzz/mediainfo.js/issues/{{id}}"
 }
