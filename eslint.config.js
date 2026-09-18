@@ -1,6 +1,6 @@
 import eslintJs from '@eslint/js'
+import vitest from '@vitest/eslint-plugin'
 import eslintPluginImport from 'eslint-plugin-import'
-import eslintPluginJest from 'eslint-plugin-jest'
 import eslintPluginPrettier from 'eslint-plugin-prettier'
 import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
@@ -112,14 +112,16 @@ export default tsEslint.config(
 
   {
     files: ['tests/__tests__/**/*.ts'],
-    plugins: { jest: eslintPluginJest },
-    languageOptions: { globals: globals.node },
+    plugins: { vitest },
+    languageOptions: {
+      globals: { ...globals.node, ...vitest.environments.env.globals },
+    },
     rules: {
-      'jest/no-disabled-tests': 'warn',
-      'jest/no-focused-tests': 'error',
-      'jest/no-identical-title': 'error',
-      'jest/prefer-to-have-length': 'warn',
-      'jest/valid-expect': 'error',
+      'vitest/no-disabled-tests': 'warn',
+      'vitest/no-focused-tests': 'error',
+      'vitest/no-identical-title': 'error',
+      'vitest/prefer-to-have-length': 'warn',
+      'vitest/valid-expect': 'error',
     },
   },
 
