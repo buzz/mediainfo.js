@@ -4,7 +4,7 @@
     "allowJs": true,
     "esModuleInterop": true,
     "module": "es2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
