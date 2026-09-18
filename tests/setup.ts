@@ -9,6 +9,7 @@ const TEST_FILES = {
   'av1_10bit_pq_limited_range.mp4': '5c7c8f240046ece3811ba58089a10fe1', // issue #188
   'AudioVideoInterleave.avi': 'a51c3aff106210abcf32a9d4285628a6',
   'Dead_Combo_-_01_-_Povo_Que_Cas_Descalo.mp3': 'b02fc030703403a13c9a6cef5922c6d1',
+  'flv-duration-no-metadata.flv': '839903b35fe4528bd90400ebb4156b9d', // issue #164
   'test-sample-636x360-25fps-53.76s.mp4': '354a59f58ec403d2f56834ee94125a33',
   'test-sample-320x240-29.970fps-14.014s.m1v': '5c606590c7a37a2f4f5ba5bbd42eb4e2',
   'many_tracks.mp4': '0e002574aad79365477ab8f904fef616',
