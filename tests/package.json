@@ -11,10 +11,10 @@
   "keywords": [],
   "author": "buzz",
   "license": "BSD-2-Clause",
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@12.4.2",
   "devDependencies": {
-    "@types/node": "^25.0.9",
+    "@types/node": "^26.6.1",
     "mediainfo.js": "link:..",
-    "vitest": "^3.2.4"
+    "vitest": "^5.0.1"
   }
 }

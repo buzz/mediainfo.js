@@ -1,0 +1,25 @@
+patchedDependencies:
+  gulp-sourcemaps@3.0.0: patches/gulp-sourcemaps@3.0.0.patch
+allowBuilds:
+  es5-ext: true
+minimumReleaseAgeExclude:
+  - '@babel/cli@8.0.6'
+  - '@babel/code-frame@8.0.6'
+  - '@babel/core@8.0.6'
+  - '@babel/generator@8.0.6'
+  - '@babel/helper-compilation-targets@8.0.6'
+  - '@babel/helper-globals@8.0.6'
+  - '@babel/helper-string-parser@8.0.6'
+  - '@babel/helper-validator-identifier@8.0.6'
+  - '@babel/parser@8.0.6'
+  - '@babel/plugin-bugfix-safari-rest-destructuring-rhs-array@8.0.6'
+  - '@babel/plugin-transform-async-generator-functions@8.0.6'
+  - '@babel/plugin-transform-regenerator@8.0.6'
+  - '@babel/preset-env@8.0.6'
+  - '@babel/register@8.0.6'
+  - '@babel/traverse@8.0.6'
+  - '@babel/types@8.0.6'
+  - prettier@3.9.8
+overrides:
+  '@typescript-eslint/utils': ^8.70.0
+  '@typescript-eslint/eslint-plugin': ^8.70.0
