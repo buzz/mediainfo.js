@@ -1,4 +1,5 @@
 #include <MediaInfo/MediaInfo.h>
+#include <clocale>
 #include <new>
 #include <string>
 
@@ -13,6 +14,13 @@ extern "C"
 {
   void *mi_new(const char *output_format, int cover_data, int full)
   {
+    // ZenLib is built with --disable-unicode, so it converts every tag to UTF-8 with wcstombs(),
+    // which follows the C locale: in the default "C" locale it fails on any non-ASCII character.
+    // Same as https://github.com/MediaArea/MediaInfoLib/pull/2244, which mediainfo.js does not get
+    // from upstream because that patch is in MediaInfoJS.cpp and this file replaces it.
+    // Issue #150, see also the ZenLib patch in gulp/compile/zenlib.ts.
+    std::setlocale(LC_ALL, "C.UTF-8");
+
     auto *ctx = new (std::nothrow) MiContext();
     if (!ctx)
       return nullptr;
