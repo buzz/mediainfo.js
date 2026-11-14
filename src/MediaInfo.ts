@@ -31,6 +31,14 @@ const FORMAT_CHOICES = ['JSON', 'XML', 'HTML', 'text'] as const
  */
 const POSITION_ONLY = -1
 
+/**
+ * Status bits for `Open_Buffer_Continue()`.
+ * Bit 0: container format recognized.
+ * Bit 3: parser finished.
+ */
+const STATUS_IS_ACCEPTED = 0x01
+const STATUS_IS_FINISHED = 0x08
+
 const DEFAULT_OPTIONS = {
   coverData: false,
   chunkSize: 256 * 1024,
@@ -55,6 +63,9 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
   private readonly mediainfoModule: MediaInfoModule
   private ptr: number
   private isAnalyzing = false
+
+  /** True if container format is recognized. */
+  private isFormatAccepted = false
 
   /** @group General Use */
   readonly options: MediaInfoOptions<TFormat>
@@ -171,9 +182,9 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
           // the walk FLV does backwards from end of file to find them (issue #164). Only a parser
           // that already reported "finished" needs the full re-init, to get that flag cleared
           // (issue #188).
-          // Known limit: when one readChunk() call delivers the whole file, MediaInfoLib raises the
-          // walk seek together with "finished", so the re-init is unavoidable and resets the walk -
-          // handing the parser smaller pieces internally is what would be needed to cover it.
+          // Known limit: if format is only recognized from the whole file, MediaInfoLib
+          // triggers the seek and "finished" together, making re-init unavoidable.
+          // nextReadSize() avoids this for header-recognized formats.
           this.openBufferInit(isFinished ? fileSize : POSITION_ONLY, seekTo)
           return true
         }
@@ -183,13 +194,31 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
         return offset < fileSize && !isFinished
       }
 
+      /**
+       * Number of bytes to request for the read at `offset`.
+       *
+       * MediaInfoLib ends format detection when a read reaches EOF. If the whole file is read,
+       * it may hand the container to a parser that already finished. Re-initializing
+       * that parser later can cause duplicate header values (issue #190) or missing fields
+       * if no seek is possible (e.g. MPEG-TS).
+       *
+       * Halving the read during detection prevents premature EOF, mimicking a streaming
+       * reader. Truncating the tail (all but the last byte) is avoided as some parsers
+       * (e.g. Matroska) stop analysis upon detecting a truncated container.
+       */
+      const nextReadSize = (): number => {
+        const remaining = fileSize - offset
+        const size = Math.min(this.options.chunkSize, remaining)
+        const shouldStopBeforeEndOfFile = !this.isFormatAccepted && size > 1 && size === remaining
+        return shouldStopBeforeEndOfFile ? Math.ceil(size / 2) : size
+      }
+
       try {
         this.openBufferInit(fileSize, offset)
 
         for (;;) {
-          // await (also for synchronous readers) keeps this iterative, a mutual recursion with
-          // shouldReadMore() would add a stack frame per chunk
-          const data = await readChunk(Math.min(this.options.chunkSize, fileSize - offset), offset)
+          // await keeps this iterative; mutual recursion with shouldReadMore() would add stack frames per chunk.
+          const data = await readChunk(nextReadSize(), offset)
           if (!shouldReadMore(data)) {
             break
           }
@@ -231,6 +260,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     if (this.ptr) {
       this.mediainfoModule._mi_delete(this.ptr)
     }
+    this.isFormatAccepted = false
     this.ptr = this.instantiateModuleInstance()
   }
 
@@ -265,8 +295,12 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     const result = this.mediainfoModule._mi_open_buffer_continue(this.ptr, dataPtr, size)
 
     this.mediainfoModule._free(dataPtr)
-    // Bit 3 set (0x08) means processing is complete
-    return !!(result & 0x08)
+
+    if (result & STATUS_IS_ACCEPTED) {
+      this.isFormatAccepted = true
+    }
+
+    return !!(result & STATUS_IS_FINISHED)
   }
 
   /**
