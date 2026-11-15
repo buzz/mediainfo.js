@@ -6,6 +6,20 @@ All notable changes to this project will be documented in this file.
 Changes preceding version 0.2.0 are not included in the changelog.
 :::
 
+## [0.3.9](https://github.com/buzz/mediainfo.js/compare/v0.3.8...v0.3.9) (2026-11-15)
+
+### Bug Fixes
+
+* **build:** patch MediaInfoLib to include cmath unconditionally ([0801e2c](https://github.com/buzz/mediainfo.js/commit/0801e2cde7654bc6d7f77ad448e20c5c11e344e2))
+* **build:** run autogen.sh using /bin/sh ([82f0f3c](https://github.com/buzz/mediainfo.js/commit/82f0f3c87453b189888e448627979fa1cae4bae9))
+* keep the end of the file away from the format detection ([4d315ac](https://github.com/buzz/mediainfo.js/commit/4d315acfa6c1a8f6797ac1d7a4954476da426874)), closes [#190](https://github.com/buzz/mediainfo.js/issues/190)
+* **release:** hardcode the changelog link URL formats ([85cc8f4](https://github.com/buzz/mediainfo.js/commit/85cc8f453d4332b4a01798ff91ddbc38e8f956f8))
+* **release:** regenerate the 0.3.8 changelog links ([b8e5119](https://github.com/buzz/mediainfo.js/commit/b8e5119d819db486c4106b882e07e94a33e1b6e3))
+
+### Upgrades
+
+* **deps:** upgrade libmediainfo to v26.10 ([5b2e462](https://github.com/buzz/mediainfo.js/commit/5b2e462cf0f9900d74db8cc13ecf16872a4d3b04))
+
 ## [0.3.8](https://github.com/buzz/mediainfo.js/compare/v0.3.7...v0.3.8) (2026-09-18)
 
 ### Bug Fixes
