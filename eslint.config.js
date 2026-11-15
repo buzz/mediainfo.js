@@ -25,7 +25,7 @@ export default tsEslint.config(
   eslintJs.configs.recommended,
   ...tsEslint.configs.strictTypeChecked,
   ...tsEslint.configs.stylisticTypeChecked,
-  eslintPluginUnicorn.configs['flat/recommended'],
+  eslintPluginUnicorn.configs.recommended,
 
   // base config
 
@@ -94,6 +94,8 @@ export default tsEslint.config(
 
       'unicorn/filename-case': 'off',
       'unicorn/no-null': 'off',
+      // Docblocks keep their ` * ` prefixes, every file is written that way
+      'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
       'unicorn/prevent-abbreviations': 'off',
       // One-line JSDoc is deliberate, `//` comments are not shown as docs by editors
       'unicorn/single-line-block-comment-style': 'off',

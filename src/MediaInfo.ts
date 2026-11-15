@@ -133,11 +133,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
       try {
         this.openBufferFinalize()
         const result = this.inform()
-        if (this.options.format === 'object') {
-          callback(this.parseResultJson(result))
-        } else {
-          callback(result)
-        }
+        callback(this.options.format === 'object' ? this.parseResultJson(result) : result)
       } finally {
         this.isAnalyzing = false
       }
@@ -353,8 +349,6 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
    * @returns Parsed JSON object
    */
   private parseResultJson(resultString: string): ResultMap[TFormat] {
-    type Writable<T> = { -readonly [P in keyof T]: T[P] }
-
     const intFields = INT_FIELDS as readonly string[]
     const floatFields = FLOAT_FIELDS as readonly string[]
 
@@ -362,6 +356,7 @@ class MediaInfo<TFormat extends FormatType = typeof DEFAULT_OPTIONS.format> {
     const result = JSON.parse(resultString) as MediaInfoResult
 
     if (result.media) {
+      type Writable<T> = { -readonly [P in keyof T]: T[P] }
       const newMedia = { ...result.media, track: [] as Writable<Track>[] }
 
       if (Array.isArray(result.media.track)) {
