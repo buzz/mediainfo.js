@@ -751,6 +751,8 @@ export interface GeneralTrack extends BaseTrack {
   readonly Format_Extensions?: string
   /** Level of the Format */
   readonly Format_Level?: string
+  /** Specifications the file is compliant with */
+  readonly CompliantWith?: string
   /** Internet Media Type (aka MIME Type, Content-Type) */
   readonly InternetMediaType?: string
   /** Version of the CodecID */
@@ -1315,6 +1317,10 @@ export interface ImageTrack extends BaseTrack {
   readonly Format_Settings_Packing?: string
   /** Wrapping mode set for format (e.g. Frame, Clip) */
   readonly Format_Settings_Wrapping?: string
+  /** Number of slices per image (e.g. cells of a HEIF grid) */
+  readonly Format_Settings_SliceCount?: number
+  /** Number of slices per image (e.g. cells of a HEIF grid) */
+  readonly Format_Settings_SliceCount_String?: string
   /** How this file is muxed in the container (e.g. Muxed in Video #1) */
   readonly MuxingMode?: string
   /** Internet Media Type (aka MIME Type, Content-Type) */
@@ -1371,6 +1377,10 @@ export interface ImageTrack extends BaseTrack {
   readonly Active_DisplayAspectRatio?: number
   /** The proportional relationship between the active width and active height of a frame (e.g. 4:3) */
   readonly Active_DisplayAspectRatio_String?: string
+  /** Rotation of the image, derived from the Exif orientation, in degrees */
+  readonly Rotation?: string
+  /** Rotation of the image, derived from the Exif orientation, in degrees */
+  readonly Rotation_String?: string
   /** Color profile of the image (e.g. YUV) */
   readonly ColorSpace?: string
   /** Ratio of chroma to luma in encoded image (e.g. 4:2:2) */
@@ -1863,9 +1873,9 @@ export interface OtherTrack extends BaseTrack {
   readonly TimeCode_DropFrame?: string
   /** Time code settings */
   readonly TimeCode_Settings?: string
-  /** Time code is Stripped (only 1st time code, no discontinuity) */
+  /** Time code is stripped (only the first time code and the time codes after a discontinuity are stored) */
   readonly TimeCode_Stripped?: string
-  /** Time code is Stripped (only 1st time code, no discontinuity) */
+  /** Time code is stripped (only the first time code and the time codes after a discontinuity are stored) */
   readonly TimeCode_Stripped_String?: string
   /** Time code source (Container, Stream, SystemScheme1, SDTI, ANC...) */
   readonly TimeCode_Source?: string
