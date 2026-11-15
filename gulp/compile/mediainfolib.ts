@@ -123,7 +123,7 @@ async function task() {
   // it, only CXXFLAGS do), so prebuild the port for it.
   await spawn('embuilder', ['build', 'zlib'], mediainfolibDir)
 
-  await spawn('./autogen.sh', [], mediainfolibDir)
+  await spawn('sh', ['./autogen.sh'], mediainfolibDir)
   await spawn('sed', ['-i', 's/-O2/-Oz/', 'configure'], mediainfolibDir)
   await patchC1Filter()
   await patchAv1Reject()

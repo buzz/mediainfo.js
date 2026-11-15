@@ -92,7 +92,7 @@ async function patchEncodingConversions() {
 }
 
 async function task() {
-  await spawn('./autogen.sh', [], zenlibDir)
+  await spawn('sh', ['./autogen.sh'], zenlibDir)
   await spawn('sed', ['-i', 's/-O2/-Oz/', 'configure'], zenlibDir)
   await patchEncodingConversions()
   await spawn(
