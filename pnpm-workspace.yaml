@@ -23,3 +23,5 @@ minimumReleaseAgeExclude:
 overrides:
   '@typescript-eslint/utils': ^8.70.0
   '@typescript-eslint/eslint-plugin': ^8.70.0
+  # Until 7.1 gives us an API
+  typescript: ~6.0.3
